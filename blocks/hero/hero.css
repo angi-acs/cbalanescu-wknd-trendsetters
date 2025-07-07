@@ -47,6 +47,135 @@
   }
 }
 
+/* --- HERO 1 STYLES --- */
+.hero.hero1 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background: var(--background-color);
+  padding: 64px 0;
+  gap: 56px;
+  min-height: 540px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.hero.hero1 > div:first-child {
+  flex: 0 0 400px;
+  max-width: 400px;
+  min-width: 320px;
+  min-height: 340px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.hero.hero1 > div:last-child {
+  flex: 1 1 0;
+  max-width: 600px;
+  min-width: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100%;
+}
+
+.hero.hero1 > div:last-child > div {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.hero.hero1 > div:last-child > div > p:first-child,
+.hero.hero1 > div:last-child > div > p:nth-child(2) {
+  display: inline-block;
+  vertical-align: middle;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.hero.hero1 > div:last-child > div > p:first-child {
+  font-size: 14px;
+  text-transform: uppercase;
+  color: #888;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  margin-right: 10px;
+}
+
+.hero.hero1 > div:last-child > div > p:nth-child(2) {
+  background: #f3f3f3;
+  color: #222;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 4px 16px;
+  border-radius: 16px;
+  letter-spacing: 0.04em;
+}
+
+.hero.hero1 h2,
+.hero.hero1 h1 {
+  font-family: var(--heading-font-family), Montserrat, Arial, sans-serif;
+  font-size: 48px;
+  font-weight: 600;
+  color: #222;
+  margin: 18px 0 0;
+  letter-spacing: 0.01em;
+  line-height: 1.08;
+  max-width: 480px;
+  overflow-wrap: break-word;
+  text-align: left;
+}
+
+.hero.hero1 > div:last-child > div > p:nth-child(3),
+.hero.hero1 > div:last-child > div > p:nth-child(4),
+.hero.hero1 > div:last-child > div > p:nth-child(5),
+.hero.hero1 > div:last-child > div > p:nth-child(6),
+.hero.hero1 > div:last-child > div > p:nth-child(7) {
+  display: inline;
+  font-size: 15px;
+  color: #888;
+  margin: 0 6px 0 0;
+  vertical-align: middle;
+  font-weight: 400;
+}
+
+.hero.hero1 > div:last-child > div > p:nth-child(4),
+.hero.hero1 > div:last-child > div > p:nth-child(6) {
+  font-size: 18px;
+  color: #bbb;
+  font-weight: bold;
+  margin: 0 8px;
+  line-height: 0;
+}
+
+.hero.hero1 > div:first-child > div {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ececec;
+  border-radius: 28px;
+  min-height: 280px;
+}
+
+.hero.hero1 picture,
+.hero.hero1 img {
+  width: 100%;
+  height: auto;
+  border-radius: 28px;
+  object-fit: cover;
+  display: block;
+  box-shadow: none;
+  max-width: 400px;
+  min-width: 0;
+  min-height: 0;
+}
+
 /* --- HERO 4 STYLES --- */
 .hero.hero4 {
   display: flex;
@@ -151,136 +280,6 @@
   border-color: #000;
 }
 
-/* --- HERO 1 STYLES --- */
-.hero.hero1 {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  background: var(--background-color);
-  padding: 64px 0;
-  gap: 56px;
-  min-height: 540px;
-  box-sizing: border-box;
-  width: 100%;
-}
-
-.hero.hero1 > div:first-child {
-  flex: 0 0 400px;
-  max-width: 400px;
-  min-width: 320px;
-  min-height: 340px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-}
-
-.hero.hero1 > div:first-child > div {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #ececec; /* fallback bg for debugging if image missing */
-  border-radius: 28px;
-  min-height: 280px;
-}
-
-.hero.hero1 picture,
-.hero.hero1 img {
-  width: 100%;
-  height: auto;
-  border-radius: 28px;
-  object-fit: cover;
-  display: block;
-  box-shadow: none;
-  max-width: 400px;
-  min-width: 0;
-  min-height: 0;
-}
-
-.hero.hero1 > div:last-child {
-  flex: 1 1 0;
-  max-width: 600px;
-  min-width: 320px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  height: 100%;
-  /* Prevent text block from drifting right if image is empty */
-}
-
-.hero.hero1 > div:last-child > div {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 20px;
-}
-
-.hero.hero1 > div:last-child > div > p:first-child,
-.hero.hero1 > div:last-child > div > p:nth-child(2) {
-  display: inline-block;
-  vertical-align: middle;
-  margin-top: 0;
-  margin-bottom: 0;
-}
-
-.hero.hero1 > div:last-child > div > p:first-child {
-  font-size: 14px;
-  text-transform: uppercase;
-  color: #888;
-  font-weight: 400;
-  letter-spacing: 0.04em;
-  margin-right: 10px;
-}
-
-.hero.hero1 > div:last-child > div > p:nth-child(2) {
-  background: #f3f3f3;
-  color: #222;
-  font-size: 12px;
-  font-weight: 700;
-  text-transform: uppercase;
-  padding: 4px 16px;
-  border-radius: 16px;
-  letter-spacing: 0.04em;
-}
-
-.hero.hero1 h2,
-.hero.hero1 h1 {
-  font-family: var(--heading-font-family), Montserrat, Arial, sans-serif;
-  font-size: 48px;
-  font-weight: 600;
-  color: #222;
-  margin: 18px 0 0;
-  letter-spacing: 0.01em;
-  line-height: 1.08;
-  max-width: 480px;
-  overflow-wrap: break-word;
-  text-align: left;
-}
-
-.hero.hero1 > div:last-child > div > p:nth-child(3),
-.hero.hero1 > div:last-child > div > p:nth-child(4),
-.hero.hero1 > div:last-child > div > p:nth-child(5),
-.hero.hero1 > div:last-child > div > p:nth-child(6),
-.hero.hero1 > div:last-child > div > p:nth-child(7) {
-  display: inline;
-  font-size: 15px;
-  color: #888;
-  margin: 0 6px 0 0;
-  vertical-align: middle;
-  font-weight: 400;
-}
-
-.hero.hero1 > div:last-child > div > p:nth-child(4),
-.hero.hero1 > div:last-child > div > p:nth-child(6) {
-  font-size: 18px;
-  color: #bbb;
-  font-weight: bold;
-  margin: 0 8px;
-  line-height: 0;
-}
-
 /* --- HERO 6 STYLES --- */
 .hero.hero6 {
   position: relative;
@@ -302,24 +301,6 @@
   z-index: 1;
   pointer-events: none;
   display: block;
-}
-
-.hero.hero6 picture,
-.hero.hero6 img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.hero.hero6 > div:first-child::after {
-  display: block;
-  position: absolute;
-  inset: 0;
-  background: rgb(255 255 255 / 8%);
-  backdrop-filter: blur(11px);
-  z-index: 2;
-  content: "";
 }
 
 .hero.hero6 > div:last-child {
@@ -345,6 +326,24 @@
   display: flex;
   flex-direction: column;
   gap: 1.35rem;
+}
+
+.hero.hero6 picture,
+.hero.hero6 img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.hero.hero6 > div:first-child::after {
+  display: block;
+  position: absolute;
+  inset: 0;
+  background: rgb(255 255 255 / 8%);
+  backdrop-filter: blur(11px);
+  z-index: 2;
+  content: "";
 }
 
 .hero.hero6 h1 {
@@ -380,7 +379,7 @@
 .hero-container > .hero-wrapper > .block.hero.hero6 .button {
   display: inline-block;
   font-size: 1.19rem;
-  font-family: "Instrument Sans", Arial, sans-serif;
+  font-family: Instrument Sans, Arial, sans-serif;
   font-weight: 600;
   color: #222;
   background: #fff;
@@ -402,6 +401,181 @@
   background: transparent;
   color: #fff;
   border-color: #fff;
+}
+
+/* --- HERO 7 STYLES --- */
+.hero.hero7 {
+  background: #f7f7f3;
+  width: 100%;
+  padding: 40px 0 24px;
+  box-sizing: border-box;
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+}
+
+.hero.hero7 picture,
+.hero.hero7 img {
+  display: none;
+}
+
+.hero.hero7 [class*="overlay"],
+.hero.hero7 [class*="button"],
+.hero.hero7 button,
+.hero.hero7 a.button,
+.hero.hero7 h1,
+.hero.hero7 h2,
+.hero.hero7 h3,
+.hero.hero7 h4,
+.hero.hero7 h5,
+.hero.hero7 h6,
+.hero.hero7 .button-container {
+  display: none;
+}
+
+.hero.hero7 > div:first-of-type > div > p {
+  display: block;
+  color: #222;
+  font-family: var(--body-font-family, Instrument Sans, Arial, sans-serif);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.4;
+  text-align: center;
+  margin: 0 auto;
+  padding: 0;
+  max-width: 900px;
+  background: none;
+  box-shadow: none;
+}
+
+.hero.hero7 > div:first-of-type > div > p:not(:first-of-type),
+.hero.hero7 > div:first-of-type > div > *:not(p) {
+  display: none;
+}
+
+.hero.hero7 > div:not(:first-of-type),
+.hero.hero7 > div > div:empty {
+  margin: 0;
+  padding: 0;
+}
+
+.hero.hero7 hr,
+.hero.hero7 .divider,
+.hero.hero7 .section-header {
+  display: none;
+}
+
+/* --- HERO 10 STYLES --- */
+.hero.hero10 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  min-height: 480px;
+  padding: 64px 0;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+.hero.hero10 > div:first-of-type {
+  display: none;
+}
+
+.hero.hero10 > div:last-of-type {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 1100px;
+  gap: 104px;
+  margin: 0 auto;
+  padding: 0 48px;
+  box-sizing: border-box;
+  min-height: 340px;
+}
+
+.hero.hero10 > div:last-of-type > div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: 104px;
+}
+
+.hero.hero10 > div:last-of-type > div > *:first-child {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 500px;
+  gap: 18px;
+}
+
+.hero.hero10 h2 {
+  font-family: Orbitron, Syncopate, Arial, sans-serif;
+  font-size: 2.5rem;
+  font-weight: 400;
+  color: #000;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.hero.hero10 p:not(.button-container) {
+  color: #444;
+  font-size: 1rem;
+  margin: 0;
+  max-width: 440px;
+  line-height: 1.35;
+}
+
+.hero.hero10 > div:last-of-type > div > *:last-child {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  flex: 0 0 220px;
+  min-width: 180px;
+  gap: 18px;
+}
+
+.hero.hero10 > div:last-of-type > div > *:last-child > .button-container {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.hero.hero10 .button-container .button,
+.hero.hero10 .button-container a.button {
+  display: block;
+  width: 100%;
+  min-width: 180px;
+  max-width: 270px;
+  text-align: center;
+  background: #fff;
+  color: #000;
+  border: 1px solid #000;
+  border-radius: 9999px;
+  font-family: Instrument Sans, Arial, sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  padding: 12px 0;
+  margin: 0;
+  box-shadow: none;
+  transition: box-shadow 0.18s, border-color 0.18s, background 0.18s, color 0.18s;
+}
+
+.hero.hero10 .button-container:first-of-type .button,
+.hero.hero10 .button-container:first-of-type a.button {
+  box-shadow: 0 0 0 2px #FFFB99;
 }
 
 @media (width <= 900px) {
@@ -426,6 +600,42 @@
     flex-direction: column;
     gap: 0.7rem;
     margin: 0.3rem 0 0;
+  }
+
+  .hero.hero10 {
+    padding: 36px 0;
+    min-height: unset;
+  }
+
+  .hero.hero10 > div:last-of-type {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 36px;
+    padding: 0 16px;
+    max-width: 98vw;
+    min-height: unset;
+  }
+
+  .hero.hero10 > div:last-of-type > div {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 24px;
+    width: 100%;
+  }
+
+  .hero.hero10 > div:last-of-type > div > *:first-child {
+    max-width: 100%;
+    gap: 12px;
+  }
+
+  .hero.hero10 > div:last-of-type > div > *:last-child {
+    min-width: 0;
+    max-width: 100%;
+    gap: 12px;
+  }
+
+  .hero.hero10 > div:last-of-type > div > *:last-child > .button-container {
+    width: 100%;
   }
 }
 
@@ -495,69 +705,4 @@
   padding: 0;
   height: 100vh;
   min-height: 100vh;
-}
-
-/* --- MERGED HERO 7 STYLES --- */
-.hero.hero7 {
-  background: #f7f7f3;
-  width: 100%;
-  padding: 40px 0 24px;
-  box-sizing: border-box;
-  min-height: 80px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  position: relative;
-}
-
-.hero.hero7 picture,
-.hero.hero7 img {
-  display: none;
-}
-
-.hero.hero7 [class*="overlay"],
-.hero.hero7 [class*="button"],
-.hero.hero7 button,
-.hero.hero7 a.button,
-.hero.hero7 h1,
-.hero.hero7 h2,
-.hero.hero7 h3,
-.hero.hero7 h4,
-.hero.hero7 h5,
-.hero.hero7 h6,
-.hero.hero7 .button-container {
-  display: none;
-}
-
-.hero.hero7 > div:first-of-type > div > p {
-  display: block;
-  color: #222;
-  font-family: var(--body-font-family, Instrument Sans, Arial, sans-serif);
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 1.4;
-  text-align: center;
-  margin: 0 auto;
-  padding: 0;
-  max-width: 900px;
-  background: none;
-  box-shadow: none;
-}
-
-.hero.hero7 > div:first-of-type > div > p:not(:first-of-type),
-.hero.hero7 > div:first-of-type > div > *:not(p) {
-  display: none;
-}
-
-.hero.hero7 > div:not(:first-of-type),
-.hero.hero7 > div > div:empty {
-  margin: 0;
-  padding: 0;
-}
-
-.hero.hero7 hr,
-.hero.hero7 .divider,
-.hero.hero7 .section-header {
-  display: none;
 }
