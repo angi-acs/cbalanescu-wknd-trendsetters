@@ -1,3 +1,4 @@
+
 /* --- HERO CONTAINER BASE STYLES --- */
 .hero-container .hero-wrapper {
   max-width: unset;
@@ -985,5 +986,210 @@
     width: 70px;
     height: 70px;
     border-radius: 7px;
+  }
+}
+
+/* --- BEGIN MERGED .hero.hero15 --- */
+.hero.hero15 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background: #f8f8f5;
+  min-height: 100vh;
+  padding: 0;
+  gap: 68px;
+  box-sizing: border-box;
+  position: relative;
+}
+
+/* --- END MERGED .hero.hero15 --- */
+
+/* Generated CSS (other selectors unchanged from the generated CSS you provided) */
+
+.hero.hero15 > div {
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Left: Image column */
+.hero.hero15 > div:first-child {
+  flex: 0 0 420px;
+  width: 420px;
+  max-width: 420px;
+  min-width: 320px;
+  min-height: 320px;
+  height: 420px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+.hero.hero15 > div:first-child > div {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Reveal and style the image */
+.hero.hero15 picture,
+.hero.hero15 img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: 420px;
+  max-height: 420px;
+  min-width: 220px;
+  min-height: 220px;
+  object-fit: cover;
+  border-radius: 24px;
+  background: #eaeaea;
+  box-shadow: none;
+  aspect-ratio: 1/1;
+}
+
+/* Right: Text column */
+.hero.hero15 > div:last-child {
+  flex: 1 1 520px;
+  max-width: 580px;
+  min-width: 320px;
+  width: 100%;
+  align-items: center;
+  justify-content: flex-start;
+  height: auto;
+  padding-left: 0;
+}
+
+.hero.hero15 > div:last-child > div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+  height: auto;
+}
+
+.hero.hero15 h1 {
+  font-family: Outfit, Montserrat, Syncopate, Arial, sans-serif;
+  font-size: 64px;
+  font-weight: 600;
+  line-height: 1.05;
+  color: #222;
+  margin: 0 0 36px;
+  letter-spacing: 0.01em;
+  text-align: left;
+  word-break: break-word;
+}
+
+.hero.hero15 p:not(.button-container) {
+  font-size: 16px;
+  color: #555;
+  margin: 0 0 44px;
+  line-height: 1.6;
+  text-align: left;
+  max-width: 440px;
+}
+
+.hero.hero15 .button-container {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+}
+
+.hero-container > .hero-wrapper > .block.hero.hero15 .button,
+.hero.hero15 .button {
+  background: #fff;
+  color: #222;
+  border: 1.5px solid #222;
+  border-radius: 999px;
+  font-size: 16px;
+  font-family: inherit;
+  font-weight: 500;
+  padding: 14px 40px;
+  margin: 0;
+  text-align: center;
+  text-decoration: none;
+  box-shadow: none;
+  min-width: 200px;
+  transition: background 0.18s, color 0.18s, border-color 0.18s;
+}
+
+.hero-container > .hero-wrapper > .block.hero.hero15 .button:hover,
+.hero.hero15 .button:hover,
+.hero.hero15 .button:focus {
+  background: #222;
+  color: #fff;
+  border-color: #222;
+}
+
+@media (width <= 1100px) {
+  .hero.hero15 {
+    gap: 32px;
+  }
+
+  .hero.hero15 > div:first-child {
+    width: 32vw;
+    height: 32vw;
+    max-width: 320px;
+    max-height: 320px;
+    min-width: 140px;
+    min-height: 140px;
+  }
+
+  .hero.hero15 picture,
+  .hero.hero15 img {
+    max-width: 320px;
+    max-height: 320px;
+  }
+
+  .hero.hero15 > div:last-child {
+    max-width: 94vw;
+    min-width: 0;
+  }
+}
+
+@media (width <= 900px) {
+  .hero.hero15 {
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+    min-height: unset;
+    padding: 32px 0;
+  }
+
+  .hero.hero15 > div:first-child {
+    width: 78vw;
+    height: 78vw;
+    min-width: 0;
+    max-width: 240px;
+    max-height: 240px;
+    margin: 0 auto;
+  }
+
+  .hero.hero15 > div:last-child {
+    width: 100%;
+    max-width: 96vw;
+    min-width: 0;
+    justify-content: center;
+  }
+
+  .hero.hero15 h1 {
+    font-size: 32px;
+    margin-bottom: 20px;
+  }
+
+  .hero.hero15 p:not(.button-container) {
+    margin-bottom: 24px;
+  }
+
+  .hero.hero15 .button-container {
+    gap: 12px;
   }
 }
