@@ -31,3 +31,110 @@
     order: unset;
   }
 }
+
+.columns.columns8 {
+  background: #f7f8f3;
+  padding: 10px 0;
+}
+
+.columns.columns8 > div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 4vw;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0;
+  min-height: 38px;
+  margin: 0;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.columns.columns8 > div > div {
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 30%;
+  font-family: var(--body-font-family);
+  font-size: 13px;
+  color: #232323;
+  font-weight: 400;
+  line-height: 1.38;
+  margin: 0;
+  padding: 0;
+  overflow-wrap: break-word;
+  white-space: normal;
+}
+
+.columns.columns8 > div > div:last-child {
+  flex: 0 0 auto;
+  max-width: none;
+}
+
+.columns.columns8 > div > div p {
+  margin: 0;
+  padding: 0;
+  color: inherit;
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  white-space: normal;
+}
+
+.columns.columns8 .button-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin: 0;
+  padding: 0;
+}
+
+.columns.columns8 .button-container .button {
+  box-sizing: border-box;
+  display: inline-block;
+  margin: 0;
+  padding: 6px 28px;
+  font-family: var(--body-font-family);
+  font-size: 13px;
+  font-weight: 400;
+  color: #232323;
+  background: #fff;
+  border: 1px solid #232323;
+  border-radius: 999px;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  box-shadow: 0 2px 0 0 #f7f32d;
+  transition: box-shadow 0.2s;
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.columns.columns8 .button-container .button:hover,
+.columns.columns8 .button-container .button:focus {
+  background: #fff;
+  color: #232323;
+  border: 1px solid #232323;
+  box-shadow: 0 2px 0 0 #f7f32d;
+  text-decoration: underline;
+}
+
+@media (width <= 900px) {
+  .columns.columns8 > div {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+    padding: 8px 6vw;
+  }
+
+  .columns.columns8 > div > div {
+    max-width: 100%;
+    flex: unset;
+  }
+
+  .columns.columns8 .button-container {
+    justify-content: flex-start;
+  }
+}
