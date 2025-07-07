@@ -1,3 +1,4 @@
+/* --- HERO CONTAINER BASE STYLES --- */
 .hero-container .hero-wrapper {
   max-width: unset;
   padding: 0;
@@ -46,6 +47,152 @@
   }
 }
 
+/* --- HERO 4 STYLES --- */
+.hero.hero4 {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  background: #fff;
+  min-height: unset;
+  height: auto;
+  box-sizing: border-box;
+  padding: 0;
+  gap: 0;
+  background-image: none;
+  overflow: visible;
+}
+
+.hero.hero4 > div:first-child {
+  display: none;
+}
+
+.hero.hero4 > div:last-child {
+  flex: 1 1 100%;
+  min-width: 0;
+  max-width: unset;
+  padding: 40px 0 40px 24px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  box-sizing: border-box;
+}
+
+.hero.hero4 > div:last-child > div {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  width: 100%;
+  gap: 48px;
+}
+
+.hero.hero4 > div:last-child > div > p,
+.hero.hero4 > div:last-child > div > .button-container {
+  flex: 1 1 0;
+  max-width: 340px;
+  display: block;
+  text-align: left;
+}
+
+.hero.hero4 > div:last-child > div > p {
+  font-family: var(--body-font-family), Arial, sans-serif;
+  font-size: 13px;
+  color: #222;
+  margin: 0 0 16px;
+  line-height: 1.5;
+}
+
+.hero.hero4 > div:last-child > div > .button-container {
+  margin: 0;
+  padding: 0;
+}
+
+.hero.hero4 .button-container .button {
+  display: inline-block;
+  font-size: 14px;
+  font-family: var(--body-font-family), Arial, sans-serif;
+  font-weight: 400;
+  color: #000;
+  background: #fff;
+  border: 1.5px solid #000;
+  border-radius: 2em;
+  padding: 7px 26px;
+  min-width: 0;
+  box-sizing: border-box;
+  text-align: center;
+  text-decoration: none;
+  margin: 0;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.hero.hero4 .button-container .button:hover,
+.hero.hero4 .button-container .button:focus {
+  background: #000;
+  color: #fff;
+  border-color: #000;
+}
+
+.hero-container > .hero-wrapper > .block.hero.hero4 .button {
+  display: inline-block;
+  font-size: 14px;
+  font-family: var(--body-font-family), Arial, sans-serif;
+  font-weight: 400;
+  color: #000;
+  background: #fff;
+  border: 1.5px solid #000;
+  border-radius: 2em;
+  padding: 7px 26px;
+  min-width: 0;
+  box-sizing: border-box;
+  text-align: center;
+  text-decoration: none;
+  margin: 0;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.hero-container > .hero-wrapper > .block.hero.hero4 .button:hover,
+.hero-container > .hero-wrapper > .block.hero.hero4 .button:focus {
+  background: #000;
+  color: #fff;
+  border-color: #000;
+}
+
+@media (width <= 800px) {
+  .hero.hero4 > div:last-child > div {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+  }
+
+  .hero.hero4 > div:last-child {
+    padding: 24px 8px;
+  }
+
+  .hero.hero4 > div:last-child > div > h2,
+  .hero.hero4 > div:last-child > div > p,
+  .hero.hero4 > div:last-child > div > .button-container {
+    max-width: 100%;
+    text-align: left;
+  }
+}
+
+.hero.hero4 > div:last-child > div > h2 {
+  flex: 0 0 52%;
+  max-width: 52%;
+  font-family: var(--heading-font-family), Montserrat, Arial, sans-serif;
+  font-size: 48px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: #000;
+  margin: 0;
+  line-height: 1.08;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+
+/* --- HERO 1 STYLES --- */
 .hero.hero1 {
   display: flex;
   flex-direction: row;
@@ -59,20 +206,6 @@
   width: 100%;
 }
 
-/* --- TEXT COLUMN --- */
-.hero.hero1 > div:last-child {
-  flex: 1 1 0;
-  max-width: 600px;
-  min-width: 320px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  height: 100%;
-
-  /* Prevent text block from drifting right if image is empty */
-}
-
-/* --- IMAGE COLUMN: Ensure visible and occupies space --- */
 .hero.hero1 > div:first-child {
   flex: 0 0 400px;
   max-width: 400px;
@@ -106,7 +239,17 @@
   min-height: 0;
 }
 
-/* Text inner vertical stack */
+.hero.hero1 > div:last-child {
+  flex: 1 1 0;
+  max-width: 600px;
+  min-width: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100%;
+  /* Prevent text block from drifting right if image is empty */
+}
+
 .hero.hero1 > div:last-child > div {
   width: 100%;
   display: flex;
@@ -115,7 +258,6 @@
   gap: 20px;
 }
 
-/* --- LABEL + BADGE on same row, left-aligned --- */
 .hero.hero1 > div:last-child > div > p:first-child,
 .hero.hero1 > div:last-child > div > p:nth-child(2) {
   display: inline-block;
@@ -144,7 +286,6 @@
   letter-spacing: 0.04em;
 }
 
-/* --- HEADLINE --- */
 .hero.hero1 h2,
 .hero.hero1 h1 {
   font-family: var(--heading-font-family), Montserrat, Arial, sans-serif;
@@ -159,7 +300,6 @@
   text-align: left;
 }
 
-/* --- METADATA: All inline on single row, left-aligned --- */
 .hero.hero1 > div:last-child > div > p:nth-child(3),
 .hero.hero1 > div:last-child > div > p:nth-child(4),
 .hero.hero1 > div:last-child > div > p:nth-child(5),
@@ -182,7 +322,6 @@
   line-height: 0;
 }
 
-/* --- Responsive Adjustments --- */
 @media (width <= 1050px) {
   .hero.hero1 {
     gap: 28px;
@@ -227,7 +366,6 @@
 }
 
 /* Optional: remove fallback bg after debugging image display */
-
 /*
 .hero.hero1 > div:first-child > div {
   background: none;
