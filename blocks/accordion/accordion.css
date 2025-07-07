@@ -59,3 +59,116 @@
   border-top: 1px solid #dadada;
   background-color: var(--background-color);
 }
+
+/* Merged block for .accordion.accordion19 */
+.accordion.accordion19 {
+  background: #FAFAF6;
+  max-width: 1100px;
+  margin: 0 auto;
+  border-radius: 0;
+  padding: 0;
+}
+
+/* Details row styling */
+.accordion.accordion19 > details {
+  border: none;
+  margin: 0;
+  border-bottom: 1px solid #E5E5E0;
+  background: transparent;
+  border-radius: 0;
+}
+
+.accordion.accordion19 > details:last-child {
+  border-bottom: none;
+}
+
+/* Row: text left, chevron right, perfect centering and compact */
+.accordion.accordion19 > details > summary {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 6px 11px 14px;
+  min-height: 44px;
+  font-family: Inter, Arial, sans-serif;
+  font-size: 15px;
+  color: #222;
+  font-weight: 400;
+  background: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  transition: background 0.2s;
+  box-sizing: border-box;
+  gap: 0;
+  line-height: 1.2;
+}
+
+/* Remove default marker for details in Webkit browsers */
+.accordion.accordion19 > details > summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Text styling for summary label */
+.accordion.accordion19 > details > summary p {
+  margin: 0;
+  font-size: 15px;
+  color: #222;
+  font-family: Inter, Arial, sans-serif;
+  font-weight: 400;
+  flex-grow: 1;
+  line-height: 1.2;
+}
+
+/* Chevron: smaller, thinner, flush right, vertically centered */
+.accordion.accordion19 > details > summary::after {
+  display: block;
+  width: 14px;
+  height: 14px;
+  margin-left: 2px;
+  margin-right: 0;
+  box-sizing: border-box;
+  border: solid #222;
+  border-width: 0 2px 2px 0;
+  border-radius: 0.5px;
+  transform: rotate(45deg);
+  transition: transform 0.2s;
+}
+
+/* Rotate chevron down when open */
+.accordion.accordion19 > details[open] > summary::after {
+  transform: rotate(-135deg);
+}
+
+/* Remove hover/focus background */
+.accordion.accordion19 > details > summary:focus,
+.accordion.accordion19 > details > summary:hover {
+  background: transparent;
+}
+
+/* Accordion body styles */
+.accordion.accordion19 > details > .accordion-item-body {
+  padding: 0 6px 11px 14px;
+  background: #FAFAF6;
+  font-size: 15px;
+  color: #222;
+  font-family: Inter, Arial, sans-serif;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.accordion.accordion19 > details > .accordion-item-body p {
+  margin: 0;
+}
+
+@media (width <= 600px) {
+  .accordion.accordion19 {
+    max-width: 100%;
+  }
+
+  .accordion.accordion19 > details > summary,
+  .accordion.accordion19 > details > .accordion-item-body {
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
