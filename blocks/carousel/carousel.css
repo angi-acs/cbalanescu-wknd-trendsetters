@@ -32,6 +32,15 @@
   min-height: min(50vw, calc(100dvh - var(--header-height)));
 }
 
+.carousel.carousel18 .carousel-slide {
+  flex: 0 0 auto;
+  align-items: center;
+  background: none;
+  box-shadow: none;
+  margin: 0;
+  width: auto;
+}
+
 .carousel .carousel-slide:has(.carousel-slide-content[data-align='center']) {
   align-items: center;
 }
@@ -45,10 +54,62 @@
   inset: 0;
 }
 
+.carousel.carousel18 .carousel-slide .carousel-slide-image picture {
+  position: static;
+  inset: unset;
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 .carousel .carousel-slide .carousel-slide-image picture > img {
   height: 100%;
   width: 100%;
   object-fit: cover;
+}
+
+.carousel.carousel18 .carousel-slide .carousel-slide-image picture > img {
+  display: block;
+  width: 168px;
+  height: 118px;
+  max-width: none;
+  max-height: none;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 2px solid #fff;
+  box-shadow: 0 4px 20px rgb(0 0 0 / 9%), 0 1.5px 4px rgb(0 0 0 / 6%);
+  background: #fff;
+  margin: 0 auto;
+  transition: box-shadow 0.25s;
+}
+
+.carousel.carousel18 .carousel-slide:nth-child(1) .carousel-slide-image picture > img {
+  transform: rotate(-2deg);
+}
+
+.carousel.carousel18 .carousel-slide:nth-child(2) .carousel-slide-image picture > img {
+  transform: rotate(1.2deg);
+}
+
+.carousel.carousel18 .carousel-slide:nth-child(3) .carousel-slide-image picture > img {
+  transform: rotate(-1deg);
+}
+
+.carousel.carousel18 .carousel-slide:nth-child(4) .carousel-slide-image picture > img {
+  transform: rotate(1.5deg);
+}
+
+.carousel.carousel18 .carousel-slide:nth-child(5) .carousel-slide-image picture > img {
+  transform: rotate(-1.4deg);
+}
+
+.carousel.carousel18 .carousel-slide:nth-child(6) .carousel-slide-image picture > img {
+  transform: rotate(1.6deg);
+}
+
+.carousel.carousel18 .carousel-slide .carousel-slide-image picture > img:hover,
+.carousel.carousel18 .carousel-slide .carousel-slide-image picture > img:focus {
+  box-shadow: 0 8px 28px rgb(0 0 0 / 13%), 0 2.5px 8px rgb(0 0 0 / 9%);
 }
 
 .carousel .carousel-slide .carousel-slide-content {
@@ -56,9 +117,13 @@
   margin: 68px;
   padding: 16px;
   color: white;
-  background-color: rgba(19 19 19 / 75%);
+  background-color: rgb(19 19 19 / 75%);
   position: relative;
   width: var(--slide-content-width, auto);
+}
+
+.carousel.carousel18 .carousel-slide-content {
+  display: none;
 }
 
 .carousel .carousel-slide-indicators {
@@ -81,6 +146,17 @@
   transition: background-color 0.2s;
 }
 
+.carousel .carousel-navigation-buttons button {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  margin: 0;
+  border-radius: 50%;
+  padding: 0;
+  background-color: rgb(19 19 19 / 25%);
+  transition: background-color 0.2s;
+}
+
 .carousel .carousel-slide-indicator button:disabled,
 .carousel .carousel-slide-indicator button:hover,
 .carousel .carousel-slide-indicator button:focus-visible {
@@ -99,21 +175,9 @@
   z-index: 1;
 }
 
-/* stylelint-disable-next-line no-descending-specificity */
-.carousel .carousel-navigation-buttons button {
-  position: relative;
-  width: 44px;
-  height: 44px;
-  margin: 0;
-  border-radius: 50%;
-  padding: 0;
-  background-color: rgba(19 19 19 / 25%);
-  transition: background-color 0.2s;
-}
-
 .carousel .carousel-navigation-buttons button:hover,
 .carousel .carousel-navigation-buttons button:focus-visible {
-  background-color: rgba(19 19 19 / 75%);
+  background-color: rgb(19 19 19 / 75%);
 }
 
 .carousel .carousel-navigation-buttons button::after {
@@ -150,4 +214,30 @@
   .carousel .carousel-slide .carousel-slide-content[data-align='justify'] {
     --slide-content-width: auto;
   }
+}
+
+.carousel.carousel18 {
+  position: relative;
+  padding: 72px 96px;
+  box-sizing: border-box;
+  min-height: 380px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel.carousel18 .carousel-slides {
+  justify-content: center;
+  align-items: center;
+  gap: 96px;
+  padding: 0;
+  margin: 0 auto;
+  background: none;
+  overflow: visible;
+  min-height: unset;
+}
+
+.carousel.carousel18 .carousel-navigation-buttons,
+.carousel.carousel18 .carousel-slide-indicators {
+  display: none;
 }
