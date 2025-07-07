@@ -53,6 +53,17 @@
   object-fit: cover;
 }
 
+.cards > ul > li ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.cards > ul > li li {
+  margin: 0;
+  padding: 0;
+}
+
 .cards.cards2 {
   /* merged declarations from base and generated CSS (none in base, so only from generated) */
 }
@@ -118,6 +129,43 @@
   position: relative;
 }
 
+.cards > ul > li .cards-card-body p {
+  display: none;
+}
+
+.cards.cards17 .cards-card-body p {
+  font-family: var(--body-font-family);
+  font-size: 16px;
+  color: #888;
+  margin: 0;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+.cards.cards27 .cards-card-body p {
+  color: #c7c7c7;
+  font-size: 1.08rem;
+  font-weight: 400;
+  margin: 0;
+  text-shadow: 0 2px 8px rgb(0 0 0 / 12%);
+  line-height: 1.35;
+  font-family: var(--body-font-family), sans-serif;
+}
+
+.cards > ul > li .cards-card-body p:first-of-type {
+  display: block;
+  font-size: 12px;
+  color: #222;
+  font-weight: 400;
+  margin: 0;
+  padding: 0;
+  line-height: 1.4;
+  letter-spacing: 0;
+  text-align: left;
+  background: none;
+  box-shadow: none;
+}
+
 .cards.cards2 .cards-card-body > p:first-of-type,
 .cards.cards2 .cards-card-body > p:nth-of-type(2) {
   margin: 0;
@@ -159,94 +207,6 @@
   margin-bottom: 10px;
 }
 
-.cards.cards2 .cards-card-body h3 {
-  font-size: 21px;
-  font-family: Montserrat, Raleway, Poppins, Helvetica Neue, Arial, sans-serif;
-  font-weight: 700;
-  color: #232323;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  line-height: 1.13;
-  margin-top: 8px;
-  margin-bottom: 0;
-  overflow-wrap: break-word;
-}
-
-.cards.cards11 .cards-card-body {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  padding: 18px;
-  flex: 1 1 auto;
-  box-sizing: border-box;
-  justify-content: flex-start;
-}
-
-.cards.cards17 .cards-card-body {
-  flex: 1 1 auto;
-  padding: 32px 26px 26px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  background: #fff;
-  align-items: flex-start;
-  text-align: left;
-}
-
-.cards.cards27 .cards-card-body {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  min-height: 56px;
-  padding: 18px 22px 10px;
-  background: linear-gradient(180deg, rgb(0 0 0 / 38%) 60%, rgb(0 0 0 / 8%) 100%);
-  border-radius: 20px 20px 0 0;
-  z-index: 2;
-  pointer-events: none;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-}
-
-.cards.cards17 .cards-card-body p {
-  font-family: var(--body-font-family);
-  font-size: 16px;
-  color: #888;
-  margin: 0;
-  font-weight: 400;
-  line-height: 1.6;
-}
-
-.cards.cards27 .cards-card-body p {
-  color: #c7c7c7;
-  font-size: 1.08rem;
-  font-weight: 400;
-  margin: 0;
-  text-shadow: 0 2px 8px rgb(0 0 0 / 12%);
-  line-height: 1.35;
-  font-family: var(--body-font-family), sans-serif;
-}
-
-.cards > ul > li .cards-card-body p {
-  display: none;
-}
-
-.cards > ul > li .cards-card-body p:first-of-type {
-  display: block;
-  font-size: 12px;
-  color: #222;
-  font-weight: 400;
-  margin: 0;
-  padding: 0;
-  line-height: 1.4;
-  letter-spacing: 0;
-  text-align: left;
-  background: none;
-  box-shadow: none;
-}
-
 .cards > ul > li h1,
 .cards > ul > li h2,
 .cards > ul > li h3,
@@ -277,22 +237,23 @@
   overflow-wrap: break-word;
 }
 
-.cards > ul > li ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.cards > ul > li li {
-  margin: 0;
-  padding: 0;
+.cards.cards2 .cards-card-body h3 {
+  font-size: 21px;
+  font-family: Montserrat, Raleway, Poppins, Helvetica Neue, Arial, sans-serif;
+  font-weight: 700;
+  color: #232323;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  line-height: 1.13;
+  margin-top: 8px;
+  margin-bottom: 0;
+  overflow-wrap: break-word;
 }
 
 .cards.cards2 > ul > li:hover {
   box-shadow: 0 12px 40px rgb(0 0 0 / 16%);
 }
 
-/* -------------------- CARDS11 STYLES -------------------- */
 .cards.cards11 > ul > li {
   background: #fff;
   border: 1px solid #CFCFCF;
@@ -364,7 +325,6 @@
   line-height: 1.26;
 }
 
-/* -------------------- CARDS17 STYLES -------------------- */
 .cards.cards17 > ul > li {
   display: flex;
   flex-direction: column;
@@ -416,11 +376,6 @@
   overflow-wrap: anywhere;
 }
 
-.cards.cards2 > ul > li:hover {
-  box-shadow: 0 12px 40px rgb(0 0 0 / 16%);
-}
-
-/* ======= GENERATED CSS: .cards.cards27 and other selectors ======= */
 .cards.cards27 {
   margin: 0;
   padding: 0;
@@ -565,8 +520,6 @@
   display: none;
 }
 
-/* Generated CSS */
-
 .cards.cards34 {
   width: 100%;
   margin: 0 auto;
@@ -653,5 +606,191 @@
     width: 100%;
     min-width: 0;
     aspect-ratio: 6 / 7;
+  }
+}
+
+.cards.cards35 {
+  /* merged properties from both snippets (none in base, so just for structure if needed) */
+}
+
+.cards.cards35 > ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px 0;
+  justify-content: space-between;
+  list-style: none;
+  padding: 0;
+  margin: 0 auto;
+  max-width: 1100px;
+}
+
+.cards.cards35 > ul > li {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgb(26 26 26 / 7%);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 48.5%;
+  min-width: 340px;
+  max-width: 540px;
+  margin-bottom: 32px;
+  min-height: 170px;
+  padding: 32px 40px;
+  box-sizing: border-box;
+  transition: box-shadow 0.2s;
+}
+
+.cards.cards35 > ul > li:nth-child(even) {
+  flex-direction: row-reverse;
+}
+
+.cards.cards35 .cards-card-image {
+  flex: 0 0 168px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 128px;
+  margin: 0;
+}
+
+.cards.cards35 > ul > li:not(:nth-child(even)) .cards-card-image {
+  margin-right: 32px;
+}
+
+.cards.cards35 > ul > li:nth-child(even) .cards-card-image {
+  margin-left: 32px;
+}
+
+.cards.cards35 .cards-card-image img,
+.cards.cards35 .cards-card-image picture {
+  display: block;
+  width: 168px;
+  height: 128px;
+  object-fit: cover;
+  border-radius: 16px;
+  background: #f8f8f8;
+}
+
+.cards.cards35 .cards-card-body {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  max-width: 340px;
+  padding: 0;
+}
+
+.cards.cards35 .cards-card-body-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 4px;
+  gap: 0;
+}
+
+.cards.cards35 .cards-card-body p:first-child,
+.cards.cards35 .cards-card-body p:nth-child(2) {
+  display: inline-block;
+  margin: 0 12px 0 0;
+  vertical-align: middle;
+}
+
+.cards.cards35 .cards-card-body p:first-child {
+  background: #f4f4f4;
+  color: #454545;
+  font-size: 12px;
+  border-radius: 20px;
+  padding: 2px 12px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  text-transform: uppercase;
+  margin-right: 10px;
+}
+
+.cards.cards35 .cards-card-body p:nth-child(2) {
+  color: #8a8a8a;
+  font-size: 12px;
+  margin-right: 0;
+}
+
+.cards.cards35 .cards-card-body h3 {
+  margin: 10px 0 8px;
+  font-family: Montserrat, Poppins, Arial, sans-serif;
+  font-size: 21px;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  color: #222;
+  text-transform: uppercase;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+  display: block;
+}
+
+.cards.cards35 .cards-card-body p:nth-child(4) {
+  font-size: 15px;
+  color: #606060;
+  margin: 0 0 10px;
+  line-height: 1.5;
+  display: block;
+}
+
+.cards.cards35 .cards-card-body p:last-child {
+  font-size: 15px;
+  color: #444;
+  text-decoration: underline;
+  margin: 0;
+  margin-top: auto;
+  cursor: pointer;
+  font-weight: 500;
+  align-self: flex-start;
+  display: block;
+}
+
+.cards.cards35 .cards-card-body h3,
+.cards.cards35 .cards-card-body p {
+  display: block;
+}
+
+@media (width <= 900px) {
+  .cards.cards35 > ul {
+    flex-direction: column;
+    gap: 20px;
+    max-width: 98vw;
+  }
+
+  .cards.cards35 > ul > li {
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    flex-direction: column;
+    align-items: flex-start;
+    min-height: unset;
+    padding: 20px 10px 16px;
+    margin-bottom: 20px;
+  }
+
+  .cards.cards35 .cards-card-image {
+    margin: 0 0 16px !important;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    justify-content: flex-start;
+  }
+
+  .cards.cards35 .cards-card-image img,
+  .cards.cards35 .cards-card-image picture {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 4/3;
+    border-radius: 16px;
+  }
+
+  .cards.cards35 .cards-card-body {
+    width: 100%;
+    max-width: none;
+    padding: 0;
   }
 }
