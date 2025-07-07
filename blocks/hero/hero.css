@@ -47,239 +47,6 @@
   }
 }
 
-/* --- HERO 1 STYLES --- */
-.hero.hero1 {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  background: var(--background-color);
-  padding: 64px 0;
-  gap: 56px;
-  min-height: 540px;
-  box-sizing: border-box;
-  width: 100%;
-}
-
-.hero.hero1 > div:first-child {
-  flex: 0 0 400px;
-  max-width: 400px;
-  min-width: 320px;
-  min-height: 340px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-}
-
-.hero.hero1 > div:last-child {
-  flex: 1 1 0;
-  max-width: 600px;
-  min-width: 320px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  height: 100%;
-}
-
-.hero.hero1 > div:last-child > div {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 20px;
-}
-
-.hero.hero1 > div:last-child > div > p:first-child,
-.hero.hero1 > div:last-child > div > p:nth-child(2) {
-  display: inline-block;
-  vertical-align: middle;
-  margin-top: 0;
-  margin-bottom: 0;
-}
-
-.hero.hero1 > div:last-child > div > p:first-child {
-  font-size: 14px;
-  text-transform: uppercase;
-  color: #888;
-  font-weight: 400;
-  letter-spacing: 0.04em;
-  margin-right: 10px;
-}
-
-.hero.hero1 > div:last-child > div > p:nth-child(2) {
-  background: #f3f3f3;
-  color: #222;
-  font-size: 12px;
-  font-weight: 700;
-  text-transform: uppercase;
-  padding: 4px 16px;
-  border-radius: 16px;
-  letter-spacing: 0.04em;
-}
-
-.hero.hero1 h2,
-.hero.hero1 h1 {
-  font-family: var(--heading-font-family), Montserrat, Arial, sans-serif;
-  font-size: 48px;
-  font-weight: 600;
-  color: #222;
-  margin: 18px 0 0;
-  letter-spacing: 0.01em;
-  line-height: 1.08;
-  max-width: 480px;
-  overflow-wrap: break-word;
-  text-align: left;
-}
-
-.hero.hero1 > div:last-child > div > p:nth-child(3),
-.hero.hero1 > div:last-child > div > p:nth-child(4),
-.hero.hero1 > div:last-child > div > p:nth-child(5),
-.hero.hero1 > div:last-child > div > p:nth-child(6),
-.hero.hero1 > div:last-child > div > p:nth-child(7) {
-  display: inline;
-  font-size: 15px;
-  color: #888;
-  margin: 0 6px 0 0;
-  vertical-align: middle;
-  font-weight: 400;
-}
-
-.hero.hero1 > div:last-child > div > p:nth-child(4),
-.hero.hero1 > div:last-child > div > p:nth-child(6) {
-  font-size: 18px;
-  color: #bbb;
-  font-weight: bold;
-  margin: 0 8px;
-  line-height: 0;
-}
-
-.hero.hero1 > div:first-child > div {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #ececec;
-  border-radius: 28px;
-  min-height: 280px;
-}
-
-.hero.hero1 picture,
-.hero.hero1 img {
-  width: 100%;
-  height: auto;
-  border-radius: 28px;
-  object-fit: cover;
-  display: block;
-  box-shadow: none;
-  max-width: 400px;
-  min-width: 0;
-  min-height: 0;
-}
-
-/* --- HERO 4 STYLES --- */
-.hero.hero4 {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: flex-start;
-  background: #fff;
-  min-height: unset;
-  height: auto;
-  box-sizing: border-box;
-  padding: 0;
-  gap: 0;
-  background-image: none;
-  overflow: visible;
-}
-
-.hero.hero4 > div:first-child {
-  display: none;
-}
-
-.hero.hero4 > div:last-child {
-  flex: 1 1 100%;
-  min-width: 0;
-  max-width: unset;
-  padding: 40px 0 40px 24px;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-  box-sizing: border-box;
-}
-
-.hero.hero4 > div:last-child > div {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  width: 100%;
-  gap: 48px;
-}
-
-.hero.hero4 > div:last-child > div > h2 {
-  flex: 0 0 52%;
-  max-width: 52%;
-  font-family: var(--heading-font-family), Montserrat, Arial, sans-serif;
-  font-size: 48px;
-  font-weight: 400;
-  letter-spacing: 0.04em;
-  color: #000;
-  margin: 0;
-  line-height: 1.08;
-  text-align: left;
-  overflow-wrap: anywhere;
-}
-
-.hero.hero4 > div:last-child > div > p,
-.hero.hero4 > div:last-child > div > .button-container {
-  flex: 1 1 0;
-  max-width: 340px;
-  display: block;
-  text-align: left;
-}
-
-.hero.hero4 > div:last-child > div > p {
-  font-family: var(--body-font-family), Arial, sans-serif;
-  font-size: 13px;
-  color: #222;
-  margin: 0 0 16px;
-  line-height: 1.5;
-}
-
-.hero.hero4 > div:last-child > div > .button-container {
-  margin: 0;
-  padding: 0;
-}
-
-.hero.hero4 .button-container .button,
-.hero-container > .hero-wrapper > .block.hero.hero4 .button {
-  display: inline-block;
-  font-size: 14px;
-  font-family: var(--body-font-family), Arial, sans-serif;
-  font-weight: 400;
-  color: #000;
-  background: #fff;
-  border: 1.5px solid #000;
-  border-radius: 2em;
-  padding: 7px 26px;
-  min-width: 0;
-  box-sizing: border-box;
-  text-align: center;
-  text-decoration: none;
-  margin: 0;
-  transition: background 0.2s, color 0.2s, border-color 0.2s;
-}
-
-.hero.hero4 .button-container .button:hover,
-.hero.hero4 .button-container .button:focus,
-.hero-container > .hero-wrapper > .block.hero.hero4 .button:hover,
-.hero-container > .hero-wrapper > .block.hero.hero4 .button:focus {
-  background: #000;
-  color: #fff;
-  border-color: #000;
-}
-
 /* --- HERO 6 STYLES --- */
 .hero.hero6 {
   position: relative;
@@ -656,7 +423,138 @@
     max-width: 100%;
     text-align: left;
   }
+}
 
+/* --- HERO 1 STYLES --- */
+.hero.hero1 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background: var(--background-color);
+  padding: 64px 0;
+  gap: 56px;
+  min-height: 540px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.hero.hero1 > div:first-child {
+  flex: 0 0 400px;
+  max-width: 400px;
+  min-width: 320px;
+  min-height: 340px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.hero.hero1 > div:last-child {
+  flex: 1 1 0;
+  max-width: 600px;
+  min-width: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100%;
+}
+
+.hero.hero1 > div:last-child > div {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.hero.hero1 > div:last-child > div > p:first-child,
+.hero.hero1 > div:last-child > div > p:nth-child(2) {
+  display: inline-block;
+  vertical-align: middle;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.hero.hero1 > div:last-child > div > p:first-child {
+  font-size: 14px;
+  text-transform: uppercase;
+  color: #888;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  margin-right: 10px;
+}
+
+.hero.hero1 > div:last-child > div > p:nth-child(2) {
+  background: #f3f3f3;
+  color: #222;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 4px 16px;
+  border-radius: 16px;
+  letter-spacing: 0.04em;
+}
+
+.hero.hero1 h2,
+.hero.hero1 h1 {
+  font-family: var(--heading-font-family), Montserrat, Arial, sans-serif;
+  font-size: 48px;
+  font-weight: 600;
+  color: #222;
+  margin: 18px 0 0;
+  letter-spacing: 0.01em;
+  line-height: 1.08;
+  max-width: 480px;
+  overflow-wrap: break-word;
+  text-align: left;
+}
+
+.hero.hero1 > div:last-child > div > p:nth-child(3),
+.hero.hero1 > div:last-child > div > p:nth-child(4),
+.hero.hero1 > div:last-child > div > p:nth-child(5),
+.hero.hero1 > div:last-child > div > p:nth-child(6),
+.hero.hero1 > div:last-child > div > p:nth-child(7) {
+  display: inline;
+  font-size: 15px;
+  color: #888;
+  margin: 0 6px 0 0;
+  vertical-align: middle;
+  font-weight: 400;
+}
+
+.hero.hero1 > div:last-child > div > p:nth-child(4),
+.hero.hero1 > div:last-child > div > p:nth-child(6) {
+  font-size: 18px;
+  color: #bbb;
+  font-weight: bold;
+  margin: 0 8px;
+  line-height: 0;
+}
+
+.hero.hero1 > div:first-child > div {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ececec;
+  border-radius: 28px;
+  min-height: 280px;
+}
+
+.hero.hero1 picture,
+.hero.hero1 img {
+  width: 100%;
+  height: auto;
+  border-radius: 28px;
+  object-fit: cover;
+  display: block;
+  box-shadow: none;
+  max-width: 400px;
+  min-width: 0;
+  min-height: 0;
+}
+
+@media (width <= 800px) {
   .hero.hero1 {
     flex-direction: column;
     align-items: stretch;
@@ -705,4 +603,198 @@
   padding: 0;
   height: 100vh;
   min-height: 100vh;
+}
+
+/* ----------- GENERATED CSS ----------- */
+
+.hero.hero12 {
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding: 0;
+  background: #fff;
+  align-items: stretch;
+  position: relative;
+}
+
+/* ----------- IMAGE COLUMN (right side) ----------- */
+.hero.hero12 > div:first-child {
+  flex: 1 1 0;
+  order: 2;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  min-width: 0;
+  min-height: 0;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.hero.hero12 > div:first-child > div {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+}
+
+.hero.hero12 picture,
+.hero.hero12 img {
+  display: block;
+  width: 100%;
+  height: 100vh;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  object-fit: cover;
+  border-radius: 0;
+  box-shadow: none;
+  background: #d8d8d8;
+  max-width: none;
+  max-height: none;
+}
+
+/* ----------- TEXT COLUMN (left side) ----------- */
+.hero.hero12 > div:last-child {
+  flex: 1 1 0;
+  order: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-width: 0;
+  min-height: 0;
+  height: auto;
+  background: #fff;
+  padding-left: 7vw;
+  padding-right: 2vw;
+  box-sizing: border-box;
+}
+
+.hero.hero12 > div:last-child > div {
+  width: 100%;
+  max-width: 540px;
+  margin-left: 0;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.hero.hero12 h2 {
+  font-family: Syncopate, Montserrat, Arial, sans-serif;
+  font-size: 2.4rem;
+  font-weight: 400;
+  color: #171717;
+  letter-spacing: 0.04em;
+  line-height: 1.1;
+  margin: 0 0 1.3rem;
+  text-transform: none;
+  text-align: left;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.hero.hero12 p:not(.button-container) {
+  color: #222;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  margin: 0 0 2.2rem;
+  text-align: left;
+  font-family: var(--body-font-family), Arial, sans-serif;
+  max-width: 100%;
+}
+
+.hero.hero12 .button-container {
+  display: flex;
+  flex-direction: row;
+  gap: 1.2em;
+  padding: 0;
+  margin: 0;
+}
+
+.hero-container > .hero-wrapper > .block.hero.hero12 .button,
+.hero.hero12 .button {
+  background: #fff;
+  color: #161616;
+  border: 1.5px solid #161616;
+  border-radius: 2em;
+  font-size: 1rem;
+  font-family: var(--body-font-family), Arial, sans-serif;
+  font-weight: 500;
+  padding: 0.74em 2.3em;
+  margin: 0;
+  box-shadow: none;
+  text-align: center;
+  text-decoration: none;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
+  line-height: 1.2;
+  min-width: 0;
+  min-height: 0;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.hero-container > .hero-wrapper > .block.hero.hero12 .button:hover,
+.hero-container > .hero-wrapper > .block.hero.hero12 .button:focus {
+  background: #161616;
+  color: #fff;
+  border-color: #161616;
+}
+
+.hero.hero12 .button:hover,
+.hero.hero12 .button:focus {
+  background: #161616;
+  color: #fff;
+  border-color: #161616;
+}
+
+/* ----------- RESPONSIVE ----------- */
+@media (width <= 900px) {
+  .hero.hero12 {
+    flex-direction: column;
+    min-height: unset;
+    height: auto;
+    align-items: stretch;
+  }
+
+  .hero.hero12 > div:first-child,
+  .hero.hero12 > div:last-child {
+    order: unset;
+    flex: 1 1 100%;
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    height: auto;
+    padding: 0;
+  }
+
+  .hero.hero12 > div:last-child {
+    padding: 2.5rem 5vw;
+    align-items: flex-start;
+    height: auto;
+  }
+
+  .hero.hero12 > div:last-child > div {
+    max-width: 100%;
+  }
+
+  .hero.hero12 h2,
+  .hero.hero12 p:not(.button-container) {
+    max-width: 100%;
+  }
+
+  .hero.hero12 .button-container {
+    gap: 1em;
+  }
+
+  .hero.hero12 picture,
+  .hero.hero12 img {
+    height: 40vh;
+    min-height: 180px;
+    max-height: 60vw;
+  }
 }
