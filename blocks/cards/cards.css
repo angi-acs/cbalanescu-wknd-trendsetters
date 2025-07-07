@@ -1,3 +1,4 @@
+
 /* -------------------- CARDS BASE STYLES -------------------- */
 .cards {
   margin: 0;
@@ -44,7 +45,7 @@
 
 .cards > ul > li h3 {
   font-size: 21px;
-  font-family: Montserrat, Raleway, Poppins, Helvetica Neue, Arial, sans-serif;
+  font-family: Montserrat, Raleway, Poppins, "Helvetica Neue", Arial, sans-serif;
   font-weight: 700;
   color: #232323;
   letter-spacing: 0.07em;
@@ -255,7 +256,7 @@
 
 .cards.cards2 .cards-card-body h3 {
   font-size: 21px;
-  font-family: Montserrat, Raleway, Poppins, Helvetica Neue, Arial, sans-serif;
+  font-family: Montserrat, Raleway, Poppins, "Helvetica Neue", Arial, sans-serif;
   font-weight: 700;
   color: #232323;
   letter-spacing: 0.07em;
@@ -807,5 +808,221 @@
     width: 100%;
     max-width: none;
     padding: 0;
+  }
+}
+
+.cards.cards38 {
+  width: 100%;
+  max-width: 1150px;
+  margin: 0 auto;
+  padding: 0;
+  background: var(--background-color);
+  box-sizing: border-box;
+}
+
+.cards.cards38 > ul {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 36px;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  min-height: 680px;
+  box-sizing: border-box;
+}
+
+/* LEFT COLUMN (first li): large image and text/button below */
+.cards.cards38 > ul > li:first-child {
+  flex: 1 1 58%;
+  min-width: 380px;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.cards.cards38 > ul > li:first-child .cards-card-image {
+  width: 100%;
+  aspect-ratio: 4/5;
+  min-height: 390px;
+  max-height: 560px;
+  border-radius: 32px;
+  overflow: hidden;
+  margin-bottom: 0;
+  background: #f4f4f4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cards.cards38 > ul > li:first-child .cards-card-image img,
+.cards.cards38 > ul > li:first-child .cards-card-image picture {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 32px;
+  display: block;
+}
+
+.cards.cards38 > ul > li:first-child .cards-card-body {
+  width: 100%;
+  padding: 48px 38px 28px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background: none;
+}
+
+.cards.cards38 > ul > li:first-child .cards-card-body h3 {
+  font-family: Montserrat, var(--heading-font-family), Arial, sans-serif;
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: #151515;
+  line-height: 1.07;
+  letter-spacing: 0;
+  margin: 0 0 26px;
+  text-transform: none;
+}
+
+.cards.cards38 > ul > li:first-child .cards-card-body p {
+  font-family: Montserrat, var(--body-font-family), Arial, sans-serif;
+  font-size: 1.13rem;
+  color: #4d4d4d;
+  line-height: 1.62;
+  font-weight: 400;
+  margin: 0 0 38px;
+}
+
+.cards.cards38 > ul > li:first-child .cards-card-body p:last-child {
+  margin: 0;
+  margin-top: 16px;
+  padding: 10px 34px;
+  border: 1.5px solid #151515;
+  border-radius: 999px;
+  color: #151515;
+  background: #fff;
+  font-weight: 500;
+  font-size: 1.05rem;
+  display: inline-block;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  letter-spacing: 0;
+  line-height: 1.4;
+}
+
+.cards.cards38 > ul > li:first-child .cards-card-body p:last-child:hover {
+  background: #151515;
+  color: #fff;
+}
+
+/* RIGHT COLUMN (second li): image, then text, aligned to top, visually balanced */
+.cards.cards38 > ul > li:last-child {
+  flex: 1 1 35%;
+  min-width: 260px;
+  max-width: 370px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  display: flex;
+  flex-direction: column;
+
+  /* Visually elongate the card to balance empty space if only one card */
+  min-height: 480px;
+}
+
+.cards.cards38 > ul > li:last-child .cards-card-image {
+  width: 100%;
+  aspect-ratio: 4/3;
+  min-height: 165px;
+  max-height: 250px;
+  border-radius: 18px;
+  overflow: hidden;
+  margin-bottom: 0;
+  background: #f4f4f4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cards.cards38 > ul > li:last-child .cards-card-image img,
+.cards.cards38 > ul > li:last-child .cards-card-image picture {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 18px;
+  display: block;
+}
+
+.cards.cards38 > ul > li:last-child .cards-card-body {
+  width: 100%;
+  padding: 36px 22px 14px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background: none;
+}
+
+.cards.cards38 > ul > li:last-child .cards-card-body h3 {
+  font-family: Montserrat, var(--heading-font-family), Arial, sans-serif;
+  font-size: 1.23rem;
+  font-weight: 700;
+  color: #151515;
+  text-transform: uppercase;
+  line-height: 1.13;
+  margin: 0 0 14px;
+  letter-spacing: 0;
+}
+
+.cards.cards38 > ul > li:last-child .cards-card-body p {
+  font-family: Montserrat, var(--body-font-family), Arial, sans-serif;
+  font-size: 1.03rem;
+  color: #4d4d4d;
+  line-height: 1.48;
+  font-weight: 400;
+  margin: 0;
+}
+
+/* Responsive adjustments for mobile/tablet */
+@media (width <= 900px) {
+  .cards.cards38 > ul {
+    flex-direction: column;
+    gap: 28px;
+    min-height: unset;
+    align-items: stretch;
+  }
+
+  .cards.cards38 > ul > li,
+  .cards.cards38 > ul > li:first-child,
+  .cards.cards38 > ul > li:last-child {
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .cards.cards38 > ul > li:first-child .cards-card-image {
+    min-height: 150px;
+    aspect-ratio: 4/3;
+    border-radius: 20px;
+  }
+
+  .cards.cards38 > ul > li:first-child .cards-card-body {
+    padding: 18px 8px 14px;
+  }
+
+  .cards.cards38 > ul > li:last-child {
+    min-height: 0;
+  }
+
+  .cards.cards38 > ul > li:last-child .cards-card-image {
+    min-height: 90px;
+    border-radius: 12px;
+  }
+
+  .cards.cards38 > ul > li:last-child .cards-card-body {
+    padding: 12px 6px 8px;
   }
 }
