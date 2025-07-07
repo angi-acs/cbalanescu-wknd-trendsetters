@@ -47,7 +47,70 @@
   }
 }
 
-/* --- HERO 6 STYLES --- */
+.hero.hero7 {
+  background: #f7f7f3;
+  width: 100%;
+  padding: 40px 0 24px;
+  box-sizing: border-box;
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+}
+
+.hero.hero7 picture,
+.hero.hero7 img {
+  display: none;
+}
+
+.hero.hero7 [class*="overlay"],
+.hero.hero7 [class*="button"],
+.hero.hero7 button,
+.hero.hero7 a.button,
+.hero.hero7 h1,
+.hero.hero7 h2,
+.hero.hero7 h3,
+.hero.hero7 h4,
+.hero.hero7 h5,
+.hero.hero7 h6,
+.hero.hero7 .button-container {
+  display: none;
+}
+
+.hero.hero7 > div:first-of-type > div > p {
+  display: block;
+  color: #222;
+  font-family: var(--body-font-family, Instrument Sans, Arial, sans-serif);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.4;
+  text-align: center;
+  margin: 0 auto;
+  padding: 0;
+  max-width: 900px;
+  background: none;
+  box-shadow: none;
+}
+
+.hero.hero7 > div:first-of-type > div > p:not(:first-of-type),
+.hero.hero7 > div:first-of-type > div > *:not(p) {
+  display: none;
+}
+
+.hero.hero7 > div:not(:first-of-type),
+.hero.hero7 > div > div:empty {
+  margin: 0;
+  padding: 0;
+}
+
+.hero.hero7 hr,
+.hero.hero7 .divider,
+.hero.hero7 .section-header {
+  display: none;
+}
+
 .hero.hero6 {
   position: relative;
   display: flex;
@@ -146,7 +209,7 @@
 .hero-container > .hero-wrapper > .block.hero.hero6 .button {
   display: inline-block;
   font-size: 1.19rem;
-  font-family: Instrument Sans, Arial, sans-serif;
+  font-family: "Instrument Sans", Arial, sans-serif;
   font-weight: 600;
   color: #222;
   background: #fff;
@@ -170,72 +233,6 @@
   border-color: #fff;
 }
 
-/* --- HERO 7 STYLES --- */
-.hero.hero7 {
-  background: #f7f7f3;
-  width: 100%;
-  padding: 40px 0 24px;
-  box-sizing: border-box;
-  min-height: 80px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  position: relative;
-}
-
-.hero.hero7 picture,
-.hero.hero7 img {
-  display: none;
-}
-
-.hero.hero7 [class*="overlay"],
-.hero.hero7 [class*="button"],
-.hero.hero7 button,
-.hero.hero7 a.button,
-.hero.hero7 h1,
-.hero.hero7 h2,
-.hero.hero7 h3,
-.hero.hero7 h4,
-.hero.hero7 h5,
-.hero.hero7 h6,
-.hero.hero7 .button-container {
-  display: none;
-}
-
-.hero.hero7 > div:first-of-type > div > p {
-  display: block;
-  color: #222;
-  font-family: var(--body-font-family, Instrument Sans, Arial, sans-serif);
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 1.4;
-  text-align: center;
-  margin: 0 auto;
-  padding: 0;
-  max-width: 900px;
-  background: none;
-  box-shadow: none;
-}
-
-.hero.hero7 > div:first-of-type > div > p:not(:first-of-type),
-.hero.hero7 > div:first-of-type > div > *:not(p) {
-  display: none;
-}
-
-.hero.hero7 > div:not(:first-of-type),
-.hero.hero7 > div > div:empty {
-  margin: 0;
-  padding: 0;
-}
-
-.hero.hero7 hr,
-.hero.hero7 .divider,
-.hero.hero7 .section-header {
-  display: none;
-}
-
-/* --- HERO 10 STYLES --- */
 .hero.hero10 {
   display: flex;
   flex-direction: row;
@@ -331,7 +328,7 @@
   color: #000;
   border: 1px solid #000;
   border-radius: 9999px;
-  font-family: Instrument Sans, Arial, sans-serif;
+  font-family: "Instrument Sans", Arial, sans-serif;
   font-size: 1rem;
   font-weight: 400;
   padding: 12px 0;
@@ -407,14 +404,14 @@
 }
 
 @media (width <= 800px) {
+  .hero.hero4 > div:last-child {
+    padding: 24px 8px;
+  }
+
   .hero.hero4 > div:last-child > div {
     flex-direction: column;
     align-items: flex-start;
     gap: 0;
-  }
-
-  .hero.hero4 > div:last-child {
-    padding: 24px 8px;
   }
 
   .hero.hero4 > div:last-child > div > h2,
@@ -425,7 +422,6 @@
   }
 }
 
-/* --- HERO 1 STYLES --- */
 .hero.hero1 {
   display: flex;
   flex-direction: row;
@@ -605,8 +601,6 @@
   min-height: 100vh;
 }
 
-/* ----------- GENERATED CSS ----------- */
-
 .hero.hero12 {
   display: flex;
   flex-direction: row;
@@ -619,7 +613,6 @@
   position: relative;
 }
 
-/* ----------- IMAGE COLUMN (right side) ----------- */
 .hero.hero12 > div:first-child {
   flex: 1 1 0;
   order: 2;
@@ -657,7 +650,6 @@
   max-height: none;
 }
 
-/* ----------- TEXT COLUMN (left side) ----------- */
 .hero.hero12 > div:last-child {
   flex: 1 1 0;
   order: 1;
@@ -752,7 +744,6 @@
   border-color: #161616;
 }
 
-/* ----------- RESPONSIVE ----------- */
 @media (width <= 900px) {
   .hero.hero12 {
     flex-direction: column;
@@ -796,5 +787,203 @@
     height: 40vh;
     min-height: 180px;
     max-height: 60vw;
+  }
+}
+
+.hero.hero14 {
+  position: relative;
+  width: 100vw;
+  min-height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: none;
+  padding: 0;
+}
+
+.hero.hero14 > div:first-child {
+  position: absolute;
+  inset: 0;
+  width: 100vw;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+  display: block;
+}
+
+.hero.hero14 > div:first-child picture,
+.hero.hero14 > div:first-child img {
+  width: 100vw;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.hero.hero14 > div:nth-child(2) {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 350px;
+  pointer-events: auto;
+}
+
+.hero.hero14 > div:nth-child(2) > div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 42px;
+  border: 2px solid #111;
+  border-radius: 24px;
+  padding: 52px 56px;
+  background: rgb(255 255 255 / 85%);
+  box-sizing: border-box;
+  box-shadow: 0 8px 32px rgb(0 0 0 / 9%);
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.hero.hero14 > div:nth-child(2) > div > *:not(:last-child) {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+  flex: 1 1 0;
+  min-width: 0;
+  order: 1;
+}
+
+.hero.hero14 > div:nth-child(2) > div > p:last-child {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 0 0 18px;
+  padding: 0;
+  order: 2;
+}
+
+.hero.hero14 h2 {
+  font-family: Syncopate, Montserrat, Arial, sans-serif;
+  font-size: 2.5rem;
+  font-weight: 500;
+  letter-spacing: 0.035em;
+  color: #111;
+  margin: 0 0 12px;
+  line-height: 1.08;
+  text-align: left;
+  max-width: 360px;
+}
+
+.hero.hero14 p:not(.button-container, :last-child) {
+  font-family: var(--body-font-family);
+  font-size: 1.03rem;
+  color: #444;
+  margin: 0 0 2px;
+  line-height: 1.5;
+  text-align: left;
+  padding-left: 22px;
+  position: relative;
+  max-width: 320px;
+}
+
+.hero.hero14 p:not(.button-container, :last-child)::before {
+  display: inline-block;
+  position: absolute;
+  left: 0;
+  top: 0.6em;
+  width: 12px;
+  height: 12px;
+  border-top: 2px solid #888;
+  border-right: 2px solid #888;
+  transform: rotate(45deg);
+  border-radius: 2px;
+}
+
+.hero-container > .hero-wrapper > .block.hero.hero14 .button,
+.hero.hero14 .button {
+  background: transparent;
+  color: #111;
+  border: 2px solid #111;
+  border-radius: 2em;
+  font-size: 1.03rem;
+  font-family: var(--body-font-family), Arial, sans-serif;
+  font-weight: 500;
+  padding: 0.60em 2em;
+  margin-top: 24px;
+  box-shadow: none;
+  text-align: center;
+  text-decoration: none;
+  min-width: 0;
+  min-height: 0;
+  display: inline-block;
+  white-space: nowrap;
+  transition: background 0.18s, color 0.18s, border-color 0.18s;
+}
+
+.hero-container > .hero-wrapper > .block.hero.hero14 .button:hover,
+.hero-container > .hero-wrapper > .block.hero.hero14 .button:focus,
+.hero.hero14 .button:hover,
+.hero.hero14 .button:focus {
+  background: #111;
+  color: #fff;
+  border-color: #111;
+}
+
+.hero.hero14 > div:nth-child(2) > div > p:last-child picture,
+.hero.hero14 > div:nth-child(2) > div > p:last-child img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 18px;
+  display: block;
+  margin: 0;
+  box-shadow: 0 2px 12px rgb(0 0 0 / 9%);
+}
+
+@media (width <= 950px) {
+  .hero.hero14 > div:nth-child(2) > div {
+    padding: 24px 4vw;
+    gap: 18px;
+    max-width: 99vw;
+  }
+
+  .hero.hero14 h2 {
+    font-size: 1.4rem;
+    max-width: 90vw;
+  }
+
+  .hero.hero14 > div:nth-child(2) > div > p:last-child picture,
+  .hero.hero14 > div:nth-child(2) > div > p:last-child img {
+    width: 90px;
+    height: 90px;
+    border-radius: 12px;
+  }
+}
+
+@media (width <= 700px) {
+  .hero.hero14 > div:nth-child(2) > div {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+    padding: 12px 2vw;
+    max-width: 99vw;
+  }
+
+  .hero.hero14 > div:nth-child(2) > div > p:last-child {
+    justify-content: flex-start;
+    margin: 12px 0 0;
+  }
+
+  .hero.hero14 > div:nth-child(2) > div > p:last-child picture,
+  .hero.hero14 > div:nth-child(2) > div > p:last-child img {
+    width: 70px;
+    height: 70px;
+    border-radius: 7px;
   }
 }
