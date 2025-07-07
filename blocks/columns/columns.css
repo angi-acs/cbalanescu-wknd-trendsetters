@@ -4,50 +4,25 @@
   /* No declarations in base or generated to merge for this selector directly, so leave empty if not present in either. */
 }
 
-.columns.columns8 > div {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 4vw;
+.columns img {
   width: 100%;
-  box-sizing: border-box;
-  padding: 0;
-  min-height: 38px;
-  margin: 0;
-  padding-left: 0;
-  padding-right: 0;
 }
 
-.columns.columns8 > div > div {
-  flex: 1 1 0;
-  min-width: 0;
-  max-width: 30%;
-  font-family: var(--body-font-family);
-  font-size: 13px;
-  color: #232323;
-  font-weight: 400;
-  line-height: 1.38;
-  margin: 0;
-  padding: 0;
-  overflow-wrap: break-word;
-  white-space: normal;
+.columns > div {
+  display: flex;
+  flex-direction: column;
 }
 
-.columns.columns8 > div > div:last-child {
-  flex: 0 0 auto;
-  max-width: none;
+.columns > div > .columns-img-col img {
+  display: block;
 }
 
-.columns.columns8 > div > div p {
-  margin: 0;
-  padding: 0;
-  color: inherit;
-  font-size: inherit;
-  font-family: inherit;
-  font-weight: inherit;
-  line-height: inherit;
-  white-space: normal;
+.columns > div > .columns-img-col {
+  order: 0;
+}
+
+.columns > div > div {
+  order: 1;
 }
 
 .columns.columns13 [class*="columns"] > div {
@@ -242,6 +217,151 @@
   overflow: hidden;
 }
 
+.columns.columns31 > div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 2.2vw;
+  width: 100%;
+  max-width: 1800px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.columns.columns31 > div > .columns-img-col picture,
+.columns.columns31 > div > .columns-img-col img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  border-radius: 22px;
+}
+
+.columns.columns31 > div > .columns-img-col {
+  flex: 1 1 0;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  min-width: 0;
+  max-width: 50%;
+  aspect-ratio: 4/3;
+  border-radius: 22px;
+  overflow: hidden;
+  background: transparent;
+}
+
+.columns.columns28 {
+  background: #fafbf8;
+  padding: 64px 0 56px;
+  box-sizing: border-box;
+}
+
+.columns.columns28 > .columns {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 80px;
+  max-width: 1100px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.columns.columns28 > .columns > div:first-child {
+  flex: 0 0 44%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  min-width: 0;
+  max-width: 400px;
+  padding: 0;
+}
+
+.columns.columns28 > .columns > div:last-child {
+  flex: 0 0 45%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  min-width: 0;
+  max-width: 420px;
+  padding: 0;
+}
+
+.columns.columns28 > .columns > div:first-child > div {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 0;
+}
+
+.columns.columns28 > .columns > div:first-child > div > p:first-child {
+  font-family: Syncopate, var(--heading-font-family), sans-serif;
+  font-size: 2.25rem;
+  font-weight: 400;
+  color: #21221f;
+  text-transform: uppercase;
+  letter-spacing: 0.015em;
+  line-height: 1.1;
+  margin: 0 0 0.5em;
+  max-width: 340px;
+}
+
+.columns.columns28 > .columns > div:first-child > div > p:nth-child(2) {
+  font-family: "Instrument Sans", var(--body-font-family), sans-serif;
+  font-size: 1.05rem;
+  color: #21221f;
+  margin: 0 0 0.6em;
+  line-height: 1.38;
+  max-width: 380px;
+}
+
+.columns.columns28 > .columns > div:last-child > div:first-child {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 0;
+}
+
+.columns.columns28 > .columns > div:last-child > div:first-child picture,
+.columns.columns28 > .columns > div:last-child > div:first-child img {
+  display: block;
+  width: 340px;
+  max-width: 96vw;
+  height: 340px;
+  max-height: 340px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin: 0 0 8px;
+  box-shadow: none;
+  align-self: flex-start;
+}
+
+.columns.columns28 > .columns > div:last-child > div:first-child > p:not(:first-child) {
+  font-family: "Instrument Sans", var(--body-font-family), sans-serif;
+  color: #21221f;
+  font-size: 1.03rem;
+  margin: 0 0 2px;
+  font-weight: 400;
+  line-height: 1.2;
+  text-align: left;
+}
+
+.columns.columns28 > .columns > div:last-child > div:first-child > p:last-child {
+  font-size: 0.94rem;
+  color: #21221f;
+  opacity: 0.68;
+  margin-bottom: 0;
+}
+
+.columns.columns28 > .columns > div:first-child,
+.columns.columns28 > .columns > div:last-child {
+  margin-bottom: 0;
+}
+
 @media (width <= 900px) {
   .columns.columns8 > div {
     flex-direction: column;
@@ -357,18 +477,22 @@
     margin-bottom: 10px;
     border-radius: 8px;
   }
-}
 
-@media (width >= 900px) {
-  .columns > div {
-    align-items: center;
-    flex-direction: unset;
-    gap: 24px;
+  .columns.columns31 {
+    padding: 4vw 1vw;
   }
 
-  .columns > div > div {
-    flex: 1;
-    order: unset;
+  .columns.columns31 > div {
+    flex-direction: column;
+    gap: 1.1rem;
+    max-width: 720px;
+  }
+
+  .columns.columns31 > div > .columns-img-col {
+    max-width: 100%;
+    aspect-ratio: 4/3;
+    border-radius: 18px;
+    min-height: 180px;
   }
 }
 
@@ -391,6 +515,19 @@
     height: 30vw;
     min-height: 30vw;
     max-height: 30vw;
+  }
+}
+
+@media (width >= 900px) {
+  .columns > div {
+    align-items: center;
+    flex-direction: unset;
+    gap: 24px;
+  }
+
+  .columns > div > div {
+    flex: 1;
+    order: unset;
   }
 }
 
@@ -511,7 +648,6 @@
   min-height: 330px;
 }
 
-/* Main columns */
 .columns.columns25 > div > div {
   flex: 1 1 0;
   min-width: 175px;
@@ -521,7 +657,6 @@
   box-sizing: border-box;
 }
 
-/* First column: space between logo and socials, full height, slightly less width */
 .columns.columns25 > div > div:first-child {
   justify-content: space-between;
   min-width: 258px;
@@ -530,7 +665,6 @@
   padding-bottom: 0;
 }
 
-/* Style the logo/title ("FASHION BLOG") */
 .columns.columns25 .button-container {
   width: 100%;
   margin-bottom: 0;
@@ -560,7 +694,6 @@
   white-space: normal;
 }
 
-/* Social Links: horizontal row, bottom-aligned in column */
 .columns.columns25 > div > div:first-child ul {
   display: flex;
   flex-direction: row;
@@ -594,7 +727,6 @@
   text-decoration: none;
 }
 
-/* Remove bullets for all lists */
 .columns.columns25 ul {
   list-style: none;
   margin: 0;
@@ -606,7 +738,6 @@
   padding: 0;
 }
 
-/* Headings: uppercase, gray, letter-spaced, smaller */
 .columns.columns25 > div > div:not(:first-child) h2 {
   color: #5e5e5e;
   font-size: 1rem;
@@ -619,7 +750,6 @@
   line-height: 1.2;
 }
 
-/* List/link styles for main navigation */
 .columns.columns25 > div > div:not(:first-child) ul li {
   margin-bottom: 11px;
 }
@@ -643,153 +773,10 @@
   text-decoration: none;
 }
 
-/* Remove underline for all links in the block */
 .columns.columns25 a {
   text-decoration: none;
 }
 
-/* Tighter inter-column spacing for a more compact block */
 .columns.columns25 > div > div:not(:last-child) {
   margin-right: 12px;
-}
-
-.columns > div {
-  display: flex;
-  flex-direction: column;
-}
-
-.columns img {
-  width: 100%;
-}
-
-.columns > div > div {
-  order: 1;
-}
-
-.columns > div > .columns-img-col {
-  order: 0;
-}
-
-.columns > div > .columns-img-col img {
-  display: block;
-}
-
-/* --- Generated CSS: --- */
-
-.columns.columns28 {
-  background: #fafbf8;
-  padding: 64px 0 56px;
-  box-sizing: border-box;
-}
-
-.columns.columns28 > .columns {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: center;
-  gap: 80px;
-  max-width: 1100px;
-  margin: 0 auto;
-  box-sizing: border-box;
-}
-
-/* Left column: headline and quote stacked, max width for better vertical alignment */
-.columns.columns28 > .columns > div:first-child {
-  flex: 0 0 44%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  min-width: 0;
-  max-width: 400px;
-  padding: 0;
-}
-
-.columns.columns28 > .columns > div:first-child > div {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  padding: 0;
-}
-
-/* Headline styling */
-.columns.columns28 > .columns > div:first-child > div > p:first-child {
-  font-family: Syncopate, var(--heading-font-family), sans-serif;
-  font-size: 2.25rem;
-  font-weight: 400;
-  color: #21221f;
-  text-transform: uppercase;
-  letter-spacing: 0.015em;
-  line-height: 1.1;
-  margin: 0 0 0.5em;
-  max-width: 340px;
-}
-
-.columns.columns28 > .columns > div:first-child > div > p:nth-child(2) {
-  font-family: "Instrument Sans", var(--body-font-family), sans-serif;
-  font-size: 1.05rem;
-  color: #21221f;
-  margin: 0 0 0.6em;
-  line-height: 1.38;
-  max-width: 380px;
-}
-
-/* Right column: image and byline stacked top, but align top with left */
-.columns.columns28 > .columns > div:last-child {
-  flex: 0 0 45%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-  min-width: 0;
-  max-width: 420px;
-  padding: 0;
-}
-
-/* Tighter grouping between image and byline */
-.columns.columns28 > .columns > div:last-child > div:first-child {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 12px;
-  padding: 0;
-}
-
-/* Image: fixed size, aligns with top of left content */
-.columns.columns28 > .columns > div:last-child > div:first-child picture,
-.columns.columns28 > .columns > div:last-child > div:first-child img {
-  display: block;
-  width: 340px;
-  max-width: 96vw;
-  height: 340px;
-  max-height: 340px;
-  object-fit: cover;
-  border-radius: 10px;
-  margin: 0 0 8px;
-  box-shadow: none;
-  align-self: flex-start;
-}
-
-/* Byline: grouped just below image, left-aligned */
-.columns.columns28 > .columns > div:last-child > div:first-child > p:not(:first-child) {
-  font-family: "Instrument Sans", var(--body-font-family), sans-serif;
-  color: #21221f;
-  font-size: 1.03rem;
-  margin: 0 0 2px;
-  font-weight: 400;
-  line-height: 1.2;
-  text-align: left;
-}
-
-.columns.columns28 > .columns > div:last-child > div:first-child > p:last-child {
-  font-size: 0.94rem;
-  color: #21221f;
-  opacity: 0.68;
-  margin-bottom: 0;
-}
-
-/* Remove any default bottom margins */
-.columns.columns28 > .columns > div:first-child,
-.columns.columns28 > .columns > div:last-child {
-  margin-bottom: 0;
 }
