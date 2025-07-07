@@ -25,3 +25,157 @@
   aspect-ratio: 4 / 3;
   object-fit: cover;
 }
+
+.cards.cards2 {
+  /* merged declarations from base and generated CSS (none in base, so only from generated) */
+}
+
+/* Generated CSS (unchanged except for .cards.cards2, which is above as merged) */
+
+.cards.cards2 > ul {
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.cards.cards2 > ul > li {
+  background: #fff;
+  border-radius: 28px;
+  box-shadow: 0 8px 32px rgb(0 0 0 / 11%);
+  box-sizing: border-box;
+  overflow: hidden;
+  width: 282px;
+  min-width: 282px;
+  max-width: 282px;
+  height: 468px;
+  display: flex;
+  flex-direction: column;
+  border: none;
+  transition: box-shadow 0.18s;
+}
+
+.cards.cards2 > ul > li:hover {
+  box-shadow: 0 12px 40px rgb(0 0 0 / 16%);
+}
+
+/* IMAGE */
+.cards.cards2 .cards-card-image {
+  height: 64%;
+  min-height: 200px;
+  max-height: 300px;
+  overflow: hidden;
+  border-radius: 28px 28px 0 0;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  background: none;
+}
+
+.cards.cards2 .cards-card-image picture,
+.cards.cards2 .cards-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-top-left-radius: 28px;
+  border-top-right-radius: 28px;
+}
+
+/* CARD BODY */
+.cards.cards2 .cards-card-body {
+  background: #fff;
+  border-bottom-left-radius: 28px;
+  border-bottom-right-radius: 28px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding: 18px 20px 22px;
+  box-sizing: border-box;
+  justify-content: flex-start;
+  min-height: 0;
+  position: relative;
+}
+
+/* INLINE TAG/DATE ROW using flex row on the first two p's only */
+.cards.cards2 .cards-card-body > p:first-of-type,
+.cards.cards2 .cards-card-body > p:nth-of-type(2) {
+  margin: 0;
+  line-height: 1.2;
+  display: flex;
+  align-items: center;
+  float: none;
+  position: static;
+  margin-bottom: 2px;
+  margin-top: 0;
+}
+
+.cards.cards2 .cards-card-body > p:first-of-type {
+  background: #F3F3F3;
+  color: #6C6C6C;
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  border-radius: 12px;
+  padding: 3px 16px;
+  width: auto;
+  min-width: 0;
+  max-width: none;
+  flex: none;
+  margin-right: 12px;
+  display: inline-flex;
+}
+
+.cards.cards2 .cards-card-body > p:nth-of-type(2) {
+  color: #A0A0A0;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  margin-right: 0;
+  margin-bottom: 10px;
+}
+
+/* TITLE */
+.cards.cards2 .cards-card-body h3 {
+  font-size: 21px;
+  font-family: Montserrat, Raleway, Poppins, "Helvetica Neue", Arial, sans-serif;
+  font-weight: 700;
+  color: #232323;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  line-height: 1.13;
+  margin-top: 8px;
+  margin-bottom: 0;
+  overflow-wrap: break-word;
+}
+
+/* Responsive adjustments for mobile */
+@media (width <= 900px) {
+  .cards.cards2 > ul {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .cards.cards2 > ul > li {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    height: auto;
+  }
+
+  .cards.cards2 .cards-card-image {
+    max-height: 200px;
+    min-height: 120px;
+    height: 46vw;
+  }
+
+  .cards.cards2 .cards-card-body {
+    padding: 16px 10px 18px;
+  }
+}
