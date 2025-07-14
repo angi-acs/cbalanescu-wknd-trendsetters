@@ -4,8 +4,8 @@ This is a project created by AEMY.
 
 ## Environments
 
-- Preview: https://main--cbalanescu-wknd-trendsetters--aemdemos.aem.page/
-- Live: https://main--cbalanescu-wknd-trendsetters--aemdemos.aem.live/
+- Preview: https://main--cbalanescu-wknd-trendsetters--angi-acs.aem.page/
+- Live: https://main--cbalanescu-wknd-trendsetters--angi-acs.aem.live/
 
 ## Installation
 
