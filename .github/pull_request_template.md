@@ -3,5 +3,5 @@ Please always provide the [GitHub issue(s)](../issues) your PR is for, as well a
 Fix #<gh-issue-id>
 
 Test URLs:
-- Before: https://main--cbalanescu-wknd-trendsetters--aemdemos.aem.live/
-- After: https://<branch>--cbalanescu-wknd-trendsetters--aemdemos.aem.live/
+- Before: https://main--cbalanescu-wknd-trendsetters--angi-acs.aem.live/
+- After: https://<branch>--cbalanescu-wknd-trendsetters--angi-acs.aem.live/
