@@ -1,3 +1,4 @@
+
 .tabs .tabs-list {
   display: flex;
   gap: 0.5ch;
@@ -55,4 +56,112 @@
 
 .tabs .tabs-panel[aria-hidden='true'] {
   display: none;
+}
+
+.tabs.tabs16 {
+  background: #000;
+  padding: 0;
+  margin: 0;
+  border: none;
+  width: 100%;
+}
+
+/* Ensure visibility for all direct children */
+.tabs.tabs16 > * {
+  display: block;
+}
+
+/* Tab List Layout */
+.tabs.tabs16 .tabs-list {
+  display: flex;
+  flex-direction: row;
+  background: #000;
+  padding: 0;
+  margin: 0;
+  border: none;
+  width: 100%;
+  align-items: flex-end;
+  min-height: 38px;
+}
+
+/* Tab Buttons */
+.tabs.tabs16 .tabs-tab {
+  flex: 1 1 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: none;
+  border: none;
+  border-radius: 0;
+  margin: 0;
+  padding: 0 0 6px;
+  min-width: 0;
+  min-height: 32px;
+  line-height: 1.2;
+  box-shadow: none;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  color: #707070;
+  font-size: 16px;
+  font-weight: 400;
+  text-align: center;
+  transition: color 0.2s, font-weight 0.2s;
+}
+
+/* Remove default button styles from base CSS for tabs */
+.tabs.tabs16 .tabs-list .tabs-tab {
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  color: inherit;
+  font-weight: inherit;
+  text-align: center;
+  max-width: none;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: unset;
+  padding: 0 0 6px;
+}
+
+/* Tab label text (p tag) styling */
+.tabs.tabs16 .tabs-tab p {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  text-align: center;
+  pointer-events: none;
+}
+
+/* Active tab: white, bold, thick underline */
+.tabs.tabs16 .tabs-tab[aria-selected="true"] {
+  color: #fff;
+  font-weight: 600;
+  border-bottom: 3px solid #fff;
+  background: none;
+}
+
+/* Inactive tab: gray, thin underline */
+.tabs.tabs16 .tabs-tab[aria-selected="false"] {
+  color: #707070;
+  font-weight: 400;
+  border-bottom: 2px solid #222;
+  background: none;
+}
+
+/* Show only active panel */
+.tabs.tabs16 .tabs-panel {
+  background: #000;
+  border: none;
+  color: #fff;
+  padding: 0;
+  margin: 0;
+  display: none;
+}
+
+.tabs.tabs16 .tabs-panel[aria-hidden="false"] {
+  display: block;
 }
