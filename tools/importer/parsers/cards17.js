@@ -1,37 +1,39 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // 1. Setup header row as in the example
   const headerRow = ['Cards (cards17)'];
   const cells = [headerRow];
 
-  // 2. Find all tab content panes (each may have multiple cards in a grid)
-  const tabPanes = element.querySelectorAll('.w-tab-pane');
+  // Select all tab panes
+  const tabPanes = element.querySelectorAll('[class*="w-tab-pane"]');
   tabPanes.forEach((tabPane) => {
-    // The main grid in this tab
+    // Each tabPane contains a grid of cards
     const grid = tabPane.querySelector('.w-layout-grid');
     if (!grid) return;
-    // Each card is a direct <a> child of the grid
-    const cards = Array.from(grid.querySelectorAll(':scope > a'));
+    const cards = grid.querySelectorAll(':scope > a');
     cards.forEach((card) => {
-      // IMAGE: Look for img as direct/indirect child (only if present)
-      const imgEl = card.querySelector('img');
-      // TEXT: Find heading and description (must reference existing nodes)
-      let title = card.querySelector('h3, .h4-heading');
-      let desc = card.querySelector('.paragraph-sm');
-      // Compose text cell by referencing the existing nodes (not cloning)
-      const textFragments = [];
-      if (title) textFragments.push(title);
-      if (desc && desc !== title) textFragments.push(desc);
-      // If both missing, make empty so the cell isn't undefined
-      const textCell = textFragments.length ? textFragments : '';
-      // Image cell: either the <img> or blank
-      const imageCell = imgEl ? imgEl : '';
-      cells.push([imageCell, textCell]);
+      // Left cell: image (if present)
+      let imgCell = '';
+      const aspectBox = card.querySelector('.utility-aspect-3x2');
+      if (aspectBox) {
+        const img = aspectBox.querySelector('img');
+        if (img) imgCell = img;
+      }
+      // Right cell: text (heading and description)
+      // If .utility-text-align-center exists within card, use it, else use card
+      const textContainer = card.querySelector('.utility-text-align-center') || card;
+      let textParts = [];
+      // Heading (h3 or .h4-heading)
+      const heading = textContainer.querySelector('h3, .h4-heading');
+      if (heading) textParts.push(heading);
+      // Description (first .paragraph-sm)
+      const desc = textContainer.querySelector('.paragraph-sm');
+      if (desc) textParts.push(desc);
+      // Compose cell with all found elements
+      // If both missing, fallback to ''
+      let textCell = textParts.length > 0 ? textParts : '';
+      cells.push([imgCell, textCell]);
     });
   });
-
-  // 3. Create the block table
   const table = WebImporter.DOMUtils.createTable(cells, document);
-  // 4. Replace the original element
   element.replaceWith(table);
 }

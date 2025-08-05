@@ -1,68 +1,44 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // 1. Table header exactly as in the example
+  // According to the example, the header row should be a single cell,
+  // then each data row should be a 2-column row (image | text)
+
   const headerRow = ['Carousel (carousel37)'];
 
-  // 2. Find the grid holding text and images
-  const grid = element.querySelector('.grid-layout');
-  let textCol = null, imgCol = null;
-  if (grid) {
-    const children = Array.from(grid.children);
-    // Heuristic: textCol is the one with a heading, imgCol has images
-    children.forEach((child) => {
-      if (!textCol && child.querySelector('h1,h2,h3,h4,h5,h6')) {
-        textCol = child;
-      }
-      if (!imgCol && child.querySelector('img')) {
-        imgCol = child;
-      }
-    });
-  }
-
-  // 3. Compose text cell (for first image/slide)
-  let textCellContent = [];
-  if (textCol) {
-    // Heading
-    const heading = textCol.querySelector('h1,h2,h3,h4,h5,h6');
-    if (heading) {
-      textCellContent.push(heading);
-    }
-    // Subheading/Description
-    const subheading = textCol.querySelector('p');
-    if (subheading) {
-      textCellContent.push(subheading);
-    }
-    // CTAs/buttons
-    const btnGroup = textCol.querySelector('.button-group');
-    if (btnGroup) {
-      // Each link (a) on its own line
-      btnGroup.querySelectorAll('a').forEach((a, idx, arr) => {
-        textCellContent.push(a);
-        if (idx < arr.length - 1) {
-          textCellContent.push(document.createElement('br'));
-        }
-      });
+  // Get image grid: the first .w-layout-grid with images
+  let imageGrid = null;
+  const grids = Array.from(element.querySelectorAll('.w-layout-grid'));
+  for (let grid of grids) {
+    if (grid.querySelector('img')) {
+      imageGrid = grid;
+      break;
     }
   }
+  let images = imageGrid ? Array.from(imageGrid.querySelectorAll('img')) : Array.from(element.querySelectorAll('img'));
 
-  // 4. Get slide images
-  let slides = [];
-  if (imgCol) {
-    // Find all <img> within this col (direct children or inside a grid)
-    let imgs = Array.from(imgCol.querySelectorAll('img'));
-    imgs.forEach((img, idx) => {
-      if (idx === 0) {
-        slides.push([img, textCellContent]);
-      } else {
-        slides.push([img, '']);
-      }
-    });
-  }
+  // Get all text (title, description, buttons)
+  let titleElem = element.querySelector('.h1-heading, h1, h2, h3, h4, h5, h6');
+  let descElem = element.querySelector('.subheading, p');
+  let buttonGroup = element.querySelector('.button-group');
+  let textCell = [];
+  if (titleElem) textCell.push(titleElem);
+  if (descElem && descElem !== titleElem) textCell.push(descElem);
+  if (buttonGroup) textCell.push(buttonGroup);
 
-  // 5. Compose table rows: header + all slides
-  const tableRows = [headerRow, ...slides];
+  // Compose the rows
+  const rows = [];
+  rows.push(headerRow); // header row: single cell only
+  images.forEach((img, idx) => {
+    if (idx === 0) {
+      rows.push([img, textCell]); // first slide: image and text
+    } else {
+      rows.push([img, '']); // other slides: image only, empty cell
+    }
+  });
 
-  // 6. Create and replace
-  const block = WebImporter.DOMUtils.createTable(tableRows, document);
-  element.replaceWith(block);
+  // The table structure: header row must be a single cell; data rows must be two columns
+  // WebImporter.DOMUtils.createTable will handle colspan for the header row
+
+  const table = WebImporter.DOMUtils.createTable(rows, document);
+  element.replaceWith(table);
 }

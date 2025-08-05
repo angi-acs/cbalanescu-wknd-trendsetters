@@ -1,50 +1,46 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Set up the table header
+  // Header row: must match example exactly
   const headerRow = ['Hero (hero4)'];
 
-  // This block does not have a background image
-  const backgroundImageRow = [''];
+  // Background image row: no image present, so empty string
+  const bgRow = [''];
 
-  // Get the grid with the relevant content
-  const grid = element.querySelector('.grid-layout');
-  let content = [];
-
+  // Content row: extract heading, paragraph, and button preserving DOM elements
+  let contentEls = [];
+  // Find the grid containing the main elements
+  const grid = element.querySelector('.w-layout-grid');
   if (grid) {
-    // Grab all direct children of the grid
-    const children = grid.children;
-    // Find the heading (should be h2)
-    let heading = null;
-    for (let i = 0; i < children.length; i++) {
-      if (children[i].tagName && children[i].tagName.toLowerCase().startsWith('h')) {
-        heading = children[i];
-        break;
-      }
-    }
-    if (heading) content.push(heading);
-
-    // Get the div containing the paragraph and CTA (could be other layout variations)
-    for (let i = 0; i < children.length; i++) {
-      if (children[i].tagName && children[i].tagName.toLowerCase() === 'div') {
-        // Add all <p> and <a> children in the div
-        const p = children[i].querySelector('p');
-        const a = children[i].querySelector('a');
-        if (p) content.push(p);
-        if (a) content.push(a);
-      }
+    // Find the direct children of the grid
+    const children = Array.from(grid.children);
+    // First h2 or heading
+    const heading = children.find(el => /^H[1-6]$/.test(el.tagName));
+    if (heading) contentEls.push(heading);
+    // Find the div containing paragraph and button
+    const contentDiv = children.find(el => el.tagName === 'DIV');
+    if (contentDiv) {
+      // Add all of its children (paragraphs, links)
+      contentEls.push(...Array.from(contentDiv.children));
     }
   }
-  // Defensive fallback: if nothing was found, the cell should be empty
-  if (content.length === 0) content = [''];
+  // Fallback if grid not found (edge case)
+  if (contentEls.length === 0) {
+    // Try to find heading, p, and a anywhere inside element.
+    const heading = element.querySelector('h1,h2,h3,h4,h5,h6');
+    const p = element.querySelector('p');
+    const a = element.querySelector('a');
+    contentEls = [heading, p, a].filter(Boolean);
+  }
 
-  const contentRow = [content];
+  const contentRow = [contentEls];
 
-  const cells = [
+  // Create the table according to guidelines
+  const table = WebImporter.DOMUtils.createTable([
     headerRow,
-    backgroundImageRow,
+    bgRow,
     contentRow
-  ];
+  ], document);
 
-  const table = WebImporter.DOMUtils.createTable(cells, document);
+  // Replace the original element with the block table
   element.replaceWith(table);
 }

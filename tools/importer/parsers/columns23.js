@@ -1,33 +1,29 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Get the grid of images
-  const imageGrid = element.querySelector('.grid-layout.desktop-3-column.utility-min-height-100dvh');
-  const imageDivs = imageGrid ? Array.from(imageGrid.children) : [];
-  const images = imageDivs.map(div => div.querySelector('img')).filter(img => img);
+  // Find the image grid and collect all images
+  const grid = element.querySelector('.grid-layout.desktop-3-column');
+  const imgDivs = grid ? Array.from(grid.children) : [];
+  const images = imgDivs.map(div => div.querySelector('img')).filter(Boolean);
 
-  // Get the central text content (headline, subheading, buttons)
-  const contentCol = element.querySelector('.ix-hero-scale-3x-to-1x-content .container');
+  // Get the overlay content (heading, paragraph, buttons)
+  let content = null;
+  const contentCol = element.querySelector('.ix-hero-scale-3x-to-1x-content');
+  if (contentCol) {
+    content = contentCol.querySelector('.container');
+  }
 
-  // Compose the header row (must be a single cell)
-  const headerRow = ['Columns (columns23)'];
+  // Place all images in one container for the first column
+  const imagesContainer = document.createElement('div');
+  images.forEach(img => imagesContainer.appendChild(img));
 
-  // Images cell: stack all images in one div
-  const imagesCell = document.createElement('div');
-  images.forEach(img => imagesCell.appendChild(img));
+  // Correct header row: two columns to match the content row
+  const headerRow = ['Columns (columns23)', ''];
+  const row = [imagesContainer, content];
 
-  // Content cell: reference the content container, or empty div if not found
-  const contentCell = contentCol || document.createElement('div');
+  const table = WebImporter.DOMUtils.createTable([
+    headerRow,
+    row
+  ], document);
 
-  // Compose the main content row with two columns
-  const contentRow = [imagesCell, contentCell];
-
-  // Build the final table structure
-  const cells = [
-    headerRow,    // single cell header row
-    contentRow    // second row, 2 columns
-  ];
-
-  // Create and replace
-  const table = WebImporter.DOMUtils.createTable(cells, document);
   element.replaceWith(table);
 }

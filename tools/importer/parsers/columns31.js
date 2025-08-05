@@ -1,23 +1,25 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Get all direct child divs (columns)
+  // Header row: must be a single cell array per requirements
+  const headerRow = ['Columns (columns31)'];
+
+  // Gather all immediate children for columns
   const columns = Array.from(element.querySelectorAll(':scope > div'));
-  if (columns.length === 0) return;
-
-  // Create the table using WebImporter.DOMUtils.createTable as usual
-  const table = WebImporter.DOMUtils.createTable([
-    ['Columns (columns31)'],
-    columns
-  ], document);
-
-  // Fix the header row to span all columns
-  const headerRow = table.querySelector('tr');
-  if (headerRow && columns.length > 1) {
-    const th = headerRow.querySelector('th');
-    if (th) {
-      th.setAttribute('colspan', columns.length);
+  // For each column, extract the direct child (which contains the image)
+  const cellsRow = columns.map(col => {
+    if (col.children.length === 1) {
+      return col.children[0];
     }
-  }
+    return col;
+  });
 
-  element.replaceWith(table);
+  // Table structure: header is a single-cell row, second row is N columns
+  const cells = [
+    headerRow,
+    cellsRow,
+  ];
+
+  // Create table with one-cell header row, and columns as required
+  const block = WebImporter.DOMUtils.createTable(cells, document);
+  element.replaceWith(block);
 }

@@ -1,82 +1,69 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Helper: create a content fragment for the text cell (tag, heading, desc)
-  function createTextCell({ tagNode, headingNode, descNode }) {
+  // Helper: create fragment from available elements
+  function buildTextCell(elems) {
     const frag = document.createDocumentFragment();
-    if (tagNode) {
-      frag.appendChild(tagNode);
-    }
-    if (headingNode) {
-      frag.appendChild(headingNode);
-    }
-    if (descNode) {
-      frag.appendChild(descNode);
-    }
-    return frag.childNodes.length === 1 ? frag.firstChild : frag;
+    elems.forEach(e => { if (e) frag.appendChild(e); });
+    return frag;
   }
 
-  // Find the grid containing the cards
-  const grid = element.querySelector('.grid-layout');
-  if (!grid) return;
-
+  // Table header as in the example
   const cells = [['Cards (cards5)']];
 
-  // --- Featured Left Card ---
+  // Find the grid
+  const grid = element.querySelector('.grid-layout');
+  if (!grid) return;
   const gridChildren = Array.from(grid.children);
-  // First card is the large left card
-  const mainCard = gridChildren.find(
-    node => node.matches('a.utility-link-content-block')
-  );
-  if (mainCard) {
-    const imgWrap = mainCard.querySelector('.utility-aspect-1x1');
-    const img = imgWrap ? imgWrap.querySelector('img.cover-image') : null;
-    // Extract tag group, heading, desc
-    const tagGroup = mainCard.querySelector('.tag-group');
+
+  // 1. Main card (large card on left)
+  const mainCard = gridChildren[0];
+  if (mainCard && mainCard.classList.contains('utility-link-content-block')) {
+    const image = mainCard.querySelector('img');
+    const tag = mainCard.querySelector('.tag-group');
     const heading = mainCard.querySelector('h3');
     const desc = mainCard.querySelector('p');
+    const textCell = buildTextCell([tag, heading, desc]);
     cells.push([
-      img,
-      createTextCell({ tagNode: tagGroup, headingNode: heading, descNode: desc })
+      image || '',
+      textCell
     ]);
   }
 
-  // --- Two Cards with Images ---
-  // Next direct child is a div.flex-horizontal.flex-vertical (with 2 cards)
-  const cardRows = gridChildren.filter(
-    node => node.classList.contains('flex-horizontal') && node.classList.contains('flex-vertical')
-  );
-  if (cardRows.length > 0) {
-    // First row: contains two cards with images
-    const imageCards = cardRows[0].querySelectorAll('a.utility-link-content-block');
-    imageCards.forEach(card => {
-      const imgWrap = card.querySelector('.utility-aspect-3x2');
-      const img = imgWrap ? imgWrap.querySelector('img.cover-image') : null;
-      const tagGroup = card.querySelector('.tag-group');
+  // 2. Two medium cards (top right, image cards)
+  const mediumCardsCol = gridChildren[1];
+  if (mediumCardsCol) {
+    const mediumCards = mediumCardsCol.querySelectorAll('.utility-link-content-block');
+    mediumCards.forEach(card => {
+      const image = card.querySelector('img');
+      const tag = card.querySelector('.tag-group');
       const heading = card.querySelector('h3');
       const desc = card.querySelector('p');
+      const textCell = buildTextCell([tag, heading, desc]);
       cells.push([
-        img,
-        createTextCell({ tagNode: tagGroup, headingNode: heading, descNode: desc })
+        image || '',
+        textCell
       ]);
     });
   }
 
-  // --- Text Only Cards ---
-  // Second row: contains text-only cards (no image)
-  if (cardRows.length > 1) {
-    const textCardsRow = cardRows[1];
-    const textCards = Array.from(textCardsRow.children).filter(node => node.matches('a.utility-link-content-block'));
-    textCards.forEach(card => {
-      const heading = card.querySelector('h3');
-      const desc = card.querySelector('p');
-      cells.push([
-        '',
-        createTextCell({ headingNode: heading, descNode: desc })
-      ]);
+  // 3. Text-only cards (rightmost column)
+  const textCardsCol = gridChildren[2];
+  if (textCardsCol) {
+    // Only count direct children with .utility-link-content-block
+    Array.from(textCardsCol.children).forEach(child => {
+      if (child.classList.contains('utility-link-content-block')) {
+        const heading = child.querySelector('h3');
+        const desc = child.querySelector('p');
+        const textCell = buildTextCell([heading, desc]);
+        cells.push([
+          '',
+          textCell
+        ]);
+      }
     });
   }
 
-  // Replace original element with block table
+  // Build and replace
   const table = WebImporter.DOMUtils.createTable(cells, document);
   element.replaceWith(table);
 }

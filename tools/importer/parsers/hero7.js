@@ -1,27 +1,27 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Block header as required by the example
-  const headerRow = ['Hero (hero7)'];
-
-  // Get all immediate children of the grid (should be image containers)
+  // Find all immediate children (should be image containers)
   const children = Array.from(element.querySelectorAll(':scope > div'));
-  // Find all <img> elements directly under these divs
-  const images = children
-    .map(div => div.querySelector('img'))
-    .filter(Boolean);
+  
+  // Find the first <img> within any of the children to use as background image, as per the visual structure
+  let bgImg = null;
+  for (const child of children) {
+    const img = child.querySelector('img');
+    if (img) {
+      bgImg = img;
+      break;
+    }
+  }
 
-  // Table row for images: all images together in a single cell
-  const imageRow = [images];
-
-  // There is NO content row (no heading, subheading, CTA) in the provided HTML
+  // Compose block table rows
+  const headerRow = ['Hero (hero7)'];
+  const bgRow = [bgImg ? bgImg : ''];
+  // No heading, subheading, or cta in provided HTML, so blank content cell
   const contentRow = [''];
 
-  // Build and replace
-  const table = WebImporter.DOMUtils.createTable([
-    headerRow,
-    imageRow,
-    contentRow,
-  ], document);
+  const cells = [headerRow, bgRow, contentRow];
 
+  // Create and replace
+  const table = WebImporter.DOMUtils.createTable(cells, document);
   element.replaceWith(table);
 }

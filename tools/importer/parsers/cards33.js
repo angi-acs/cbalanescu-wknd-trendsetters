@@ -1,20 +1,19 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Header row as specified
+  // Cards (cards33) header row
   const headerRow = ['Cards (cards33)'];
 
-  // Each card: direct children with .utility-aspect-1x1 (contain an img)
-  const cardDivs = element.querySelectorAll(':scope > .utility-aspect-1x1');
-
-  // For each card, extract the image element. No text content is present in source.
-  // Per block structure, image goes in first cell, second cell remains empty
-  const rows = Array.from(cardDivs).map(cardDiv => {
-    const img = cardDiv.querySelector('img');
+  // Query all top-level card divs
+  const cardDivs = element.querySelectorAll(':scope > div.utility-aspect-1x1');
+  
+  // Each card has only an image, no text content in the source HTML
+  const rows = Array.from(cardDivs).map(div => {
+    const img = div.querySelector('img');
     return [img, ''];
   });
 
-  // Build the block table
-  const cells = [headerRow, ...rows];
-  const table = WebImporter.DOMUtils.createTable(cells, document);
-  element.replaceWith(table);
+  // Assemble the block table
+  const tableArray = [headerRow, ...rows];
+  const block = WebImporter.DOMUtils.createTable(tableArray, document);
+  element.replaceWith(block);
 }

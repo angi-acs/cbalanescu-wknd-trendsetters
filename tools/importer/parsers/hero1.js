@@ -1,52 +1,51 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Helper: get direct child by class
-  function findChildByClass(parent, className) {
-    for (const child of parent.children) {
-      if (child.classList && child.classList.contains(className)) {
-        return child;
-      }
-    }
-    return null;
-  }
-
-  // Header row
+  // 1. Header row
   const headerRow = ['Hero (hero1)'];
+  
+  // 2. Get main content wrapper
+  const container = element.querySelector('.container');
+  const grid = container ? container.querySelector('.grid-layout') : null;
+  const gridChildren = grid ? Array.from(grid.children) : [];
 
-  // Get the main .container div
-  const container = findChildByClass(element, 'container') || element;
-
-  // Find grid-layout (main content container)
-  const grid = container.querySelector('.grid-layout') || container;
-
-  // Find the main image (background image cell)
+  // 3. Find image (use first img in grid)
   let img = null;
-  for (const child of grid.children) {
+  for (const child of gridChildren) {
     if (child.tagName === 'IMG') {
       img = child;
       break;
     }
   }
+  // Fallback if image not found
+  if (!img) {
+    img = element.querySelector('img');
+  }
 
-  // Find the text block (usually the non-img direct child)
+  // 4. Find text block (the non-img direct child in grid)
   let textBlock = null;
-  for (const child of grid.children) {
-    if (child !== img && child.nodeType === 1) {
+  for (const child of gridChildren) {
+    if (child !== img) {
       textBlock = child;
       break;
     }
   }
+  // Fallback if not found
+  if (!textBlock) {
+    // Try to find a likely div
+    textBlock = element.querySelector('div:not(.container):not(.grid-layout):not(.w-layout-grid):not(.image)');
+  }
 
-  // Fallbacks for missing image or textBlock
-  // If image is missing, leave cell empty
-  // If textBlock is missing, leave cell empty
+  // Defensive: If nothing found, create an empty div
+  if (!img) img = document.createElement('div');
+  if (!textBlock) textBlock = document.createElement('div');
 
-  const cells = [
+  // 5. Assemble rows for table according to spec
+  const rows = [
     headerRow,
-    [img ? img : ''],
-    [textBlock ? textBlock : '']
+    [img],
+    [textBlock],
   ];
 
-  const table = WebImporter.DOMUtils.createTable(cells, document);
+  const table = WebImporter.DOMUtils.createTable(rows, document);
   element.replaceWith(table);
 }

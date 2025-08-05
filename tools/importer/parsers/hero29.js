@@ -1,39 +1,64 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Header row as specified
+  // 1. Table header must exactly match block name in the prompt
   const headerRow = ['Hero (hero29)'];
 
-  // Find the grid container
-  const grid = element.querySelector('.w-layout-grid');
-
-  // Find the main image (background image)
-  let imageCell = '';
-  if (grid) {
-    // Select the first immediate image child of the grid (not descendant of left column)
-    const images = Array.from(grid.children).filter(child => child.tagName === 'IMG');
-    if (images.length > 0) {
-      imageCell = images[0];
-    }
+  // 2. Extract background image (image element) and content block
+  // The structure is: section > div.container > div.grid-layout > [contentDiv, img]
+  let grid = element.querySelector('.grid-layout');
+  if (!grid) {
+    // Fallback to immediate child divs if structure varies
+    const container = element.querySelector('.container');
+    grid = container ? container.firstElementChild : null;
+  }
+  if (!grid) {
+    // Fallback to any direct child div
+    grid = Array.from(element.children).find(el => el.classList.contains('grid-layout'));
   }
 
-  // Find the text content block (column with all the text and CTA)
-  let textContentCell = '';
-  if (grid) {
-    // Find the first child that's a DIV (not IMG)
-    const contentDiv = Array.from(grid.children).find(child => child.tagName === 'DIV');
-    if (contentDiv) {
-      textContentCell = [contentDiv];
-    }
+  // Defensive
+  if (!grid) {
+    // If not found, fall back to any image and any div
+    const fallbackImg = element.querySelector('img');
+    const fallbackDiv = element.querySelector('div');
+    const cells = [
+      headerRow,
+      [fallbackImg || ''],
+      [fallbackDiv || ''],
+    ];
+    const table = WebImporter.DOMUtils.createTable(cells, document);
+    element.replaceWith(table);
+    return;
   }
 
-  // Build the cells array as 1 column, 3 rows
+  // Now, get direct children: one is content, one is image
+  // Do not clone, use references
+  let contentDiv = null;
+  let imageEl = null;
+  Array.from(grid.children).forEach(child => {
+    if (child.tagName === 'IMG' && !imageEl) {
+      imageEl = child;
+    } else if (child.tagName === 'DIV' && !contentDiv) {
+      contentDiv = child;
+    }
+  });
+
+  // Edge cases: If order reversed, or if extra nodes
+  if (!contentDiv || !imageEl) {
+    const divs = Array.from(grid.children).filter(c => c.tagName === 'DIV');
+    const imgs = Array.from(grid.children).filter(c => c.tagName === 'IMG');
+    if (!contentDiv) contentDiv = divs[0] || null;
+    if (!imageEl) imageEl = imgs[0] || null;
+  }
+
+  // 3. Always build table with exactly 3 rows, 1 column as per block description
   const cells = [
     headerRow,
-    [imageCell],
-    [textContentCell]
+    [imageEl || ''],
+    [contentDiv || ''],
   ];
 
-  // Create table and replace original element
+  // 4. Create table and replace
   const table = WebImporter.DOMUtils.createTable(cells, document);
   element.replaceWith(table);
 }

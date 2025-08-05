@@ -1,61 +1,26 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Find the carousel grid with slides
-  const grid = element.querySelector('.w-layout-grid');
+  // Find the image grid containing all slides
+  const grid = element.querySelector('.grid-layout');
   if (!grid) return;
+  const slides = Array.from(grid.children).filter(child => child.querySelector('img'));
 
-  // Slides are the direct children of the grid
-  const slideWrappers = Array.from(grid.children);
+  // Build the block table's rows
+  const rows = [
+    ['Carousel (carousel18)']
+  ];
 
-  // Initialize the table with the correct header
-  const cells = [['Carousel (carousel18)']];
-
-  slideWrappers.forEach((slide) => {
-    // Look for the image within the slide
+  slides.forEach(slide => {
+    // Find the <img> for the slide (mandatory)
     const aspect = slide.querySelector('.utility-aspect-2x3');
-    let img = null;
-    if (aspect) {
-      img = aspect.querySelector('img');
-    }
-
-    // Try to find any text content for the slide (supporting future variations)
-    // Accept anything that is not the image container as possible text
-    let textContent = '';
-    // Look for siblings of aspect that may contain text
-    if (slide.children.length > 1) {
-      // Collect all siblings of aspect that are not the aspect (image container)
-      const textNodes = Array.from(slide.children).filter(child => child !== aspect);
-      // If found, include all as the text cell
-      if (textNodes.length > 0) {
-        textContent = textNodes;
-      }
-    }
-
-    // If no sibling text nodes, also check descendants of aspect for overlays/text
-    if (!textContent || (Array.isArray(textContent) && textContent.length === 0)) {
-      // Sometimes overlays are INSIDE the image container
-      const possibleText = Array.from(aspect ? aspect.children : []).filter(child => child.tagName !== 'IMG');
-      if (possibleText.length > 0) {
-        textContent = possibleText;
-      }
-    }
-
-    // If textContent is still empty, use an empty string
-    if (!textContent || (Array.isArray(textContent) && textContent.length === 0)) {
-      textContent = '';
-    }
-
-    // Only process if there is an image
-    if (img) {
-      cells.push([
-        img,
-        textContent
-      ]);
-    }
+    if (!aspect) return;
+    const img = aspect.querySelector('img');
+    if (!img) return;
+    // Reference the img node directly
+    rows.push([img, '']); // Second cell empty, as there's no text content in the provided HTML
   });
 
-  // Create the block table
-  const table = WebImporter.DOMUtils.createTable(cells, document);
-  // Replace the original element with the generated table
+  // Create block table and replace the original block
+  const table = WebImporter.DOMUtils.createTable(rows, document);
   element.replaceWith(table);
 }

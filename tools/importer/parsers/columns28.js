@@ -1,44 +1,39 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Find the main content container
+  // The component is Columns (columns28)
+  // Find the main grid layout
   const container = element.querySelector('.container');
   if (!container) return;
-  const outerGrid = container.querySelector('.w-layout-grid.grid-layout');
-  if (!outerGrid) return;
 
-  // --- First row, left cell: heading and quote ---
-  const heading = outerGrid.querySelector('p.h2-heading');
-  const quote = outerGrid.querySelector('p.paragraph-lg');
-  const leftTop = document.createElement('div');
-  if (heading) leftTop.appendChild(heading);
-  if (quote) leftTop.appendChild(quote);
+  const grid = container.querySelector('.grid-layout');
+  if (!grid) return;
 
-  // --- First row, right cell: intentionally blank ---
-  const rightTop = '';
+  // The section structure is:
+  // 1. <p class="h2-heading.."> - heading
+  // 2. <p class="paragraph-lg.."> - testimonial text
+  // 3. <div class="w-layout-grid..."><div class="divider..."></div><div class="flex-horizontal..."><div class="avatar"><img ...></div><div>name/title</div></div><div class="utility-display-inline-block...">svg logo</div></div>
 
-  // --- Second row: testimonial and logo ---
-  let leftBottom = '';
-  let rightBottom = '';
-  // The testimonial and logo are inside the nested grid
-  const innerGrid = outerGrid.querySelector('.w-layout-grid.grid-layout.grid-gap-sm');
-  if (innerGrid) {
-    const divider = innerGrid.querySelector('.divider');
-    const testimonial = innerGrid.querySelector('.flex-horizontal');
-    const leftDiv = document.createElement('div');
-    if (divider) leftDiv.appendChild(divider);
-    if (testimonial) leftDiv.appendChild(testimonial);
-    if (leftDiv.childNodes.length > 0) leftBottom = leftDiv;
-    const logo = innerGrid.querySelector('.utility-display-inline-block');
-    if (logo) rightBottom = logo;
-  }
-  
-  // Compose cells as a table: header, then 2x2 grid
+  // Only immediate children of grid
+  const children = Array.from(grid.children);
+  if (children.length < 3) return;
+
+  // First column: heading, divider/avatar block
+  // Second column: testimonial ("quote") text
+
+  // Compose columns referencing existing elements
+  const leftCol = document.createElement('div');
+  leftCol.appendChild(children[0]); // heading
+  leftCol.appendChild(children[2]); // grid with divider, avatar, logo
+
+  const rightCol = children[1]; // quote paragraph
+
+  // Block table creation
+  const headerRow = ['Columns (columns28)'];
   const cells = [
-    ['Columns (columns28)'],
-    [leftTop, rightTop],
-    [leftBottom, rightBottom]
+    headerRow,
+    [leftCol, rightCol],
   ];
-  
+
   const table = WebImporter.DOMUtils.createTable(cells, document);
   element.replaceWith(table);
 }

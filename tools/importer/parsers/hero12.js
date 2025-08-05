@@ -1,62 +1,61 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Find the main grid containing hero structure
-  const mainGrid = element.querySelector(':scope > .w-layout-grid');
-  if (!mainGrid) return;
+  // --- Header row: always the block name, exactly as specified ---
+  const headerRow = ['Hero (hero12)'];
 
-  // Find the hero image (optional background/decorative image)
-  const img = mainGrid.querySelector('img');
+  // --- Image row: find the prominent image in the section ---
+  // The image is a direct child of the outer grid, not inside content blocks
+  let imageRow = [''];
+  const images = element.querySelectorAll('img');
+  if (images.length > 0) {
+    // Use the first image found
+    imageRow = [images[0]];
+  }
 
-  // Find the content container (title, text, ctas)
-  let contentDiv = null;
-  const childDivs = mainGrid.querySelectorAll(':scope > div');
-  for (const div of childDivs) {
-    if (div.querySelector('h1, h2, h3, h4, h5, h6')) {
-      contentDiv = div;
+  // --- Content row: should include heading (h2), subheading (rich-text), and CTA(s) (button-group) ---
+  // Find the most likely container for these, which is a nested .section inside a .grid-layout
+  let contentCell = [];
+  // Find all .section blocks inside the element (skipping the top-level section)
+  const nestedSections = element.querySelectorAll('.section');
+  let foundContent = false;
+  for (const section of nestedSections) {
+    // Look for h1/h2/h3
+    const heading = section.querySelector('h1, h2, h3');
+    if (heading) contentCell.push(heading);
+
+    // Look for subheading: .rich-text, .paragraph-lg, .w-richtext, etc
+    const subheading = section.querySelector('.rich-text, .rich-text-block, .paragraph-lg, .w-richtext');
+    if (subheading) contentCell.push(subheading);
+
+    // Look for CTA(s): .button-group
+    const cta = section.querySelector('.button-group');
+    if (cta) contentCell.push(cta);
+
+    // If we found at least one of the items, stop
+    if (contentCell.length > 0) {
+      foundContent = true;
       break;
     }
   }
-  if (!contentDiv && childDivs.length > 0) {
-    contentDiv = childDivs[0];
-  }
 
-  // Gather all content in contentDiv, preserving document elements
-  let contentElements = [];
-  if (contentDiv) {
-    // Heading(s)
-    const heading = contentDiv.querySelector('h1, h2, h3, h4, h5, h6');
-    if (heading) contentElements.push(heading);
-
-    // Subheading - look for any other heading after the first heading
-    const allHeadings = contentDiv.querySelectorAll('h1, h2, h3, h4, h5, h6');
-    if (allHeadings.length > 1) {
-      for (let i = 1; i < allHeadings.length; i++) {
-        contentElements.push(allHeadings[i]);
-      }
-    }
-
-    // Paragraphs, but only those not inside any .button-group
-    const buttonGroup = contentDiv.querySelector('.button-group');
-    const paragraphs = contentDiv.querySelectorAll('p');
-    paragraphs.forEach(p => {
-      if (!buttonGroup || !buttonGroup.contains(p)) {
-        contentElements.push(p);
-      }
-    });
-
-    // Call-to-action links (all <a> inside .button-group)
-    if (buttonGroup) {
-      const ctas = buttonGroup.querySelectorAll('a');
-      ctas.forEach(a => contentElements.push(a));
+  // Fallback: If nothing found, use all children except image
+  if (!foundContent) {
+    const children = Array.from(element.children).filter((child) => !child.matches('img'));
+    if (children.length > 0) {
+      contentCell = children;
+    } else {
+      contentCell = [''];
     }
   }
 
-  // Compose the table cells: block name, image, content
+  // --- Build the block table ---
   const cells = [
-    ['Hero (hero12)'],
-    [img ? img : ''],
-    [contentElements]
+    headerRow,
+    imageRow,
+    [contentCell]
   ];
+
+  // --- Create block table and replace original element ---
   const table = WebImporter.DOMUtils.createTable(cells, document);
   element.replaceWith(table);
 }

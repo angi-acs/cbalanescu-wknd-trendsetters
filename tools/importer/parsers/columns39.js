@@ -1,25 +1,30 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Extract all immediate children (the columns)
-  const columns = Array.from(element.querySelectorAll(':scope > div'));
-  if (!columns.length) {
-    element.remove();
-    return;
-  }
-  // For each column, extract the content to display (prefer image if only an image, else whole div)
-  const columnCells = columns.map((col) => {
-    if (
-      col.children.length === 1 &&
-      col.firstElementChild.tagName.toLowerCase() === 'img'
-    ) {
+  // Header row: always a single cell as per the requirements
+  const headerRow = ['Columns (columns39)'];
+
+  // Get all immediate child divs, which are the columns
+  const columnDivs = Array.from(element.querySelectorAll(':scope > div'));
+
+  // For each column, collect all its content into a cell
+  const contentRow = columnDivs.map((col) => {
+    // If the column has only one child, return it directly
+    if (col.children.length === 1) {
       return col.firstElementChild;
     }
-    return col;
+    // Otherwise, collect all children
+    return Array.from(col.childNodes).filter(node => {
+      // Remove empty text nodes
+      return !(node.nodeType === Node.TEXT_NODE && !node.textContent.trim());
+    });
   });
 
-  // Table header must be a single cell row
-  const headerRow = ['Columns (columns39)'];
-  const cells = [headerRow, columnCells];
-  const table = WebImporter.DOMUtils.createTable(cells, document);
+  // Compose the table as a 2-row (header, content), N-column (each column div) block
+  const table = WebImporter.DOMUtils.createTable([
+    headerRow,
+    contentRow
+  ], document);
+
+  // Replace original element
   element.replaceWith(table);
 }

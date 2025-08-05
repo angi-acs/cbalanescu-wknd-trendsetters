@@ -1,38 +1,36 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Grab the two direct .w-layout-grid > div children
-  const grid = element.querySelector('.w-layout-grid');
-  const gridDivs = grid ? grid.querySelectorAll(':scope > div') : [];
+  // Header row as specified
+  const headerRow = ['Hero (hero14)'];
 
-  // 1. Background image: first img in the left grid cell
-  let bgImgEl = null;
-  if (gridDivs.length > 0) {
-    bgImgEl = gridDivs[0].querySelector('img');
+  // --- Background Image (row 2) ---
+  // Find the first child div that contains an img.cover-image.utility-position-absolute
+  let bgImg = null;
+  const bgImgWrapper = element.querySelector('img.cover-image.utility-position-absolute');
+  if (bgImgWrapper) {
+    bgImg = bgImgWrapper;
   }
-  // If no background image, leave cell blank
 
-  // 2. Content cell (headline, features, CTA, and possibly a foreground image)
-  // The card is inside the right div
-  let contentCellEls = [];
-  if (gridDivs.length > 1) {
-    const card = gridDivs[1].querySelector('.card');
+  // --- Main Content (row 3) ---
+  // This is the container > card > card-body
+  let mainContent = null;
+  const container = element.querySelector('div.container');
+  if (container) {
+    // The card that contains everything
+    const card = container.querySelector('div.card.card-on-secondary');
     if (card) {
-      // We want all card content, including images inside
-      contentCellEls.push(card);
-    } else {
-      // fallback: use the whole right grid cell
-      contentCellEls.push(gridDivs[1]);
+      mainContent = card;
     }
-  } else {
-    contentCellEls = [];
   }
 
-  // Build the table for Hero (hero14)
+  // Edge case: if any of the above is missing, provide an empty string for robustness
   const cells = [
-    ['Hero (hero14)'],
-    [bgImgEl ? bgImgEl : ''],
-    [contentCellEls.length === 1 ? contentCellEls[0] : contentCellEls]
+    headerRow,
+    [bgImg ? bgImg : ''],
+    [mainContent ? mainContent : ''],
   ];
-  const block = WebImporter.DOMUtils.createTable(cells, document);
-  element.replaceWith(block);
+
+  // Create the block table and replace the element
+  const table = WebImporter.DOMUtils.createTable(cells, document);
+  element.replaceWith(table);
 }

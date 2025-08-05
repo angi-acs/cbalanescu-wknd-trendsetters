@@ -1,26 +1,22 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Find the inner grid element that contains the columns
+  // Find the main grid layout containing the columns
   const grid = element.querySelector('.grid-layout');
   if (!grid) return;
-  // Get all direct children of the grid as columns
-  const cols = Array.from(grid.children);
-  // Remove columns that are empty (for robustness)
-  const validCols = cols.filter(col => col && (col.textContent.trim() || col.querySelector('img,video,a,iframe')));
-  // Create header row with a single cell
+  // Get all direct children of the grid (these are the columns)
+  const columnElements = Array.from(grid.children);
+  if (columnElements.length === 0) return;
+
+  // Table header row: exactly one cell with the correct title
   const headerRow = ['Columns (columns8)'];
-  // Create content row with one cell for each column
-  const contentRow = validCols;
-  // Build the block table
-  const table = WebImporter.DOMUtils.createTable([
-    headerRow,
-    contentRow
-  ], document);
-  // Set colspan on the header cell so it visually spans all columns
-  const th = table.querySelector('th');
-  if (th && validCols.length > 1) {
-    th.setAttribute('colspan', validCols.length);
-  }
-  // Replace the original element with the block table
+
+  // Content row: one cell per column, referencing the original elements
+  const contentRow = columnElements.map(col => col);
+
+  // Build the table data structure
+  const cells = [headerRow, contentRow];
+  const table = WebImporter.DOMUtils.createTable(cells, document);
+
+  // Replace the original element
   element.replaceWith(table);
 }

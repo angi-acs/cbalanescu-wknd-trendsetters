@@ -1,28 +1,29 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Accordion block header as per example
+  // Table header as specified in requirements
   const headerRow = ['Accordion (accordion22)'];
-  // Find all direct children with class 'divider' (each one is an accordion item)
+  const rows = [headerRow];
+
+  // Each accordion item is a .divider direct child
   const dividers = element.querySelectorAll(':scope > .divider');
-  const rows = [];
-  dividers.forEach(divider => {
-    // Each divider contains a grid-layout with two children: title and content
-    const grid = divider.querySelector('.grid-layout');
-    if (!grid) return; // skip if missing
-    const children = grid.querySelectorAll(':scope > div');
-    if (children.length >= 2) {
-      // Reference the original title and content elements
-      const title = children[0];
-      const content = children[1];
-      rows.push([title, content]);
-    } else if (children.length === 1) {
-      // Edge case: missing content, insert empty cell
-      rows.push([children[0], '']);
-    }
-    // If no children, skip
+
+  dividers.forEach((divider) => {
+    // Get the inner grid within the .divider
+    const grid = divider.querySelector('.w-layout-grid');
+    if (!grid) return;
+    // Get all direct children of the grid (should be title and content)
+    const gridChildren = Array.from(grid.children);
+    // Defensive: skip if not enough columns
+    if (gridChildren.length < 2) return;
+    // Use existing elements for title and content
+    const title = gridChildren[0];
+    const content = gridChildren[1];
+    rows.push([title, content]);
   });
 
-  const cells = [headerRow, ...rows];
-  const block = WebImporter.DOMUtils.createTable(cells, document);
-  element.replaceWith(block);
+  // Only replace if at least one accordion item was found (rows > header)
+  if (rows.length > 1) {
+    const table = WebImporter.DOMUtils.createTable(rows, document);
+    element.replaceWith(table);
+  }
 }

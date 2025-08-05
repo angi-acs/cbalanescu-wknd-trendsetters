@@ -1,50 +1,41 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // 1. Table header row
-  const headerRow = ['Hero (hero15)'];
-
-  // 2. Find the image (background asset)
-  // Look for the first <img> inside the grid
+  // Find the main grid layout which contains the image and content
   const grid = element.querySelector('.grid-layout');
-  let heroImg = null;
-  if (grid) {
-    heroImg = grid.querySelector('img');
-  }
-  const imageRow = [heroImg ? heroImg : ''];
+  if (!grid) return;
 
-  // 3. Collect heading, subheading, and CTAs
-  let contentCol = null;
-  // In this markup, the div with id="w-node-_85b6655c-7c4a-e9e3-9ce9-a5af31fcf1c3-31fcf1be" holds text/buttons
-  if (grid) {
-    // Find all direct child divs of grid
-    const gridDivs = grid.querySelectorAll(':scope > div');
-    contentCol = Array.from(gridDivs).find(
-      (div) => div.querySelector('h1, h2, h3, h4, h5, h6')
-    );
-  }
-  const content = [];
-  if (contentCol) {
-    // Heading (h1-h6)
-    const heading = contentCol.querySelector('h1, h2, h3, h4, h5, h6');
-    if (heading) content.push(heading);
-    // Subheading (class or first <p>)
-    const subheading = contentCol.querySelector('.subheading, p');
-    if (subheading) content.push(subheading);
-    // Button group (collect all buttons/links)
-    const buttonGroup = contentCol.querySelector('.button-group');
+  // Get immediate children: image and content
+  const gridChildren = Array.from(grid.children);
+  // Find the image element
+  const imageEl = gridChildren.find(child => child.tagName === 'IMG');
+  // Find the content container (should contain h1)
+  const contentEl = gridChildren.find(child => child.querySelector('h1'));
+
+  // Prepare content parts for the 3rd row
+  const contentParts = [];
+  if (contentEl) {
+    // Grab the h1
+    const h1 = contentEl.querySelector('h1');
+    if (h1) contentParts.push(h1);
+    // Grab the subheading
+    const subheading = contentEl.querySelector('p.subheading');
+    if (subheading) contentParts.push(subheading);
+    // Grab buttons in a button group
+    const buttonGroup = contentEl.querySelector('.button-group');
     if (buttonGroup) {
       const buttons = Array.from(buttonGroup.querySelectorAll('a'));
-      if (buttons.length) content.push(...buttons);
+      if (buttons.length) contentParts.push(...buttons);
     }
   }
-  const contentRow = [content];
 
-  // 4. Assemble block table
+  // Build the table rows as per spec
   const cells = [
-    headerRow,
-    imageRow,
-    contentRow
+    ['Hero (hero15)'],
+    [imageEl ? imageEl : ''],
+    [contentParts.length ? contentParts : '']
   ];
+
+  // Create the table and replace the original element
   const table = WebImporter.DOMUtils.createTable(cells, document);
   element.replaceWith(table);
 }
