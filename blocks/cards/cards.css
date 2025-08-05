@@ -1,5 +1,4 @@
 
-/* -------------------- CARDS BASE STYLES -------------------- */
 .cards {
   margin: 0;
   padding: 0;
@@ -75,7 +74,6 @@
 }
 
 .cards.cards2 {
-  /* merged declarations from base and generated CSS (none in base, so only from generated) */
 }
 
 .cards.cards2 > ul {
@@ -532,7 +530,6 @@
 }
 
 .cards.cards35 {
-  /* merged properties from both snippets (none in base, so just for structure if needed) */
 }
 
 .cards.cards35 > ul {
@@ -833,8 +830,6 @@
   min-height: 680px;
   box-sizing: border-box;
 }
-
-/* LEFT COLUMN (first li): large image and text/button below */
 .cards.cards38 > ul > li:first-child {
   flex: 1 1 58%;
   min-width: 380px;
@@ -919,8 +914,6 @@
   background: #151515;
   color: #fff;
 }
-
-/* RIGHT COLUMN (second li): image, then text, aligned to top, visually balanced */
 .cards.cards38 > ul > li:last-child {
   flex: 1 1 35%;
   min-width: 260px;
@@ -929,8 +922,6 @@
   justify-content: flex-start;
   display: flex;
   flex-direction: column;
-
-  /* Visually elongate the card to balance empty space if only one card */
   min-height: 480px;
 }
 
@@ -986,8 +977,6 @@
   font-weight: 400;
   margin: 0;
 }
-
-/* Responsive adjustments for mobile/tablet */
 @media (width <= 900px) {
   .cards.cards38 > ul {
     flex-direction: column;
@@ -1024,5 +1013,281 @@
 
   .cards.cards38 > ul > li:last-child .cards-card-body {
     padding: 12px 6px 8px;
+  }
+}
+
+
+.cards.cards5 {
+  background: #F6F7F3;
+  border-radius: 2rem;
+  padding: 2.4rem 2.2rem 2.4rem 2.2rem;
+  max-width: 1180px;
+  margin: 2rem auto;
+  box-sizing: border-box;
+  display: block;
+}
+
+/* More right column space, bigger gutter for a lighter feel */
+.cards.cards5 > ul {
+  display: grid;
+  grid-template-columns: 42.5% 57.5%;
+  gap: 0 3.2rem;
+  align-items: start;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  background: none;
+  min-height: 0;
+}
+
+/* Remove margin on li, vertical alignment */
+.cards.cards5 > ul > li {
+  margin: 0;
+  padding: 0;
+  background: none;
+  border-radius: 0;
+  box-shadow: none;
+  min-width: 0;
+  min-height: 0;
+}
+
+/* Left column: main image and intro */
+.cards.cards5 > ul > li:first-child {
+  display: flex;
+  flex-direction: column;
+  grid-column: 1 / 2;
+  grid-row: 1 / 3;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding-right: 0.1rem;
+  height: 100%;
+}
+
+.cards.cards5 > ul > li:first-child .cards-card-image {
+  border-radius: 1.2rem;
+  overflow: hidden;
+  margin-bottom: 1.05rem;
+  width: 100%;
+  aspect-ratio: 2.45/1;
+  min-height: 195px;
+  max-height: 280px;
+}
+
+.cards.cards5 > ul > li:first-child .cards-card-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 1.2rem;
+}
+
+.cards.cards5 > ul > li:first-child .cards-card-body {
+  display: flex;
+  flex-direction: column;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.cards.cards5 > ul > li:first-child .cards-card-body p:first-child {
+  display: inline-block;
+  align-self: flex-start;
+  background: #E9EAE2;
+  color: #8B8B7B;
+  text-transform: uppercase;
+  font-size: 0.89rem;
+  font-family: 'Montserrat', 'Instrument Sans', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  border-radius: 1.2em;
+  padding: 0.12em 1.15em 0.06em 1.15em;
+  margin-bottom: 0.48rem;
+  margin-top: 0;
+  line-height: 1.2;
+}
+
+.cards.cards5 > ul > li:first-child .cards-card-body h3 {
+  font-family: 'Montserrat', 'Instrument Sans', sans-serif;
+  font-size: 2.01rem;
+  font-weight: 700;
+  color: #22221D;
+  margin: 0 0 0.98rem 0;
+  letter-spacing: 0.01em;
+  line-height: 1.08;
+  text-transform: none;
+}
+
+.cards.cards5 > ul > li:first-child .cards-card-body p:not(:first-child) {
+  font-family: 'Montserrat', 'Instrument Sans', sans-serif;
+  font-size: 1.01rem;
+  color: rgba(34,34,29,0.82);
+  margin: 0;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+/* Right column: all cards stacked, first two with images side by side */
+.cards.cards5 > ul > li:not(:first-child) {
+  grid-column: 2 / 3;
+  padding: 0;
+  border: none;
+  background: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* Cards 2 & 3: image left, text right, images wider and closer */
+.cards.cards5 > ul > li:nth-child(2),
+.cards.cards5 > ul > li:nth-child(3) {
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 0.85rem;
+  margin-bottom: 0.10rem;
+  min-height: 56px;
+}
+
+.cards.cards5 > ul > li:nth-child(2) .cards-card-image,
+.cards.cards5 > ul > li:nth-child(3) .cards-card-image {
+  flex: 0 0 155px;
+  width: 155px;
+  height: 72px;
+  border-radius: 1.1rem;
+  overflow: hidden;
+  margin: 0;
+  aspect-ratio: 2.15/1;
+}
+
+.cards.cards5 > ul > li:nth-child(2) .cards-card-image img,
+.cards.cards5 > ul > li:nth-child(3) .cards-card-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 1.1rem;
+}
+
+/* Card body tweaks for vertical centering */
+.cards.cards5 > ul > li:nth-child(2) .cards-card-body,
+.cards.cards5 > ul > li:nth-child(3) .cards-card-body {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  min-width: 0;
+}
+
+/* Card labels in right column */
+.cards.cards5 > ul > li:nth-child(2) .cards-card-body p:first-child,
+.cards.cards5 > ul > li:nth-child(3) .cards-card-body p:first-child {
+  display: inline-block;
+  align-self: flex-start;
+  background: #E9EAE2;
+  color: #8B8B7B;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  font-family: 'Montserrat', 'Instrument Sans', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  border-radius: 1.1em;
+  padding: 0.06em 1em 0.04em 1em;
+  margin-bottom: 0.13rem;
+  margin-top: 0;
+  line-height: 1.2;
+}
+
+.cards.cards5 > ul > li:nth-child(2) .cards-card-body h3,
+.cards.cards5 > ul > li:nth-child(3) .cards-card-body h3 {
+  font-family: 'Montserrat', 'Instrument Sans', sans-serif;
+  font-size: 0.93rem;
+  font-weight: 700;
+  color: #22221D;
+  margin: 0 0 0.09rem 0;
+  letter-spacing: 0.00em;
+  line-height: 1.1;
+  text-transform: none;
+}
+
+.cards.cards5 > ul > li:nth-child(2) .cards-card-body p:not(:first-child),
+.cards.cards5 > ul > li:nth-child(3) .cards-card-body p:not(:first-child) {
+  font-family: 'Montserrat', 'Instrument Sans', sans-serif;
+  font-size: 0.86rem;
+  color: rgba(34,34,29,0.81);
+  margin: 0;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+/* Text-only stacked cards with separators, tight grouping */
+.cards.cards5 > ul > li:nth-child(n+4) {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 0.7rem 0 0.7rem 0;
+  border-bottom: 1.5px solid #E9EAE2;
+  margin-bottom: 0;
+}
+
+.cards.cards5 > ul > li:nth-child(4) {
+  margin-top: 0.10rem;
+}
+
+.cards.cards5 > ul > li:last-child {
+  border-bottom: none;
+}
+
+.cards.cards5 > ul > li:nth-child(n+4) .cards-card-body {
+  padding: 0;
+}
+
+.cards.cards5 > ul > li:nth-child(n+4) .cards-card-body h3 {
+  font-family: 'Montserrat', 'Instrument Sans', sans-serif;
+  font-size: 0.87rem;
+  font-weight: 700;
+  color: #22221D;
+  margin: 0 0 0.12rem 0;
+  letter-spacing: 0;
+  line-height: 1.1;
+  text-transform: none;
+}
+
+.cards.cards5 > ul > li:nth-child(n+4) .cards-card-body p {
+  font-family: 'Montserrat', 'Instrument Sans', sans-serif;
+  font-size: 0.85rem;
+  color: rgba(34,34,29,0.80);
+  margin: 0;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+/* Remove empty .cards-card-image blocks in text-only cards */
+.cards.cards5 > ul > li:nth-child(n+4) .cards-card-image {
+  display: none;
+}
+
+/* Responsive: stack columns on mobile/tablet */
+@media (max-width: 900px) {
+  .cards.cards5 {
+    padding: 1.2rem 0.5rem;
+    border-radius: 1rem;
+    min-width: 0;
+  }
+  .cards.cards5 > ul {
+    grid-template-columns: 1fr;
+    gap: 2rem 0;
+    min-height: unset;
+    padding: 0;
+  }
+  .cards.cards5 > ul > li,
+  .cards.cards5 > ul > li:first-child {
+    grid-column: 1 / -1;
+    padding: 0;
+    margin: 0;
+  }
+  .cards.cards5 > ul > li:nth-child(2),
+  .cards.cards5 > ul > li:nth-child(3) {
+    flex-direction: row;
+    gap: 1rem;
+    margin-bottom: 1.1rem;
   }
 }
