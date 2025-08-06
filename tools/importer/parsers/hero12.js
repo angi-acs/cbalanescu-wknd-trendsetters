@@ -1,62 +1,62 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Find the main grid containing hero structure
-  const mainGrid = element.querySelector(':scope > .w-layout-grid');
-  if (!mainGrid) return;
+  // 1. Header row
+  const headerRow = ['Hero (hero12)'];
 
-  // Find the hero image (optional background/decorative image)
-  const img = mainGrid.querySelector('img');
-
-  // Find the content container (title, text, ctas)
-  let contentDiv = null;
-  const childDivs = mainGrid.querySelectorAll(':scope > div');
-  for (const div of childDivs) {
-    if (div.querySelector('h1, h2, h3, h4, h5, h6')) {
-      contentDiv = div;
-      break;
-    }
+  // 2. Find the background image (img tag at top-level grid)
+  // The correct image is the one that's a direct child of the top-level grid, not inside the content grid
+  let img = null;
+  const grids = element.querySelectorAll(':scope > .w-layout-grid');
+  if (grids.length > 0) {
+    // Iterate through direct children of the top-level grid for an image
+    const topLevelGrid = grids[0];
+    const directImg = Array.from(topLevelGrid.children).find(
+      (child) => child.tagName && child.tagName.toLowerCase() === 'img'
+    );
+    if (directImg) img = directImg;
   }
-  if (!contentDiv && childDivs.length > 0) {
-    contentDiv = childDivs[0];
+  // fallback: find any image inside this section if not found above
+  if (!img) {
+    img = element.querySelector('img');
+  }
+  const row2 = [img ? img : ''];
+
+  // 3. Find the main content area
+  // it's in the nested .w-layout-grid within the top-level grid
+  let contentGrid = null;
+  if (grids.length > 0) {
+    // Find a child grid inside the top-level grid
+    contentGrid = grids[0].querySelector('.w-layout-grid');
   }
 
-  // Gather all content in contentDiv, preserving document elements
+  // Fallback: find a div that contains a heading
+  if (!contentGrid) {
+    contentGrid = element.querySelector('h1, h2, h3')?.closest('div');
+  }
+
+  // 4. Gather content: headings, paragraph(s), button group
   let contentElements = [];
-  if (contentDiv) {
-    // Heading(s)
-    const heading = contentDiv.querySelector('h1, h2, h3, h4, h5, h6');
-    if (heading) contentElements.push(heading);
-
-    // Subheading - look for any other heading after the first heading
-    const allHeadings = contentDiv.querySelectorAll('h1, h2, h3, h4, h5, h6');
-    if (allHeadings.length > 1) {
-      for (let i = 1; i < allHeadings.length; i++) {
-        contentElements.push(allHeadings[i]);
-      }
-    }
-
-    // Paragraphs, but only those not inside any .button-group
-    const buttonGroup = contentDiv.querySelector('.button-group');
-    const paragraphs = contentDiv.querySelectorAll('p');
-    paragraphs.forEach(p => {
-      if (!buttonGroup || !buttonGroup.contains(p)) {
-        contentElements.push(p);
-      }
+  if (contentGrid) {
+    // We want to grab the children in order; usually h2, .rich-text, .button-group
+    const children = Array.from(contentGrid.children);
+    children.forEach((child) => {
+      // Ignore images, only grab content
+      if (child.tagName && child.tagName.toLowerCase() === 'img') return;
+      // Ignore empty
+      if (!child.textContent.trim()) return;
+      contentElements.push(child);
     });
-
-    // Call-to-action links (all <a> inside .button-group)
-    if (buttonGroup) {
-      const ctas = buttonGroup.querySelectorAll('a');
-      ctas.forEach(a => contentElements.push(a));
-    }
   }
 
-  // Compose the table cells: block name, image, content
+  const row3 = [contentElements.length ? contentElements : ''];
+
+  // 5. Assemble the table structure
   const cells = [
-    ['Hero (hero12)'],
-    [img ? img : ''],
-    [contentElements]
+    headerRow,
+    row2,
+    row3,
   ];
+
   const table = WebImporter.DOMUtils.createTable(cells, document);
   element.replaceWith(table);
 }

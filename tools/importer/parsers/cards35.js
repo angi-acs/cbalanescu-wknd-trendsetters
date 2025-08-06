@@ -1,40 +1,52 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Header must be exactly as in the example
-  const headerRow = ['Cards (cards35)'];
-  // Each card is a direct child <a>
-  const cards = Array.from(element.querySelectorAll(':scope > a'));
-  const rows = cards.map(card => {
-    // Image: always first <img> in card
+  // Header row as given in the example
+  const rows = [['Cards (cards35)']];
+
+  // Each card is an anchor directly inside the grid
+  const cards = element.querySelectorAll(':scope > a');
+  cards.forEach((card) => {
+    // Find the image: always the first img inside this card
     const img = card.querySelector('img');
     
-    // Find the div that contains all text content after the image
-    // The structure is <a> > <div> (the grid wrapper) > [img, text-holder-div]
-    // We want the text-holder-div (not the grid itself, but its second child)
+    // The text content is inside the second-level div inside the card anchor
+    // Find the div whose children include the card content (excluding img)
     let textDiv = null;
-    const gridDiv = card.querySelector('div.w-layout-grid');
+    const gridDiv = card.querySelector('div');
     if (gridDiv) {
-      // Find the child of the grid that is NOT the image
-      textDiv = Array.from(gridDiv.children).find(child => child !== img);
+      // There will be two children: img and the actual text container
+      const children = Array.from(gridDiv.children);
+      textDiv = children.find(child => child !== img);
     }
-    // Fallback: if not found, take the first div after the image
-    if (!textDiv) {
-      const allDivs = Array.from(card.querySelectorAll('div'));
-      textDiv = allDivs.find(div => !div.contains(img) && div !== gridDiv);
+
+    const textParts = [];
+    if (textDiv) {
+      // Optional meta (tag and read time)
+      const meta = textDiv.querySelector('.flex-horizontal');
+      if (meta) textParts.push(meta);
+      // Heading
+      const heading = textDiv.querySelector('h3, .h4-heading');
+      if (heading) textParts.push(heading);
+      // Description
+      const desc = textDiv.querySelector('p');
+      if (desc) textParts.push(desc);
+      // CTA - usually the last div whose text is 'Read'
+      const cta = Array.from(textDiv.children).find(
+        el =>
+          el.tagName === 'DIV' &&
+          el.textContent &&
+          el.textContent.trim().toLowerCase() === 'read'
+      );
+      if (cta) textParts.push(cta);
     }
-    
-    // If still not found, fallback to gridDiv or card
-    if (!textDiv) textDiv = gridDiv || card;
-    
-    // Reference the actual textDiv from the DOM, don't clone (reference semantics)
-    // This ensures we retain all content (badges, time, heading, description, CTA, etc)
-    return [img, textDiv];
+
+    // Add this card's row
+    rows.push([
+      img,
+      textParts
+    ]);
   });
 
-  const table = WebImporter.DOMUtils.createTable([
-    headerRow,
-    ...rows
-  ], document);
-
+  const table = WebImporter.DOMUtils.createTable(rows, document);
   element.replaceWith(table);
 }

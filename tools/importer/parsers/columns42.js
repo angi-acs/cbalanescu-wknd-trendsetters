@@ -1,30 +1,22 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Find the main grid that contains the two columns
-  const mainGrid = element.querySelector('.grid-layout');
-  if (!mainGrid) return;
-  const gridChildren = Array.from(mainGrid.children);
-  // Heuristic: the left column is the div with heading, the right is the image
-  let leftCol = null;
-  let rightCol = null;
-  for (const child of gridChildren) {
-    if (!leftCol && child.querySelector && child.querySelector('h1')) {
-      leftCol = child;
-    }
-    if (!rightCol && child.tagName === 'IMG') {
-      rightCol = child;
-    }
-  }
-  // Fallbacks if structure changes
-  if (!leftCol) leftCol = gridChildren.find((el) => el.tagName !== 'IMG');
-  if (!rightCol) rightCol = gridChildren.find((el) => el.tagName === 'IMG');
+  // Find the main grid layout in this header section
+  const grid = element.querySelector('.w-layout-grid');
+  if (!grid) return;
+  // Get all direct children of the grid (each column)
+  const columns = Array.from(grid.children).filter(child => child.nodeType === 1);
+  if (columns.length < 2) return;
 
-  // For content, use the whole left column block and image element directly
-  // This ensures all child text (h1, p, buttons, etc.) are included
-  const header = ['Columns (columns42)'];
-  const row = [leftCol, rightCol];
-  const cells = [header, row];
+  // Header row must be a single cell, matching the example EXACTLY
+  const headerRow = ['Columns (columns42)'];
+  // Second row is the content, one cell per column
+  const contentRow = columns;
 
-  const table = WebImporter.DOMUtils.createTable(cells, document);
+  // Build the table: header row (1 cell), then content row (n cells)
+  const table = WebImporter.DOMUtils.createTable([
+    headerRow,
+    contentRow
+  ], document);
+
   element.replaceWith(table);
 }

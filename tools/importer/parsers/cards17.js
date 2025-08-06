@@ -1,37 +1,42 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // 1. Setup header row as in the example
-  const headerRow = ['Cards (cards17)'];
-  const cells = [headerRow];
-
-  // 2. Find all tab content panes (each may have multiple cards in a grid)
-  const tabPanes = element.querySelectorAll('.w-tab-pane');
-  tabPanes.forEach((tabPane) => {
-    // The main grid in this tab
-    const grid = tabPane.querySelector('.w-layout-grid');
-    if (!grid) return;
-    // Each card is a direct <a> child of the grid
-    const cards = Array.from(grid.querySelectorAll(':scope > a'));
-    cards.forEach((card) => {
-      // IMAGE: Look for img as direct/indirect child (only if present)
-      const imgEl = card.querySelector('img');
-      // TEXT: Find heading and description (must reference existing nodes)
-      let title = card.querySelector('h3, .h4-heading');
+  // Helper function: extracts cards from a grid
+  function extractCardsFromGrid(grid) {
+    const cards = [];
+    // Each direct child <a> is a card
+    Array.from(grid.children).forEach(card => {
+      if (card.tagName !== 'A') return;
+      // Try to find the card image (first img in descendants)
+      let imgEl = card.querySelector('img');
+      // Build the text cell: heading + description
+      let heading = card.querySelector('h3');
       let desc = card.querySelector('.paragraph-sm');
-      // Compose text cell by referencing the existing nodes (not cloning)
-      const textFragments = [];
-      if (title) textFragments.push(title);
-      if (desc && desc !== title) textFragments.push(desc);
-      // If both missing, make empty so the cell isn't undefined
-      const textCell = textFragments.length ? textFragments : '';
-      // Image cell: either the <img> or blank
-      const imageCell = imgEl ? imgEl : '';
-      cells.push([imageCell, textCell]);
+      // Only push heading/desc if they exist
+      const textParts = [];
+      if (heading) textParts.push(heading);
+      if (desc) textParts.push(desc);
+      // If both heading & desc missing, push empty string so cell is not empty
+      cards.push([
+        imgEl || '',
+        textParts.length > 0 ? textParts : ''
+      ]);
     });
+    return cards;
+  }
+
+  // Find every grid inside all tab panes
+  const grids = element.querySelectorAll('.w-layout-grid');
+  let allCards = [];
+  grids.forEach(grid => {
+    allCards = allCards.concat(extractCardsFromGrid(grid));
   });
 
-  // 3. Create the block table
+  // Table header as required
+  const cells = [
+    ['Cards (cards17)'],
+    ...allCards
+  ];
+
   const table = WebImporter.DOMUtils.createTable(cells, document);
-  // 4. Replace the original element
   element.replaceWith(table);
 }

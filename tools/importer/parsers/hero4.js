@@ -1,50 +1,44 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Set up the table header
+  // Table header row exactly as required
   const headerRow = ['Hero (hero4)'];
 
-  // This block does not have a background image
-  const backgroundImageRow = [''];
+  // No background image in given HTML, so second row is empty
+  const bgRow = [''];
 
-  // Get the grid with the relevant content
-  const grid = element.querySelector('.grid-layout');
-  let content = [];
+  // Third row: Title (heading), Subheading (paragraph), CTA button (link)
+  // Robustly handle variations (missing or reordered elements)
+  // Find the direct child .w-layout-grid
+  const grid = element.querySelector('.w-layout-grid');
+  if (!grid) return;
 
-  if (grid) {
-    // Grab all direct children of the grid
-    const children = grid.children;
-    // Find the heading (should be h2)
-    let heading = null;
-    for (let i = 0; i < children.length; i++) {
-      if (children[i].tagName && children[i].tagName.toLowerCase().startsWith('h')) {
-        heading = children[i];
-        break;
-      }
-    }
-    if (heading) content.push(heading);
+  // Find all direct children of grid (should be [heading, content-div])
+  const gridChildren = Array.from(grid.children);
 
-    // Get the div containing the paragraph and CTA (could be other layout variations)
-    for (let i = 0; i < children.length; i++) {
-      if (children[i].tagName && children[i].tagName.toLowerCase() === 'div') {
-        // Add all <p> and <a> children in the div
-        const p = children[i].querySelector('p');
-        const a = children[i].querySelector('a');
-        if (p) content.push(p);
-        if (a) content.push(a);
-      }
-    }
+  // Heading: the first heading element in grid children
+  const heading = gridChildren.find(c => /^H[1-6]$/i.test(c.tagName));
+  // Content: the first non-heading element
+  const contentDiv = gridChildren.find(c => c !== heading);
+
+  // Prepare the array for the cell
+  const contentCell = [];
+  if (heading) contentCell.push(heading);
+
+  if (contentDiv) {
+    // Find all elements in contentDiv
+    const children = Array.from(contentDiv.children);
+    // Paragraph (subheading/description)
+    const paragraph = children.find(el => el.tagName === 'P');
+    if (paragraph) contentCell.push(paragraph);
+    // CTA: the first <a> (button)
+    const cta = children.find(el => el.tagName === 'A');
+    if (cta) contentCell.push(cta);
   }
-  // Defensive fallback: if nothing was found, the cell should be empty
-  if (content.length === 0) content = [''];
 
-  const contentRow = [content];
+  // Compose the table structure
+  const cells = [headerRow, bgRow, [contentCell]];
 
-  const cells = [
-    headerRow,
-    backgroundImageRow,
-    contentRow
-  ];
-
+  // Create and replace with the table
   const table = WebImporter.DOMUtils.createTable(cells, document);
   element.replaceWith(table);
 }

@@ -1,39 +1,34 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Header row as specified
-  const headerRow = ['Hero (hero29)'];
+  // Find the grid containing the two major columns (text and image)
+  const grid = element.querySelector('.w-layout-grid') || element;
+  const gridChildren = Array.from(grid.children);
 
-  // Find the grid container
-  const grid = element.querySelector('.w-layout-grid');
-
-  // Find the main image (background image)
-  let imageCell = '';
-  if (grid) {
-    // Select the first immediate image child of the grid (not descendant of left column)
-    const images = Array.from(grid.children).filter(child => child.tagName === 'IMG');
-    if (images.length > 0) {
-      imageCell = images[0];
+  // Identify image and text areas
+  let imageEl = null;
+  let textEl = null;
+  gridChildren.forEach((child) => {
+    if (child.tagName && child.tagName.toLowerCase() === 'img') {
+      imageEl = child;
+    } else if (!textEl && child.querySelector && child.querySelector('h2')) {
+      textEl = child;
     }
+  });
+
+  // Compose content cell for row 3 (title, subheading, CTA, etc)
+  let contentCell = [];
+  if (textEl) {
+    // Add all children in original order
+    contentCell = Array.from(textEl.children);
   }
 
-  // Find the text content block (column with all the text and CTA)
-  let textContentCell = '';
-  if (grid) {
-    // Find the first child that's a DIV (not IMG)
-    const contentDiv = Array.from(grid.children).find(child => child.tagName === 'DIV');
-    if (contentDiv) {
-      textContentCell = [contentDiv];
-    }
-  }
-
-  // Build the cells array as 1 column, 3 rows
+  // Block table rows: header, image, content
   const cells = [
-    headerRow,
-    [imageCell],
-    [textContentCell]
+    ['Hero (hero29)'],
+    [imageEl].filter(Boolean),
+    [contentCell.length ? contentCell : ''].filter(Boolean)
   ];
 
-  // Create table and replace original element
   const table = WebImporter.DOMUtils.createTable(cells, document);
   element.replaceWith(table);
 }

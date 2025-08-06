@@ -1,69 +1,52 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Header row
+  // Create the block header row according to the spec
   const headerRow = ['Hero (hero40)'];
 
-  // --- Image row (background image) ---
-  // The background image is in the first .grid-layout > div > img
-  let bgImg = null;
-  const gridDivs = element.querySelectorAll(':scope > .w-layout-grid > div');
-  if (gridDivs && gridDivs.length > 0) {
+  // Extract the background image (should be the prominent cover image)
+  let bgImg = element.querySelector('img.cover-image, img');
+  // If no background image, be robust: use null, which will render as an empty cell
+  const bgRow = [bgImg ? bgImg : ''];
+
+  // Find the content container with h1, p, and CTA (within the main grid)
+  // Get all direct children divs from the main .w-layout-grid
+  let contentDiv = null;
+  const mainGrid = element.querySelector('.w-layout-grid');
+  if (mainGrid) {
+    const gridDivs = mainGrid.querySelectorAll(':scope > div');
     for (const div of gridDivs) {
-      const img = div.querySelector('img');
-      if (img) {
-        bgImg = img;
+      if (div.querySelector('h1')) {
+        contentDiv = div;
+        break;
+      }
+      // fallback: look one level deeper for sections with h1
+      const h1 = div.querySelector('h1');
+      if (h1) {
+        contentDiv = div;
         break;
       }
     }
   }
-  // Fallback: if not found, try globally
-  if (!bgImg) {
-    bgImg = element.querySelector('img');
-  }
-  // Handle absence of image
-  const imageRow = [bgImg || ''];
 
-  // --- Content row (title, subheading, cta) ---
-  let contentCellContent = [];
-  if (gridDivs && gridDivs.length > 1) {
-    // There's a nested .grid-layout in this div
-    const innerGrid = gridDivs[1].querySelector('.w-layout-grid');
-    if (innerGrid) {
-      // Get the heading
-      const h1 = innerGrid.querySelector('h1');
-      if (h1) contentCellContent.push(h1);
-      // Get the flex-vertical div (subheading and cta)
-      const flexVertical = innerGrid.querySelector('.flex-vertical');
-      if (flexVertical) {
-        // Get paragraph
-        const p = flexVertical.querySelector('p');
-        if (p) contentCellContent.push(p);
-        // Get button(s)
-        const buttonGroup = flexVertical.querySelector('.button-group');
-        if (buttonGroup) {
-          const links = buttonGroup.querySelectorAll('a');
-          links.forEach(link => contentCellContent.push(link));
-        }
-      }
+  // Compose the text content (h1, paragraph, button)
+  let textContent = document.createDocumentFragment();
+  if (contentDiv) {
+    // h1 - main heading
+    const h1 = contentDiv.querySelector('h1');
+    if (h1) textContent.appendChild(h1);
+    // p.paragraph-lg (may be inside nested flex group)
+    const p = contentDiv.querySelector('p');
+    if (p) textContent.appendChild(p);
+    // CTA button(s) - inside .button-group
+    const btnGroup = contentDiv.querySelector('.button-group');
+    if (btnGroup) {
+      Array.from(btnGroup.children).forEach(child => textContent.appendChild(child));
     }
   }
-  // Fallback: If no content found, check for h1/p/a in whole element
-  if (contentCellContent.length === 0) {
-    const h1 = element.querySelector('h1');
-    if (h1) contentCellContent.push(h1);
-    const p = element.querySelector('p');
-    if (p) contentCellContent.push(p);
-    const a = element.querySelector('a');
-    if (a) contentCellContent.push(a);
-  }
-  const contentRow = [contentCellContent.length > 0 ? contentCellContent : ['']];
+  const textRow = [textContent];
 
-  // Build table
-  const cells = [
-    headerRow,
-    imageRow,
-    contentRow,
-  ];
+  // Compose the table
+  const cells = [headerRow, bgRow, textRow];
   const block = WebImporter.DOMUtils.createTable(cells, document);
   element.replaceWith(block);
 }

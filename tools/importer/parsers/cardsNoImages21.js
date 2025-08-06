@@ -1,18 +1,20 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Table header matches the example exactly
-  const cells = [['Cards']];
-  // Select all direct child card divs
-  const cardDivs = Array.from(element.querySelectorAll(':scope > div.flex-horizontal'));
-  cardDivs.forEach((cardDiv) => {
-    // Get the card body paragraph
-    const desc = cardDiv.querySelector('p');
-    // Only add if description element exists
-    if (desc) {
-      cells.push([desc]);
+  // Table header row exactly as in the example
+  const rows = [['Cards']];
+
+  // Get all immediate child divs: each is a card
+  const cards = element.querySelectorAll(':scope > div');
+  cards.forEach(card => {
+    // Reference all <p> elements within the card (there should be one)
+    // But if none, skip this card
+    const p = card.querySelector('p');
+    if (p) {
+      rows.push([p]);
     }
   });
-  const table = WebImporter.DOMUtils.createTable(cells, document);
-  // Replace the original element with the new block table
+
+  // Build and replace
+  const table = WebImporter.DOMUtils.createTable(rows, document);
   element.replaceWith(table);
 }

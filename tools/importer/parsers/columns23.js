@@ -1,33 +1,38 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Get the grid of images
-  const imageGrid = element.querySelector('.grid-layout.desktop-3-column.utility-min-height-100dvh');
-  const imageDivs = imageGrid ? Array.from(imageGrid.children) : [];
-  const images = imageDivs.map(div => div.querySelector('img')).filter(img => img);
+  // Table header as in the spec
+  const header = ['Columns (columns23)'];
 
-  // Get the central text content (headline, subheading, buttons)
-  const contentCol = element.querySelector('.ix-hero-scale-3x-to-1x-content .container');
+  // Find the main grid containing the two columns (images & text)
+  const grid = element.querySelector('.grid-layout.desktop-1-column') || element;
+  // Find the content/image areas (should be two main grid children)
+  const columns = Array.from(grid.children).filter(el => el.tagName !== 'DIV' || el.childElementCount > 0);
 
-  // Compose the header row (must be a single cell)
-  const headerRow = ['Columns (columns23)'];
+  // The first column with the collage of images
+  let imagesCell = null;
+  const imageCol = columns.find(col => col.querySelector('.grid-layout.desktop-3-column'));
+  if (imageCol) {
+    const imagesGrid = imageCol.querySelector('.grid-layout.desktop-3-column');
+    // Compose a fragment of all the images in order
+    const frag = document.createElement('div');
+    Array.from(imagesGrid.querySelectorAll('img')).forEach(img => frag.appendChild(img));
+    imagesCell = frag;
+  } else {
+    imagesCell = document.createElement('div'); // empty fallback
+  }
 
-  // Images cell: stack all images in one div
-  const imagesCell = document.createElement('div');
-  images.forEach(img => imagesCell.appendChild(img));
+  // The second column with the heading, subheading, and buttons
+  let contentCell = null;
+  const contentCol = columns.find(col => col.querySelector('.container'));
+  if (contentCol) {
+    const content = contentCol.querySelector('.container');
+    contentCell = content;
+  } else {
+    contentCell = document.createElement('div'); // empty fallback
+  }
 
-  // Content cell: reference the content container, or empty div if not found
-  const contentCell = contentCol || document.createElement('div');
-
-  // Compose the main content row with two columns
-  const contentRow = [imagesCell, contentCell];
-
-  // Build the final table structure
-  const cells = [
-    headerRow,    // single cell header row
-    contentRow    // second row, 2 columns
-  ];
-
-  // Create and replace
+  const row = [imagesCell, contentCell];
+  const cells = [header, row];
   const table = WebImporter.DOMUtils.createTable(cells, document);
   element.replaceWith(table);
 }

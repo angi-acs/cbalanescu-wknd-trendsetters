@@ -1,44 +1,48 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Find the main content container
-  const container = element.querySelector('.container');
-  if (!container) return;
-  const outerGrid = container.querySelector('.w-layout-grid.grid-layout');
-  if (!outerGrid) return;
+  // Find the direct child .container, then its .w-layout-grid.grid-layout
+  const grid = element.querySelector('div.container > .w-layout-grid.grid-layout');
+  if (!grid) return;
 
-  // --- First row, left cell: heading and quote ---
-  const heading = outerGrid.querySelector('p.h2-heading');
-  const quote = outerGrid.querySelector('p.paragraph-lg');
-  const leftTop = document.createElement('div');
-  if (heading) leftTop.appendChild(heading);
-  if (quote) leftTop.appendChild(quote);
+  // The grid contains two columns: left (heading, quote), right (divider, author info, logo)
+  // We'll structure the block as 2 columns
 
-  // --- First row, right cell: intentionally blank ---
-  const rightTop = '';
+  // Left column content: heading + quote
+  const leftColumn = document.createElement('div');
+  const heading = grid.querySelector('.h2-heading');
+  if (heading) leftColumn.appendChild(heading);
+  const paragraph = grid.querySelector('.paragraph-lg');
+  if (paragraph) leftColumn.appendChild(paragraph);
 
-  // --- Second row: testimonial and logo ---
-  let leftBottom = '';
-  let rightBottom = '';
-  // The testimonial and logo are inside the nested grid
-  const innerGrid = outerGrid.querySelector('.w-layout-grid.grid-layout.grid-gap-sm');
-  if (innerGrid) {
-    const divider = innerGrid.querySelector('.divider');
-    const testimonial = innerGrid.querySelector('.flex-horizontal');
-    const leftDiv = document.createElement('div');
-    if (divider) leftDiv.appendChild(divider);
-    if (testimonial) leftDiv.appendChild(testimonial);
-    if (leftDiv.childNodes.length > 0) leftBottom = leftDiv;
-    const logo = innerGrid.querySelector('.utility-display-inline-block');
-    if (logo) rightBottom = logo;
+  // Right column content: inner grid (divider, author, logo)
+  const rightColumn = document.createElement('div');
+  // Find the nested grid (author + logo area) as a direct child of the main grid
+  let authorBlock = null;
+  for (const child of grid.children) {
+    if (child.classList.contains('w-layout-grid') && child !== grid) {
+      authorBlock = child;
+      break;
+    }
   }
-  
-  // Compose cells as a table: header, then 2x2 grid
+  // Some Webflow exports use id selectors for inner grids; fallback for robustness
+  if (!authorBlock) {
+    authorBlock = grid.querySelector('.w-layout-grid.grid-layout:not(:first-child)');
+  }
+  if (authorBlock) {
+    // Move all children of authorBlock into rightColumn
+    while (authorBlock.firstChild) {
+      rightColumn.appendChild(authorBlock.firstChild);
+    }
+    // Remove the now-empty authorBlock container
+    if (authorBlock.parentNode) authorBlock.parentNode.removeChild(authorBlock);
+  }
+
+  // Create header row as in the spec
+  const headerRow = ['Columns (columns28)'];
   const cells = [
-    ['Columns (columns28)'],
-    [leftTop, rightTop],
-    [leftBottom, rightBottom]
+    headerRow,
+    [leftColumn, rightColumn]
   ];
-  
   const table = WebImporter.DOMUtils.createTable(cells, document);
   element.replaceWith(table);
 }

@@ -1,19 +1,37 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Header row as specified
+  // Table header per the block name in the prompt
   const headerRow = ['Cards (cards33)'];
 
-  // Each card: direct children with .utility-aspect-1x1 (contain an img)
-  const cardDivs = element.querySelectorAll(':scope > .utility-aspect-1x1');
+  // Each immediate child div is a card container
+  const cardDivs = element.querySelectorAll(':scope > div');
+  const rows = [];
 
-  // For each card, extract the image element. No text content is present in source.
-  // Per block structure, image goes in first cell, second cell remains empty
-  const rows = Array.from(cardDivs).map(cardDiv => {
+  cardDivs.forEach(cardDiv => {
+    // The image is the sole child (with class cover-image), for each card
     const img = cardDiv.querySelector('img');
-    return [img, ''];
+    let textContent = '';
+    // Try to extract any text content that might be present with the image
+    // If the cardDiv contains more than just the image, use its text content
+    // (for future-proofing and to handle variants)
+    // Remove img from cloned div if present, so text only is included
+    const clonedDiv = cardDiv.cloneNode(true);
+    const imgInClone = clonedDiv.querySelector('img');
+    if (imgInClone) imgInClone.remove();
+    textContent = clonedDiv.textContent.trim();
+
+    let textCell;
+    if (textContent) {
+      // Wrap in a <div> for the table cell
+      textCell = document.createElement('div');
+      textCell.textContent = textContent;
+    } else {
+      // No text found, leave cell empty
+      textCell = document.createElement('div');
+    }
+    rows.push([img, textCell]);
   });
 
-  // Build the block table
   const cells = [headerRow, ...rows];
   const table = WebImporter.DOMUtils.createTable(cells, document);
   element.replaceWith(table);

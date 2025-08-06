@@ -1,82 +1,70 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Helper: create a content fragment for the text cell (tag, heading, desc)
-  function createTextCell({ tagNode, headingNode, descNode }) {
-    const frag = document.createDocumentFragment();
-    if (tagNode) {
-      frag.appendChild(tagNode);
+  // Table header as in the example
+  const headerRow = ['Cards (cards5)'];
+  const cells = [headerRow];
+
+  // Helper to build the text cell from a card (references existing elements directly)
+  function buildTextCell(card) {
+    const fragments = [];
+    // Tag(s), if present
+    const tagGroup = card.querySelector('.tag-group');
+    if (tagGroup) {
+      fragments.push(tagGroup);
     }
-    if (headingNode) {
-      frag.appendChild(headingNode);
+    // Heading (h3)
+    const heading = card.querySelector('h3');
+    if (heading) {
+      fragments.push(heading);
     }
-    if (descNode) {
-      frag.appendChild(descNode);
+    // Paragraph/Description (p)
+    const desc = card.querySelector('p');
+    if (desc) {
+      fragments.push(desc);
     }
-    return frag.childNodes.length === 1 ? frag.firstChild : frag;
+    return fragments;
   }
 
-  // Find the grid containing the cards
-  const grid = element.querySelector('.grid-layout');
-  if (!grid) return;
-
-  const cells = [['Cards (cards5)']];
-
-  // --- Featured Left Card ---
-  const gridChildren = Array.from(grid.children);
-  // First card is the large left card
-  const mainCard = gridChildren.find(
-    node => node.matches('a.utility-link-content-block')
-  );
-  if (mainCard) {
-    const imgWrap = mainCard.querySelector('.utility-aspect-1x1');
-    const img = imgWrap ? imgWrap.querySelector('img.cover-image') : null;
-    // Extract tag group, heading, desc
-    const tagGroup = mainCard.querySelector('.tag-group');
-    const heading = mainCard.querySelector('h3');
-    const desc = mainCard.querySelector('p');
+  // Get the .container > .grid-layout (the main grid)
+  const gridLayout = element.querySelector('.container .grid-layout');
+  if (!gridLayout) return;
+  // First card is the prominent one (feature card) - first <a>
+  const firstCard = gridLayout.querySelector(':scope > a.utility-link-content-block');
+  if (firstCard) {
+    // image: div[class*="aspect"] > img
+    const imgWrap = firstCard.querySelector('div[class*="aspect"]');
+    let img = imgWrap ? imgWrap.querySelector('img') : null;
+    // If no image, cell is empty string
     cells.push([
-      img,
-      createTextCell({ tagNode: tagGroup, headingNode: heading, descNode: desc })
+      img || '',
+      buildTextCell(firstCard)
     ]);
   }
-
-  // --- Two Cards with Images ---
-  // Next direct child is a div.flex-horizontal.flex-vertical (with 2 cards)
-  const cardRows = gridChildren.filter(
-    node => node.classList.contains('flex-horizontal') && node.classList.contains('flex-vertical')
-  );
-  if (cardRows.length > 0) {
-    // First row: contains two cards with images
-    const imageCards = cardRows[0].querySelectorAll('a.utility-link-content-block');
-    imageCards.forEach(card => {
-      const imgWrap = card.querySelector('.utility-aspect-3x2');
-      const img = imgWrap ? imgWrap.querySelector('img.cover-image') : null;
-      const tagGroup = card.querySelector('.tag-group');
-      const heading = card.querySelector('h3');
-      const desc = card.querySelector('p');
+  // The next two groups are both .flex-horizontal
+  const flexGroups = gridLayout.querySelectorAll(':scope > div.flex-horizontal');
+  // The first flex-horizontal: contains 2 cards with images
+  if (flexGroups[0]) {
+    const secondaryCards = flexGroups[0].querySelectorAll(':scope > a.utility-link-content-block');
+    secondaryCards.forEach(card => {
+      const imgWrap = card.querySelector('div[class*="aspect"]');
+      let img = imgWrap ? imgWrap.querySelector('img') : null;
       cells.push([
-        img,
-        createTextCell({ tagNode: tagGroup, headingNode: heading, descNode: desc })
+        img || '',
+        buildTextCell(card)
       ]);
     });
   }
-
-  // --- Text Only Cards ---
-  // Second row: contains text-only cards (no image)
-  if (cardRows.length > 1) {
-    const textCardsRow = cardRows[1];
-    const textCards = Array.from(textCardsRow.children).filter(node => node.matches('a.utility-link-content-block'));
-    textCards.forEach(card => {
-      const heading = card.querySelector('h3');
-      const desc = card.querySelector('p');
+  // The second flex-horizontal: contains text-only cards (no image)
+  if (flexGroups[1]) {
+    const tertiaryCards = flexGroups[1].querySelectorAll(':scope > a.utility-link-content-block');
+    tertiaryCards.forEach(card => {
       cells.push([
-        '',
-        createTextCell({ headingNode: heading, descNode: desc })
+        '', // no image
+        buildTextCell(card)
       ]);
     });
   }
-
-  // Replace original element with block table
+  // Create and replace
   const table = WebImporter.DOMUtils.createTable(cells, document);
   element.replaceWith(table);
 }

@@ -1,53 +1,63 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Get the .container inside the section
-  const container = element.querySelector('.container');
-  if (!container) return;
-  // Get the first grid, which contains the cards and potentially a nested grid
-  const topGrid = container.querySelector('.grid-layout');
-  if (!topGrid) return;
-
-  // Gather all cards. Some are direct children <a>, some are in a nested grid.
-  // We'll use querySelectorAll(':scope > a, :scope > div > a') to get both top-level and nested ones
-  const directCards = Array.from(topGrid.querySelectorAll(':scope > a.utility-link-content-block'));
-  const nestedGrid = topGrid.querySelector('div.grid-layout');
-  let nestedCards = [];
-  if (nestedGrid) {
-    nestedCards = Array.from(nestedGrid.querySelectorAll(':scope > a.utility-link-content-block'));
+  // Helper to extract text content from a card
+  function extractTextContent(cardEl) {
+    // Collect the main heading (could be h2 or h3 or h4)
+    let heading = cardEl.querySelector('h1, h2, h3, h4, h5, h6');
+    // Collect all p tags immediately under the card (description)
+    let paragraphs = Array.from(cardEl.querySelectorAll('p'));
+    // Find a CTA button or .button class (if present)
+    let cta = cardEl.querySelector('.button, .btn, a.button');
+    const content = [];
+    if (heading) content.push(heading);
+    if (paragraphs.length > 0) content.push(...paragraphs);
+    if (cta) content.push(cta);
+    return content;
   }
-  // All cards in order: first direct, then nested
-  const allCards = [...directCards, ...nestedCards];
 
-  // Each card: left cell is the image, right cell is all text/cta
-  const rows = allCards.map(card => {
-    // Extract the first img in the card
-    const img = card.querySelector('img');
-    // Extract heading
-    let heading = card.querySelector('h2, .h2-heading, .h4-heading');
-    // Fallback for heading: sometimes it's just h3 or h4
-    if (!heading) heading = card.querySelector('h3, h4');
-    // Description paragraph
-    const desc = card.querySelector('p');
-    // CTA/button (optional)
-    const cta = card.querySelector('.button');
+  // Find the grid that contains all card items
+  // It's either the first grid-layout or the element itself
+  let grid = element.querySelector('.w-layout-grid.grid-layout');
+  if (!grid) grid = element;
 
-    // Image cell: reference element or null
-    const imageCell = img || '';
+  // Recursively collect all .utility-link-content-block (the actual cards)
+  function collectCards(node) {
+    let cardEls = [];
+    node.childNodes.forEach(child => {
+      if (child.nodeType === 1 && child.classList.contains('utility-link-content-block')) {
+        cardEls.push(child);
+      } else if (child.nodeType === 1 && child.classList.contains('w-layout-grid')) {
+        cardEls = cardEls.concat(collectCards(child));
+      }
+    });
+    return cardEls;
+  }
+  const cards = collectCards(grid);
 
-    // Text cell: build array of elements that exist, preserving order
-    const textCellContent = [];
-    if (heading) textCellContent.push(heading);
-    if (desc) textCellContent.push(desc);
-    if (cta) textCellContent.push(cta);
-
-    return [imageCell, textCellContent];
+  // Compose rows for the block table
+  const rows = [[ 'Cards (cards38)' ]]; // header row
+  cards.forEach(card => {
+    // Find image (use the direct `img` if present, otherwise use the wrapping aspect div)
+    let img = card.querySelector('img');
+    let imageCell = null;
+    if (img) {
+      if (
+        img.parentElement &&
+        img.parentElement.childElementCount === 1 &&
+        img.parentElement !== card
+      ) {
+        imageCell = img.parentElement;
+      } else {
+        imageCell = img;
+      }
+    } else {
+      imageCell = '';
+    }
+    const textCell = extractTextContent(card);
+    rows.push([imageCell, textCell]);
   });
 
-  // Build header row, then all card rows
-  const cells = [
-    ['Cards (cards38)'],
-    ...rows
-  ];
-  const table = WebImporter.DOMUtils.createTable(cells, document);
+  // Create the block table
+  const table = WebImporter.DOMUtils.createTable(rows, document);
   element.replaceWith(table);
 }

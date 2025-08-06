@@ -1,13 +1,21 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // The header row must have two columns to match the data rows
-  const headerRow = ['Cards (cards34)', ''];
-  const cardDivs = element.querySelectorAll(':scope > div');
-  const rows = [headerRow];
+  // Header row for the block
+  const cells = [['Cards (cards34)']];
+  // Get all card wrappers (assume 1:1 mapping, each contains an <img>)
+  const cardDivs = element.querySelectorAll(':scope > .utility-aspect-1x1');
   cardDivs.forEach((cardDiv) => {
+    // Reference the (single) image element in each card
     const img = cardDiv.querySelector('img');
-    rows.push([img, '']); // image in first column, empty text cell
+    // Defensive: if no image, skip this card
+    if (!img) return;
+    // For this HTML, there is no title/description, so second cell is empty
+    cells.push([
+      img,
+      ''
+    ]);
   });
-  const table = WebImporter.DOMUtils.createTable(rows, document);
+  // Build the table and replace the source
+  const table = WebImporter.DOMUtils.createTable(cells, document);
   element.replaceWith(table);
 }

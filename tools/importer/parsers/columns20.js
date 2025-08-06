@@ -1,37 +1,48 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Find the main grid layout
-  const grid = element.querySelector('.w-layout-grid');
+  // Find the grid layout wrapper
+  const grid = element.querySelector('.grid-layout');
   if (!grid) return;
-  const gridCols = Array.from(grid.children);
-  // Defensive: Expecting at least 3 columns: left (intro), middle (contacts), right (image)
-  if (gridCols.length < 3) return;
 
-  // Left: heading/intro (h2, h3, p)
-  const leftCol = gridCols[0];
-  // Middle: contact methods
-  const middleCol = gridCols[1];
-  // Right: image
-  const rightCol = gridCols[2];
+  // Get all direct children of the grid (order is important)
+  const gridChildren = Array.from(grid.children);
 
-  // Compose first cell: leftCol + middleCol
-  const firstCell = document.createElement('div');
-  Array.from(leftCol.childNodes).forEach((node) => firstCell.appendChild(node));
-  firstCell.appendChild(middleCol);
+  // There should be three: left column (info), right column (contact list), image
+  let leftCol = null;
+  let rightCol = null;
+  let img = null;
 
-  // Second cell: rightCol is just the image
-  const secondCell = rightCol;
+  // Identify leftCol, rightCol, and img
+  gridChildren.forEach(child => {
+    if (!leftCol && child.querySelector('h2') && child.querySelector('h3')) {
+      leftCol = child;
+    } else if (!rightCol && child.tagName === 'UL') {
+      rightCol = child;
+    } else if (!img && child.tagName === 'IMG') {
+      img = child;
+    }
+  });
 
-  // Header row: exactly one column/cell, matching requirements
+  // As a fallback, also check if the image exists nested in any child
+  if (!img) {
+    img = grid.querySelector('img');
+  }
+
+  // If any column is missing, insert an empty placeholder
+  const cols = [leftCol, rightCol].map(col => col || '');
+
+  // Create the table rows
   const headerRow = ['Columns (columns20)'];
-  // Content row: two columns
-  const contentRow = [firstCell, secondCell];
+  const contentRow = cols;
+  const rows = [headerRow, contentRow];
 
-  // Create the table
-  const table = WebImporter.DOMUtils.createTable([
-    headerRow,
-    contentRow
-  ], document);
+  // If there is an image, add another row, spanning two columns
+  if (img) {
+    // To span columns, add the image to first cell, second cell empty
+    rows.push([img, '']);
+  }
 
-  element.replaceWith(table);
+  // Create and replace block
+  const block = WebImporter.DOMUtils.createTable(rows, document);
+  element.replaceWith(block);
 }

@@ -1,41 +1,33 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Table header: Must match example exactly
+  // Prepare the header row with the exact block name
   const headerRow = ['Hero (hero30)'];
 
-  // Get immediate children of the grid layout
+  // Find the background image. It's the <img> with class 'cover-image'
+  const img = element.querySelector('img.cover-image');
+  const backgroundRow = [img ? img : '']; // Insert empty string if not found
+
+  // Find the text content: the second cell of the grid-layout
+  // .grid-layout > div:nth-child(2)
   const grid = element.querySelector('.grid-layout');
-  let bgImg = '';
-  let contentElem = '';
+  let textContentDiv = '';
   if (grid) {
-    // The background image is in the first cell: .ix-parallax-scale-out-hero > img
-    const firstCell = grid.children[0];
-    if (firstCell) {
-      const parallax = firstCell.querySelector('.ix-parallax-scale-out-hero');
-      if (parallax) {
-        const img = parallax.querySelector('img');
-        if (img) {
-          bgImg = img;
-        }
-      }
-    }
-    // The heading/content is in the second cell: .utility-margin-bottom-6rem
-    const secondCell = grid.children[1];
-    if (secondCell) {
-      const contentDiv = secondCell.querySelector('.utility-margin-bottom-6rem');
-      if (contentDiv) {
-        contentElem = contentDiv;
-      }
+    const divs = grid.querySelectorAll(':scope > div');
+    if (divs.length > 1) {
+      // The second grid cell has the text content (e.g., h1)
+      textContentDiv = divs[1];
     }
   }
+  const textRow = [textContentDiv];
 
-  // Compose table: 1 column, 3 rows
+  // Assemble the table as per the requirements
   const rows = [
     headerRow,
-    [bgImg ? bgImg : ''],
-    [contentElem ? contentElem : '']
+    backgroundRow,
+    textRow
   ];
 
-  const table = WebImporter.DOMUtils.createTable(rows, document);
-  element.replaceWith(table);
+  // Create and replace with the block table
+  const block = WebImporter.DOMUtils.createTable(rows, document);
+  element.replaceWith(block);
 }
