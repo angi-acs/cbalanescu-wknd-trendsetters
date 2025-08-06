@@ -1,27 +1,48 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
+  // Block header
   const headerRow = ['Cards (cards27)'];
-  const rows = [headerRow];
 
-  // Get all top-level card elements (each card is a direct child div)
+  // Get all direct children divs (each a possible card)
   const cardDivs = Array.from(element.querySelectorAll(':scope > div'));
 
-  cardDivs.forEach(card => {
-    // Get first image inside the card
-    const img = card.querySelector('img');
-    // Get the card text content, if available
-    let textCellContent = null;
-    // Prefer .utility-padding-all-2rem div, which contains h3 and p
-    const textDiv = card.querySelector('.utility-padding-all-2rem');
-    if (textDiv) {
-      textCellContent = textDiv;
-    } else {
-      // If no such div, create an empty div for text content
-      textCellContent = document.createElement('div');
+  // Helper to extract the image and text content for each card
+  function getCardCells(cardDiv) {
+    // Get the image: get only the first image in this cardDiv
+    const img = cardDiv.querySelector('img');
+    // Find the container with text: utility-padding-all-2rem, or fallback
+    let textContainer = cardDiv.querySelector('.utility-padding-all-2rem');
+    if (!textContainer) {
+      // fallback: a div with h3 or p inside
+      textContainer = Array.from(cardDiv.querySelectorAll('div')).find(d => d.querySelector('h3, p'));
     }
-    // Only add a row if there's an image (image is mandatory for this block)
+    const textElems = [];
+    if (textContainer) {
+      // Only push h3 if it exists
+      const h3 = textContainer.querySelector('h3');
+      if (h3) textElems.push(h3);
+      // Only push p if it exists
+      const p = textContainer.querySelector('p');
+      if (p) textElems.push(p);
+    }
+    // If no text found, check if there is any h3 or p directly in cardDiv (rare fallback)
+    if (textElems.length === 0) {
+      const h3 = cardDiv.querySelector('h3');
+      if (h3) textElems.push(h3);
+      const p = cardDiv.querySelector('p');
+      if (p) textElems.push(p);
+    }
+    // If still nothing, leave blank
+    const textCell = textElems.length === 1 ? textElems[0] : (textElems.length > 1 ? textElems : '');
+    return [img, textCell];
+  }
+
+  // Build rows: filter out divs without an image (per block definition)
+  const rows = [headerRow];
+  cardDivs.forEach(cardDiv => {
+    const img = cardDiv.querySelector('img');
     if (img) {
-      rows.push([img, textCellContent]);
+      rows.push(getCardCells(cardDiv));
     }
   });
 

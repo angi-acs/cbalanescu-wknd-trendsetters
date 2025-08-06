@@ -1,29 +1,42 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Table header as specified in requirements
+  // Header row exactly as specified
   const headerRow = ['Accordion (accordion22)'];
-  const rows = [headerRow];
 
-  // Each accordion item is a .divider direct child
-  const dividers = element.querySelectorAll(':scope > .divider');
+  // Gather all immediate .divider children (each is one accordion item)
+  const dividers = Array.from(element.querySelectorAll(':scope > .divider'));
 
-  dividers.forEach((divider) => {
-    // Get the inner grid within the .divider
+  // Map each divider to a [title, content] row
+  const rows = dividers.map(divider => {
+    // Find grid container inside the divider
     const grid = divider.querySelector('.w-layout-grid');
-    if (!grid) return;
-    // Get all direct children of the grid (should be title and content)
-    const gridChildren = Array.from(grid.children);
-    // Defensive: skip if not enough columns
-    if (gridChildren.length < 2) return;
-    // Use existing elements for title and content
-    const title = gridChildren[0];
-    const content = gridChildren[1];
-    rows.push([title, content]);
+    if (!grid) {
+      // Fallback: empty cells
+      return [document.createElement('div'), document.createElement('div')];
+    }
+    // The title and content should be the first and second children of the grid
+    // But let's check class names to be resilient
+    let titleEl = null;
+    let contentEl = null;
+    for (const child of grid.children) {
+      if (!titleEl && child.classList.contains('h4-heading')) {
+        titleEl = child;
+      } else if (!contentEl && child.classList.contains('rich-text')) {
+        contentEl = child;
+      }
+    }
+    // Fallbacks in case class names are missing
+    if (!titleEl) titleEl = grid.children[0] || document.createElement('div');
+    if (!contentEl) contentEl = grid.children[1] || document.createElement('div');
+    return [titleEl, contentEl];
   });
 
-  // Only replace if at least one accordion item was found (rows > header)
-  if (rows.length > 1) {
-    const table = WebImporter.DOMUtils.createTable(rows, document);
-    element.replaceWith(table);
-  }
+  // Compose the table
+  const cells = [headerRow, ...rows];
+
+  // Create the table for the block
+  const table = WebImporter.DOMUtils.createTable(cells, document);
+
+  // Replace the original element with the new block
+  element.replaceWith(table);
 }

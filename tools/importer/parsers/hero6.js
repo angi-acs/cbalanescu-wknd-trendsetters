@@ -1,42 +1,48 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // 1st row: block name (header)
+  // 1. Table header row must match the block name exactly
   const headerRow = ['Hero (hero6)'];
 
-  // 2nd row: background image (img element if present)
-  // Find the main grid, then its immediate children (the two columns)
-  const mainGrid = element.querySelector(':scope > .w-layout-grid');
-  let imgCell = '';
-  let contentCell = '';
+  // 2. Extract the background image (may be optional)
+  // The image is .cover-image
+  const bgImg = element.querySelector('img.cover-image') || '';
 
-  if (mainGrid) {
-    const gridDivs = mainGrid.querySelectorAll(':scope > div');
-    // Usually: [image wrapper div, content wrapper div]
-    if (gridDivs.length > 0) {
-      // The background image is in the first column
-      const bgImg = gridDivs[0].querySelector('img');
-      if (bgImg) imgCell = bgImg;
-    }
-    if (gridDivs.length > 1) {
-      // The content card is nested inside the second column
-      // There may be several wrappers, but always a .card
-      const card = gridDivs[1].querySelector('.card');
-      if (card) {
-        contentCell = card;
-      } else {
-        // Fallback: use entire content column if card not found
-        contentCell = gridDivs[1];
+  // 3. Extract the text/card content
+  // .card contains h1, p (subheading), .button-group
+  const card = element.querySelector('.card');
+  const textContent = [];
+  if (card) {
+    // Heading (h1)
+    const h1 = card.querySelector('h1');
+    if (h1) textContent.push(h1);
+    // Subheading (p)
+    const subheading = card.querySelector('p');
+    if (subheading) textContent.push(subheading);
+    // Call(s) to action
+    const buttonGroup = card.querySelector('.button-group');
+    if (buttonGroup) {
+      // Reference all button links in order
+      const btns = Array.from(buttonGroup.querySelectorAll('a'));
+      if (btns.length === 1) {
+        textContent.push(btns[0]);
+      } else if (btns.length > 1) {
+        // If multiple buttons, group them in a div to keep inline layout
+        const btnDiv = document.createElement('div');
+        btns.forEach(btn => btnDiv.appendChild(btn));
+        textContent.push(btnDiv);
       }
     }
   }
 
-  // If mainGrid not found, fallback to empty cells (shouldn't happen)
-
-  const cells = [
+  // 4. Construct the table: 1 column, 3 rows
+  // 1st row: header, 2nd: background image, 3rd: text/CTAs
+  const rows = [
     headerRow,
-    [imgCell],
-    [contentCell],
+    [bgImg],
+    [textContent]
   ];
-  const table = WebImporter.DOMUtils.createTable(cells, document);
-  element.replaceWith(table);
+
+  // 5. Create and replace
+  const block = WebImporter.DOMUtils.createTable(rows, document);
+  element.replaceWith(block);
 }

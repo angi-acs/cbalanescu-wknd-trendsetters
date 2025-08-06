@@ -1,32 +1,41 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Find the main grid inside the hero section
-  const grid = element.querySelector('.grid-layout');
-  if (!grid) return;
+  // Table header row exactly as specified
+  const headerRow = ['Hero (hero32)'];
 
-  // Find headline (h2)
-  const headline = grid.querySelector('h2');
+  // Find the grid container that holds all hero content
+  const grid = element.querySelector('.w-layout-grid');
 
-  // Find tags block (vertical flex with tags)
-  const tagsBlock = grid.querySelector('.flex-vertical');
+  // There is no background image in this HTML, so the background image row is empty
+  const bgImageRow = [''];
 
-  // Find the description rich text block
-  const descriptionBlock = grid.querySelector('.rich-text');
+  // Compose the content cell for the third row, maintaining source order and semantic meaning
+  const content = [];
 
-  // Assemble content for the third row:
-  // Heading, tags, and description (in source order)
-  const contentArr = [];
-  if (headline) contentArr.push(headline);
-  if (tagsBlock) contentArr.push(tagsBlock);
-  if (descriptionBlock) contentArr.push(descriptionBlock);
+  // Subtitle/author (optional)
+  const subtitle = grid.querySelector('.paragraph-xl');
+  if (subtitle) content.push(subtitle);
 
-  // Build the table: header row, (optional) image row, content row
-  const cells = [
-    ['Hero (hero32)'], // Header row
-    [''], // Background image row (empty in this HTML)
-    [contentArr] // Content row: existing elements referenced in order
+  // Tags (optional)
+  const tags = grid.querySelector('.flex-vertical');
+  if (tags) content.push(tags);
+
+  // Title (main heading)
+  const title = grid.querySelector('h2');
+  if (title) content.push(title);
+
+  // Paragraph(s) (rich text)
+  const richText = grid.querySelector('.rich-text');
+  if (richText) content.push(richText);
+
+  // Build rows for the table
+  const rows = [
+    headerRow,
+    bgImageRow,
+    [content]
   ];
 
-  const table = WebImporter.DOMUtils.createTable(cells, document);
-  element.replaceWith(table);
+  // Create block table and replace original element
+  const block = WebImporter.DOMUtils.createTable(rows, document);
+  element.replaceWith(block);
 }

@@ -1,27 +1,20 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Find all immediate children (should be image containers)
-  const children = Array.from(element.querySelectorAll(':scope > div'));
-  
-  // Find the first <img> within any of the children to use as background image, as per the visual structure
-  let bgImg = null;
-  for (const child of children) {
-    const img = child.querySelector('img');
-    if (img) {
-      bgImg = img;
-      break;
-    }
-  }
-
-  // Compose block table rows
+  // Header row - must EXACTLY match the example
   const headerRow = ['Hero (hero7)'];
-  const bgRow = [bgImg ? bgImg : ''];
-  // No heading, subheading, or cta in provided HTML, so blank content cell
+
+  // 2nd row: Background Image (optional)
+  // Use the first <img> as the background image
+  let backgroundImg = null;
+  const firstImg = element.querySelector('img');
+  if (firstImg) backgroundImg = firstImg;
+  const backgroundRow = [backgroundImg || ''];
+
+  // 3rd row: Title, Subheading, CTA - not present, so blank
   const contentRow = [''];
 
-  const cells = [headerRow, bgRow, contentRow];
-
-  // Create and replace
-  const table = WebImporter.DOMUtils.createTable(cells, document);
+  // Compose the table as in the example: 1 col, 3 rows
+  const rows = [headerRow, backgroundRow, contentRow];
+  const table = WebImporter.DOMUtils.createTable(rows, document);
   element.replaceWith(table);
 }

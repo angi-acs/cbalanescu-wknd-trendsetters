@@ -1,69 +1,70 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Helper: create fragment from available elements
-  function buildTextCell(elems) {
-    const frag = document.createDocumentFragment();
-    elems.forEach(e => { if (e) frag.appendChild(e); });
-    return frag;
+  // Table header as in the example
+  const headerRow = ['Cards (cards5)'];
+  const cells = [headerRow];
+
+  // Helper to build the text cell from a card (references existing elements directly)
+  function buildTextCell(card) {
+    const fragments = [];
+    // Tag(s), if present
+    const tagGroup = card.querySelector('.tag-group');
+    if (tagGroup) {
+      fragments.push(tagGroup);
+    }
+    // Heading (h3)
+    const heading = card.querySelector('h3');
+    if (heading) {
+      fragments.push(heading);
+    }
+    // Paragraph/Description (p)
+    const desc = card.querySelector('p');
+    if (desc) {
+      fragments.push(desc);
+    }
+    return fragments;
   }
 
-  // Table header as in the example
-  const cells = [['Cards (cards5)']];
-
-  // Find the grid
-  const grid = element.querySelector('.grid-layout');
-  if (!grid) return;
-  const gridChildren = Array.from(grid.children);
-
-  // 1. Main card (large card on left)
-  const mainCard = gridChildren[0];
-  if (mainCard && mainCard.classList.contains('utility-link-content-block')) {
-    const image = mainCard.querySelector('img');
-    const tag = mainCard.querySelector('.tag-group');
-    const heading = mainCard.querySelector('h3');
-    const desc = mainCard.querySelector('p');
-    const textCell = buildTextCell([tag, heading, desc]);
+  // Get the .container > .grid-layout (the main grid)
+  const gridLayout = element.querySelector('.container .grid-layout');
+  if (!gridLayout) return;
+  // First card is the prominent one (feature card) - first <a>
+  const firstCard = gridLayout.querySelector(':scope > a.utility-link-content-block');
+  if (firstCard) {
+    // image: div[class*="aspect"] > img
+    const imgWrap = firstCard.querySelector('div[class*="aspect"]');
+    let img = imgWrap ? imgWrap.querySelector('img') : null;
+    // If no image, cell is empty string
     cells.push([
-      image || '',
-      textCell
+      img || '',
+      buildTextCell(firstCard)
     ]);
   }
-
-  // 2. Two medium cards (top right, image cards)
-  const mediumCardsCol = gridChildren[1];
-  if (mediumCardsCol) {
-    const mediumCards = mediumCardsCol.querySelectorAll('.utility-link-content-block');
-    mediumCards.forEach(card => {
-      const image = card.querySelector('img');
-      const tag = card.querySelector('.tag-group');
-      const heading = card.querySelector('h3');
-      const desc = card.querySelector('p');
-      const textCell = buildTextCell([tag, heading, desc]);
+  // The next two groups are both .flex-horizontal
+  const flexGroups = gridLayout.querySelectorAll(':scope > div.flex-horizontal');
+  // The first flex-horizontal: contains 2 cards with images
+  if (flexGroups[0]) {
+    const secondaryCards = flexGroups[0].querySelectorAll(':scope > a.utility-link-content-block');
+    secondaryCards.forEach(card => {
+      const imgWrap = card.querySelector('div[class*="aspect"]');
+      let img = imgWrap ? imgWrap.querySelector('img') : null;
       cells.push([
-        image || '',
-        textCell
+        img || '',
+        buildTextCell(card)
       ]);
     });
   }
-
-  // 3. Text-only cards (rightmost column)
-  const textCardsCol = gridChildren[2];
-  if (textCardsCol) {
-    // Only count direct children with .utility-link-content-block
-    Array.from(textCardsCol.children).forEach(child => {
-      if (child.classList.contains('utility-link-content-block')) {
-        const heading = child.querySelector('h3');
-        const desc = child.querySelector('p');
-        const textCell = buildTextCell([heading, desc]);
-        cells.push([
-          '',
-          textCell
-        ]);
-      }
+  // The second flex-horizontal: contains text-only cards (no image)
+  if (flexGroups[1]) {
+    const tertiaryCards = flexGroups[1].querySelectorAll(':scope > a.utility-link-content-block');
+    tertiaryCards.forEach(card => {
+      cells.push([
+        '', // no image
+        buildTextCell(card)
+      ]);
     });
   }
-
-  // Build and replace
+  // Create and replace
   const table = WebImporter.DOMUtils.createTable(cells, document);
   element.replaceWith(table);
 }

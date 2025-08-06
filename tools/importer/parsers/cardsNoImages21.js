@@ -1,23 +1,20 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Create the Cards block table
+  // Table header row exactly as in the example
   const rows = [['Cards']];
-  // Each card is an immediate child div
-  const cardDivs = element.querySelectorAll(':scope > div');
-  cardDivs.forEach(card => {
-    // Find the text content in the <p> inside the card
-    // The card may also have icons (SVGs), which are not part of the content per spec
+
+  // Get all immediate child divs: each is a card
+  const cards = element.querySelectorAll(':scope > div');
+  cards.forEach(card => {
+    // Reference all <p> elements within the card (there should be one)
+    // But if none, skip this card
     const p = card.querySelector('p');
     if (p) {
-      rows.push([p]); // Reference the existing <p> element
-    } else {
-      // Fallback: If no <p>, use trimmed text of the card
-      const txt = card.textContent.trim();
-      if (txt) {
-        rows.push([document.createTextNode(txt)]);
-      }
+      rows.push([p]);
     }
   });
+
+  // Build and replace
   const table = WebImporter.DOMUtils.createTable(rows, document);
   element.replaceWith(table);
 }

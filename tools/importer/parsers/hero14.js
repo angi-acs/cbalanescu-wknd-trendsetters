@@ -1,36 +1,23 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Header row as specified
+  // Row 1: Header (block name exactly as required)
   const headerRow = ['Hero (hero14)'];
 
-  // --- Background Image (row 2) ---
-  // Find the first child div that contains an img.cover-image.utility-position-absolute
-  let bgImg = null;
-  const bgImgWrapper = element.querySelector('img.cover-image.utility-position-absolute');
-  if (bgImgWrapper) {
-    bgImg = bgImgWrapper;
-  }
+  // Row 2: Background Image (single <img> with absolute positioning)
+  // The background image is always the .cover-image.utility-position-absolute
+  const bgImg = element.querySelector('img.cover-image.utility-position-absolute');
+  const bgImgRow = [bgImg ? bgImg : ''];
 
-  // --- Main Content (row 3) ---
-  // This is the container > card > card-body
-  let mainContent = null;
-  const container = element.querySelector('div.container');
-  if (container) {
-    // The card that contains everything
-    const card = container.querySelector('div.card.card-on-secondary');
-    if (card) {
-      mainContent = card;
-    }
-  }
+  // Row 3: Content (the main card with all important content)
+  // This card contains heading, list items, call-to-action, and may include an inline image
+  // We want the entire .card.card-on-secondary block as a single cell
+  const card = element.querySelector('.card.card-on-secondary');
+  const contentRow = [card ? card : ''];
 
-  // Edge case: if any of the above is missing, provide an empty string for robustness
-  const cells = [
-    headerRow,
-    [bgImg ? bgImg : ''],
-    [mainContent ? mainContent : ''],
-  ];
-
-  // Create the block table and replace the element
+  // Assemble the table in the required 1-col 3-row structure
+  const cells = [headerRow, bgImgRow, contentRow];
   const table = WebImporter.DOMUtils.createTable(cells, document);
+
+  // Replace the original element with the new block table
   element.replaceWith(table);
 }

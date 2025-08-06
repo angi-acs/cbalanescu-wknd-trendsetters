@@ -1,51 +1,30 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // 1. Header row
+  // Header row
   const headerRow = ['Hero (hero1)'];
-  
-  // 2. Get main content wrapper
-  const container = element.querySelector('.container');
-  const grid = container ? container.querySelector('.grid-layout') : null;
-  const gridChildren = grid ? Array.from(grid.children) : [];
 
-  // 3. Find image (use first img in grid)
-  let img = null;
-  for (const child of gridChildren) {
-    if (child.tagName === 'IMG') {
-      img = child;
-      break;
-    }
-  }
-  // Fallback if image not found
-  if (!img) {
-    img = element.querySelector('img');
+  // Find the main grid containing the image and text
+  const grid = element.querySelector('.w-layout-grid');
+  let imgEl = null;
+  let textContent = null;
+
+  if (grid) {
+    // Find the image (first img child in grid)
+    imgEl = grid.querySelector('img');
+    // Find the text content: first div in grid that's not image
+    const children = Array.from(grid.children);
+    textContent = children.find(child => child.tagName === 'DIV');
   }
 
-  // 4. Find text block (the non-img direct child in grid)
-  let textBlock = null;
-  for (const child of gridChildren) {
-    if (child !== img) {
-      textBlock = child;
-      break;
-    }
-  }
-  // Fallback if not found
-  if (!textBlock) {
-    // Try to find a likely div
-    textBlock = element.querySelector('div:not(.container):not(.grid-layout):not(.w-layout-grid):not(.image)');
-  }
-
-  // Defensive: If nothing found, create an empty div
-  if (!img) img = document.createElement('div');
-  if (!textBlock) textBlock = document.createElement('div');
-
-  // 5. Assemble rows for table according to spec
-  const rows = [
+  // Defensive: If missing image, insert empty string
+  // Defensive: If missing text, insert empty string
+  const cells = [
     headerRow,
-    [img],
-    [textBlock],
+    [imgEl || ''],
+    [textContent || '']
   ];
 
-  const table = WebImporter.DOMUtils.createTable(rows, document);
+  // Create the table and replace the element
+  const table = WebImporter.DOMUtils.createTable(cells, document);
   element.replaceWith(table);
 }

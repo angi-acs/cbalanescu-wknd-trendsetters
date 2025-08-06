@@ -1,47 +1,33 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // 1. Block header
+  // Prepare the header row with the exact block name
   const headerRow = ['Hero (hero30)'];
 
-  // 2. Background Image row
-  // Find the <img> with class 'cover-image' inside the header's descendant divs
-  let bgImg = null;
-  const imgs = element.querySelectorAll('img.cover-image');
-  if (imgs && imgs.length > 0) {
-    bgImg = imgs[0];
-  }
-  const bgImgRow = [bgImg || ''];
+  // Find the background image. It's the <img> with class 'cover-image'
+  const img = element.querySelector('img.cover-image');
+  const backgroundRow = [img ? img : '']; // Insert empty string if not found
 
-  // 3. Content row (title, cta, etc)
-  let contentCell = [];
-
-  // The content is inside the .container div, usually the second grid cell
-  // Find '.container' among header's descendants
-  const container = element.querySelector('.container');
-  if (container) {
-    // Find the heading (h1) and button group (if present)
-    const heading = container.querySelector('h1');
-    if (heading) {
-      contentCell.push(heading);
-    }
-    const buttonGroup = container.querySelector('.button-group');
-    // Only include button group if it contains child elements
-    if (buttonGroup && buttonGroup.children.length > 0) {
-      contentCell.push(buttonGroup);
+  // Find the text content: the second cell of the grid-layout
+  // .grid-layout > div:nth-child(2)
+  const grid = element.querySelector('.grid-layout');
+  let textContentDiv = '';
+  if (grid) {
+    const divs = grid.querySelectorAll(':scope > div');
+    if (divs.length > 1) {
+      // The second grid cell has the text content (e.g., h1)
+      textContentDiv = divs[1];
     }
   }
+  const textRow = [textContentDiv];
 
-  // If no content found, ensure cell is present and empty
-  const contentRow = [contentCell.length > 0 ? contentCell : ''];
-
-  // Assemble cells for block table
-  const cells = [
+  // Assemble the table as per the requirements
+  const rows = [
     headerRow,
-    bgImgRow,
-    contentRow
+    backgroundRow,
+    textRow
   ];
 
-  // Create the block table and replace the original element
-  const table = WebImporter.DOMUtils.createTable(cells, document);
-  element.replaceWith(table);
+  // Create and replace with the block table
+  const block = WebImporter.DOMUtils.createTable(rows, document);
+  element.replaceWith(block);
 }

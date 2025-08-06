@@ -1,42 +1,37 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
+  // Header row for the block
   const headerRow = ['Cards (cards2)'];
-  const rows = [headerRow];
+  
+  // Get all direct card links
+  const cardLinks = Array.from(element.querySelectorAll(':scope > a.utility-link-content-block'));
 
-  // Each card is a direct <a> child
-  const cards = element.querySelectorAll(':scope > a.utility-link-content-block');
-  cards.forEach((card) => {
-    // IMAGE (first cell): <img> inside .utility-aspect-2x3
-    let img = null;
-    const imgWrap = card.querySelector(':scope > .utility-aspect-2x3');
-    if (imgWrap) {
-      img = imgWrap.querySelector('img');
+  const rows = cardLinks.map((card) => {
+    // First cell: the image (reference)
+    const img = card.querySelector('img');
+
+    // Second cell: text content including tag, date, and heading
+    // We'll group them in a single div for proper structure
+    const cellDiv = document.createElement('div');
+
+    // Tag/date row (may have both or just one)
+    const meta = card.querySelector('.flex-horizontal');
+    if (meta) {
+      // Reference the existing element directly
+      cellDiv.appendChild(meta);
     }
 
-    // TEXT (second cell): Tag/date, then heading
-    const textContent = [];
-
-    // Tag/date row
-    const tagRow = card.querySelector(':scope > .flex-horizontal');
-    if (tagRow) {
-      // Use original tagRow, but remove class for clean import
-      tagRow.removeAttribute('class');
-      textContent.push(tagRow);
-    }
-
-    // Heading
-    const heading = card.querySelector(':scope > h3, :scope > .h4-heading');
+    // Heading (title)
+    const heading = card.querySelector('h1, h2, h3, h4, h5, h6');
     if (heading) {
-      textContent.push(heading);
+      cellDiv.appendChild(heading);
     }
 
-    // Create row for this card: [img, text cell]
-    rows.push([
-      img,
-      textContent.length === 1 ? textContent[0] : textContent
-    ]);
+    return [img, cellDiv];
   });
 
-  const table = WebImporter.DOMUtils.createTable(rows, document);
+  // Compose the table rows
+  const tableRows = [headerRow, ...rows];
+  const table = WebImporter.DOMUtils.createTable(tableRows, document);
   element.replaceWith(table);
 }

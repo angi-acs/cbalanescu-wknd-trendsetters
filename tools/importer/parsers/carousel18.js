@@ -1,26 +1,25 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Find the image grid containing all slides
+  // Find the grid layout containing slides
   const grid = element.querySelector('.grid-layout');
   if (!grid) return;
-  const slides = Array.from(grid.children).filter(child => child.querySelector('img'));
-
-  // Build the block table's rows
-  const rows = [
-    ['Carousel (carousel18)']
+  // Each child div is a slide
+  const slideDivs = Array.from(grid.children);
+  // Build rows - always two columns: [image, text cell]
+  const rows = slideDivs.map(div => {
+    // Get image (required for this block)
+    const img = div.querySelector('img');
+    // No image? Skip this slide
+    if (!img) return null;
+    // No extra text content in provided HTML; second cell is empty string
+    return [img, ''];
+  }).filter(Boolean);
+  // Block header row is a single cell
+  const cells = [
+    ['Carousel (carousel18)'],
+    ...rows
   ];
-
-  slides.forEach(slide => {
-    // Find the <img> for the slide (mandatory)
-    const aspect = slide.querySelector('.utility-aspect-2x3');
-    if (!aspect) return;
-    const img = aspect.querySelector('img');
-    if (!img) return;
-    // Reference the img node directly
-    rows.push([img, '']); // Second cell empty, as there's no text content in the provided HTML
-  });
-
-  // Create block table and replace the original block
-  const table = WebImporter.DOMUtils.createTable(rows, document);
-  element.replaceWith(table);
+  // Create the table and replace
+  const block = WebImporter.DOMUtils.createTable(cells, document);
+  element.replaceWith(block);
 }

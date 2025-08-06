@@ -1,39 +1,48 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // The component is Columns (columns28)
-  // Find the main grid layout
-  const container = element.querySelector('.container');
-  if (!container) return;
-
-  const grid = container.querySelector('.grid-layout');
+  // Find the direct child .container, then its .w-layout-grid.grid-layout
+  const grid = element.querySelector('div.container > .w-layout-grid.grid-layout');
   if (!grid) return;
 
-  // The section structure is:
-  // 1. <p class="h2-heading.."> - heading
-  // 2. <p class="paragraph-lg.."> - testimonial text
-  // 3. <div class="w-layout-grid..."><div class="divider..."></div><div class="flex-horizontal..."><div class="avatar"><img ...></div><div>name/title</div></div><div class="utility-display-inline-block...">svg logo</div></div>
+  // The grid contains two columns: left (heading, quote), right (divider, author info, logo)
+  // We'll structure the block as 2 columns
 
-  // Only immediate children of grid
-  const children = Array.from(grid.children);
-  if (children.length < 3) return;
+  // Left column content: heading + quote
+  const leftColumn = document.createElement('div');
+  const heading = grid.querySelector('.h2-heading');
+  if (heading) leftColumn.appendChild(heading);
+  const paragraph = grid.querySelector('.paragraph-lg');
+  if (paragraph) leftColumn.appendChild(paragraph);
 
-  // First column: heading, divider/avatar block
-  // Second column: testimonial ("quote") text
+  // Right column content: inner grid (divider, author, logo)
+  const rightColumn = document.createElement('div');
+  // Find the nested grid (author + logo area) as a direct child of the main grid
+  let authorBlock = null;
+  for (const child of grid.children) {
+    if (child.classList.contains('w-layout-grid') && child !== grid) {
+      authorBlock = child;
+      break;
+    }
+  }
+  // Some Webflow exports use id selectors for inner grids; fallback for robustness
+  if (!authorBlock) {
+    authorBlock = grid.querySelector('.w-layout-grid.grid-layout:not(:first-child)');
+  }
+  if (authorBlock) {
+    // Move all children of authorBlock into rightColumn
+    while (authorBlock.firstChild) {
+      rightColumn.appendChild(authorBlock.firstChild);
+    }
+    // Remove the now-empty authorBlock container
+    if (authorBlock.parentNode) authorBlock.parentNode.removeChild(authorBlock);
+  }
 
-  // Compose columns referencing existing elements
-  const leftCol = document.createElement('div');
-  leftCol.appendChild(children[0]); // heading
-  leftCol.appendChild(children[2]); // grid with divider, avatar, logo
-
-  const rightCol = children[1]; // quote paragraph
-
-  // Block table creation
+  // Create header row as in the spec
   const headerRow = ['Columns (columns28)'];
   const cells = [
     headerRow,
-    [leftCol, rightCol],
+    [leftColumn, rightColumn]
   ];
-
   const table = WebImporter.DOMUtils.createTable(cells, document);
   element.replaceWith(table);
 }

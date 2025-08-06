@@ -1,51 +1,52 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  const headerRow = ['Cards (cards35)'];
-  // Find each direct card link within the main grid
-  const cards = Array.from(element.querySelectorAll(':scope > a'));
-  const rows = cards.map(card => {
-    // 1st cell: the main image (first img in the card)
+  // Header row as given in the example
+  const rows = [['Cards (cards35)']];
+
+  // Each card is an anchor directly inside the grid
+  const cards = element.querySelectorAll(':scope > a');
+  cards.forEach((card) => {
+    // Find the image: always the first img inside this card
     const img = card.querySelector('img');
-    // 2nd cell: card text content
-    // Find the main content DIV containing everything except the image
-    // It's usually the inner div after the img, containing tag, time, heading, p, and cta
-    let contentDiv = null;
-    // Find the deepest child DIV that contains the card's text content
-    // The structure is: a > div.grid > [img, div] or similar
-    // We want the div sibling of img inside the inner grid
-    const innerGrid = card.querySelector('div.w-layout-grid');
-    if (innerGrid) {
-      // find all immediate children of innerGrid after the img
-      const childDivs = Array.from(innerGrid.children).filter(
-        c => c.tagName === 'DIV'
+    
+    // The text content is inside the second-level div inside the card anchor
+    // Find the div whose children include the card content (excluding img)
+    let textDiv = null;
+    const gridDiv = card.querySelector('div');
+    if (gridDiv) {
+      // There will be two children: img and the actual text container
+      const children = Array.from(gridDiv.children);
+      textDiv = children.find(child => child !== img);
+    }
+
+    const textParts = [];
+    if (textDiv) {
+      // Optional meta (tag and read time)
+      const meta = textDiv.querySelector('.flex-horizontal');
+      if (meta) textParts.push(meta);
+      // Heading
+      const heading = textDiv.querySelector('h3, .h4-heading');
+      if (heading) textParts.push(heading);
+      // Description
+      const desc = textDiv.querySelector('p');
+      if (desc) textParts.push(desc);
+      // CTA - usually the last div whose text is 'Read'
+      const cta = Array.from(textDiv.children).find(
+        el =>
+          el.tagName === 'DIV' &&
+          el.textContent &&
+          el.textContent.trim().toLowerCase() === 'read'
       );
-      // It's usually the first DIV
-      if (childDivs.length > 0) {
-        contentDiv = childDivs[0];
-      }
+      if (cta) textParts.push(cta);
     }
-    // Fallback: just take the first div that follows the img
-    if (!contentDiv && img) {
-      let sib = img.nextElementSibling;
-      while (sib) {
-        if (sib.tagName === 'DIV') {
-          contentDiv = sib;
-          break;
-        }
-        sib = sib.nextElementSibling;
-      }
-    }
-    // Last fallback: if nothing found, put an empty div
-    if (!contentDiv) {
-      contentDiv = document.createElement('div');
-    }
-    // Return the row as [img, contentDiv]
-    return [img, contentDiv];
+
+    // Add this card's row
+    rows.push([
+      img,
+      textParts
+    ]);
   });
-  // Create the table: 2 columns, header row as first row, then all cards
-  const table = WebImporter.DOMUtils.createTable([
-    headerRow,
-    ...rows
-  ], document);
+
+  const table = WebImporter.DOMUtils.createTable(rows, document);
   element.replaceWith(table);
 }

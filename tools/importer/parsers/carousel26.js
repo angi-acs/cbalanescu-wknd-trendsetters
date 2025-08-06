@@ -1,32 +1,34 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Header row matches exactly the block name in the example
+  // Block header row (must match exactly)
   const headerRow = ['Carousel (carousel26)'];
-  
-  // Find the card-body div that contains the slide content
-  const cardBody = element.querySelector('.card-body');
-  let img = null;
-  let textContent = null;
-  
-  if (cardBody) {
-    img = cardBody.querySelector('img');
-    // Find the heading (h4-heading) if available
-    textContent = cardBody.querySelector('.h4-heading');
-  }
-  // Fallbacks if structure is different
-  if (!img) {
-    img = element.querySelector('img');
-  }
-  if (!textContent) {
-    textContent = element.querySelector('.h4-heading, h1, h2, h3, h4, h5, h6');
-  }
-  // Only include image if it exists
-  const slideRow = [img ? img : '', textContent ? textContent : ''];
 
+  // Find the innermost card-body containing all relevant content
+  const cardBody = element.querySelector('.card-body');
+  if (!cardBody) return;
+
+  // Required: image (first cell)
+  const img = cardBody.querySelector('img');
+
+  // Optional: text content (second cell)
+  let textContent = [];
+  const heading = cardBody.querySelector('.h4-heading');
+  if (heading) {
+    // Use original element for semantic meaning
+    textContent.push(heading);
+  }
+  // No description or CTA/link in this HTML
+  if (textContent.length === 0) {
+    textContent = [''];
+  }
+
+  // Structure: header row, then each slide row
   const cells = [
     headerRow,
-    slideRow
+    [img, textContent]
   ];
-  const table = WebImporter.DOMUtils.createTable(cells, document);
-  element.replaceWith(table);
+
+  // Create the block table and replace the original element
+  const block = WebImporter.DOMUtils.createTable(cells, document);
+  element.replaceWith(block);
 }

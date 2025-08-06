@@ -1,39 +1,42 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  const headerRow = ['Cards (cards17)'];
-  const cells = [headerRow];
-
-  // Select all tab panes
-  const tabPanes = element.querySelectorAll('[class*="w-tab-pane"]');
-  tabPanes.forEach((tabPane) => {
-    // Each tabPane contains a grid of cards
-    const grid = tabPane.querySelector('.w-layout-grid');
-    if (!grid) return;
-    const cards = grid.querySelectorAll(':scope > a');
-    cards.forEach((card) => {
-      // Left cell: image (if present)
-      let imgCell = '';
-      const aspectBox = card.querySelector('.utility-aspect-3x2');
-      if (aspectBox) {
-        const img = aspectBox.querySelector('img');
-        if (img) imgCell = img;
-      }
-      // Right cell: text (heading and description)
-      // If .utility-text-align-center exists within card, use it, else use card
-      const textContainer = card.querySelector('.utility-text-align-center') || card;
-      let textParts = [];
-      // Heading (h3 or .h4-heading)
-      const heading = textContainer.querySelector('h3, .h4-heading');
+  // Helper function: extracts cards from a grid
+  function extractCardsFromGrid(grid) {
+    const cards = [];
+    // Each direct child <a> is a card
+    Array.from(grid.children).forEach(card => {
+      if (card.tagName !== 'A') return;
+      // Try to find the card image (first img in descendants)
+      let imgEl = card.querySelector('img');
+      // Build the text cell: heading + description
+      let heading = card.querySelector('h3');
+      let desc = card.querySelector('.paragraph-sm');
+      // Only push heading/desc if they exist
+      const textParts = [];
       if (heading) textParts.push(heading);
-      // Description (first .paragraph-sm)
-      const desc = textContainer.querySelector('.paragraph-sm');
       if (desc) textParts.push(desc);
-      // Compose cell with all found elements
-      // If both missing, fallback to ''
-      let textCell = textParts.length > 0 ? textParts : '';
-      cells.push([imgCell, textCell]);
+      // If both heading & desc missing, push empty string so cell is not empty
+      cards.push([
+        imgEl || '',
+        textParts.length > 0 ? textParts : ''
+      ]);
     });
+    return cards;
+  }
+
+  // Find every grid inside all tab panes
+  const grids = element.querySelectorAll('.w-layout-grid');
+  let allCards = [];
+  grids.forEach(grid => {
+    allCards = allCards.concat(extractCardsFromGrid(grid));
   });
+
+  // Table header as required
+  const cells = [
+    ['Cards (cards17)'],
+    ...allCards
+  ];
+
   const table = WebImporter.DOMUtils.createTable(cells, document);
   element.replaceWith(table);
 }

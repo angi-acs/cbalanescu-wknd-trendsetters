@@ -1,46 +1,44 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Header row: must match example exactly
+  // Table header row exactly as required
   const headerRow = ['Hero (hero4)'];
 
-  // Background image row: no image present, so empty string
+  // No background image in given HTML, so second row is empty
   const bgRow = [''];
 
-  // Content row: extract heading, paragraph, and button preserving DOM elements
-  let contentEls = [];
-  // Find the grid containing the main elements
+  // Third row: Title (heading), Subheading (paragraph), CTA button (link)
+  // Robustly handle variations (missing or reordered elements)
+  // Find the direct child .w-layout-grid
   const grid = element.querySelector('.w-layout-grid');
-  if (grid) {
-    // Find the direct children of the grid
-    const children = Array.from(grid.children);
-    // First h2 or heading
-    const heading = children.find(el => /^H[1-6]$/.test(el.tagName));
-    if (heading) contentEls.push(heading);
-    // Find the div containing paragraph and button
-    const contentDiv = children.find(el => el.tagName === 'DIV');
-    if (contentDiv) {
-      // Add all of its children (paragraphs, links)
-      contentEls.push(...Array.from(contentDiv.children));
-    }
+  if (!grid) return;
+
+  // Find all direct children of grid (should be [heading, content-div])
+  const gridChildren = Array.from(grid.children);
+
+  // Heading: the first heading element in grid children
+  const heading = gridChildren.find(c => /^H[1-6]$/i.test(c.tagName));
+  // Content: the first non-heading element
+  const contentDiv = gridChildren.find(c => c !== heading);
+
+  // Prepare the array for the cell
+  const contentCell = [];
+  if (heading) contentCell.push(heading);
+
+  if (contentDiv) {
+    // Find all elements in contentDiv
+    const children = Array.from(contentDiv.children);
+    // Paragraph (subheading/description)
+    const paragraph = children.find(el => el.tagName === 'P');
+    if (paragraph) contentCell.push(paragraph);
+    // CTA: the first <a> (button)
+    const cta = children.find(el => el.tagName === 'A');
+    if (cta) contentCell.push(cta);
   }
-  // Fallback if grid not found (edge case)
-  if (contentEls.length === 0) {
-    // Try to find heading, p, and a anywhere inside element.
-    const heading = element.querySelector('h1,h2,h3,h4,h5,h6');
-    const p = element.querySelector('p');
-    const a = element.querySelector('a');
-    contentEls = [heading, p, a].filter(Boolean);
-  }
 
-  const contentRow = [contentEls];
+  // Compose the table structure
+  const cells = [headerRow, bgRow, [contentCell]];
 
-  // Create the table according to guidelines
-  const table = WebImporter.DOMUtils.createTable([
-    headerRow,
-    bgRow,
-    contentRow
-  ], document);
-
-  // Replace the original element with the block table
+  // Create and replace with the table
+  const table = WebImporter.DOMUtils.createTable(cells, document);
   element.replaceWith(table);
 }
