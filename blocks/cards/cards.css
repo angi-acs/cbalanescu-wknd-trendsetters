@@ -1026,8 +1026,6 @@
   box-sizing: border-box;
   display: block;
 }
-
-/* More right column space, bigger gutter for a lighter feel */
 .cards.cards5 > ul {
   display: grid;
   grid-template-columns: 42.5% 57.5%;
@@ -1039,8 +1037,6 @@
   background: none;
   min-height: 0;
 }
-
-/* Remove margin on li, vertical alignment */
 .cards.cards5 > ul > li {
   margin: 0;
   padding: 0;
@@ -1050,8 +1046,6 @@
   min-width: 0;
   min-height: 0;
 }
-
-/* Left column: main image and intro */
 .cards.cards5 > ul > li:first-child {
   display: flex;
   flex-direction: column;
@@ -1124,8 +1118,6 @@
   font-weight: 500;
   line-height: 1.5;
 }
-
-/* Right column: all cards stacked, first two with images side by side */
 .cards.cards5 > ul > li:not(:first-child) {
   grid-column: 2 / 3;
   padding: 0;
@@ -1135,8 +1127,6 @@
   flex-direction: column;
   justify-content: flex-start;
 }
-
-/* Cards 2 & 3: image left, text right, images wider and closer */
 .cards.cards5 > ul > li:nth-child(2),
 .cards.cards5 > ul > li:nth-child(3) {
   flex-direction: row;
@@ -1165,8 +1155,6 @@
   object-fit: cover;
   border-radius: 1.1rem;
 }
-
-/* Card body tweaks for vertical centering */
 .cards.cards5 > ul > li:nth-child(2) .cards-card-body,
 .cards.cards5 > ul > li:nth-child(3) .cards-card-body {
   flex: 1 1 auto;
@@ -1176,8 +1164,6 @@
   justify-content: center;
   min-width: 0;
 }
-
-/* Card labels in right column */
 .cards.cards5 > ul > li:nth-child(2) .cards-card-body p:first-child,
 .cards.cards5 > ul > li:nth-child(3) .cards-card-body p:first-child {
   display: inline-block;
@@ -1217,8 +1203,6 @@
   font-weight: 500;
   line-height: 1.5;
 }
-
-/* Text-only stacked cards with separators, tight grouping */
 .cards.cards5 > ul > li:nth-child(n+4) {
   display: flex;
   flex-direction: column;
@@ -1259,13 +1243,9 @@
   font-weight: 500;
   line-height: 1.5;
 }
-
-/* Remove empty .cards-card-image blocks in text-only cards */
 .cards.cards5 > ul > li:nth-child(n+4) .cards-card-image {
   display: none;
 }
-
-/* Responsive: stack columns on mobile/tablet */
 @media (max-width: 900px) {
   .cards.cards5 {
     padding: 1.2rem 0.5rem;
@@ -1290,4 +1270,120 @@
     gap: 1rem;
     margin-bottom: 1.1rem;
   }
+}
+
+
+.cards {
+  background: #fff;
+  padding: 0;
+}
+
+/* Grid container for cards: 4 columns, responsive */
+.cards > ul {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px 32px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  width: 100%;
+  align-items: start;
+}
+
+/* Responsive: 2 columns on medium screens */
+@media (max-width: 900px) {
+  .cards > ul {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Responsive: 1 column on small screens */
+@media (max-width: 600px) {
+  .cards > ul {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Card item: flex row for icon+text, center as a group */
+.cards > ul > li {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  min-width: 0;
+  background: none;
+  border: none;
+  box-shadow: none;
+  margin: 0;
+  padding: 0;
+  min-height: 48px;
+}
+
+/* Card body: align icon and text side-by-side, center vertically */
+.cards .cards-card-body {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  margin: 0;
+  background: none;
+  position: relative;
+  /* Reserve icon space by padding */
+  padding-left: 36px;
+}
+
+/* Icon placeholder: make it closer to original icon size and bolder */
+.cards .cards-card-body::before {
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  min-height: 24px;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  border: 2px solid #000;
+  background: none;
+}
+
+/* Card text styling */
+.cards .cards-card-body p {
+  margin: 0;
+  padding: 0;
+  color: #222;
+  font-size: 12px;
+  line-height: 1.4;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-align: left;
+  background: none;
+  box-shadow: none;
+  font-family: var(--body-font-family), Arial, sans-serif;
+  overflow-wrap: anywhere;
+  display: block;
+}
+
+/* Remove default spacing from nested lists, if any */
+.cards > ul > li ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Remove background, border, and shadow from all direct card children */
+.cards > ul > li,
+.cards .cards-card-body,
+.cards .cards-card-body p {
+  background: none;
+  border: none;
+  box-shadow: none;
+}
+
+.cards > ul > li,
+.cards .cards-card-body {
+  min-width: 0;
+  max-width: 100%;
 }
